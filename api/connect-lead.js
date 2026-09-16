@@ -157,15 +157,17 @@ export default async function handler(req, res) {
       // só o comprimento, para eu perceber se ele trocou entre um teste e outro.
       const auth = /^bearer\s/i.test(token) ? token : `Bearer ${token}`;
       const linhas = [`token com ${token.length} caracteres`];
-      for (const [metodo, caminho] of [
-        ['GET ', `/api/projects/${PROJECT_ID}`],
-        ['GET ', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}`],
-        ['POST', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/responses`],
-      ]) {
+      const provas = [
+        ['GET ', `/api/projects/${PROJECT_ID}`, null],
+        // escrita simples, para saber se o token grava alguma coisa
+        ['POST', `/api/projects/${PROJECT_ID}/lead-sources`, { text: '__probe__ (apagar)', color: '#999999' }],
+        ['POST', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/responses`, { answers }],
+      ];
+      for (const [metodo, caminho, corpo] of provas) {
         const r = await fetch(`${API_BASE}${caminho}`, {
           method: metodo.trim(),
           headers: { 'content-type': 'application/json', authorization: auth },
-          ...(metodo.trim() === 'POST' ? { body: JSON.stringify({ answers }) } : {}),
+          ...(corpo ? { body: JSON.stringify(corpo) } : {}),
         });
         const t = (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
         linhas.push(`${metodo} ${caminho} -> ${r.status} ${t}`);
