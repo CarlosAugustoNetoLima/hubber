@@ -1,0 +1,34 @@
+
+
+.diag { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s48); }
+.diag__form { max-width: 720px; }
+
+.diag__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--s16);
+  margin-bottom: var(--s32);
+}
+.diag__head [data-step-counter] { color: var(--fg-muted); }
+
+.diag__privacy {
+  margin-top: var(--s24);
+  color: var(--fg-muted);
+  max-width: 56ch;
+}
+
+.after .phases { border-top: 1.5px solid var(--fg); }
+
+.final { padding-block: clamp(var(--s120), 16vw, var(--s240)); }
+.final h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6.4vw, 6rem);
+  line-height: 0.95;
+  font-weight: var(--fw-regular);
+  max-width: 12ch;
+}
+
+.section .sec-head + * { margin-top: var(--s48); }
+@media (min-width: 900px) { .section .sec-head + * { margin-top: var(--s64); } }

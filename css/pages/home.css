@@ -1,0 +1,75 @@
+
+
+/* Aviso de obra: cobre a home enquanto ela está sendo refeita.
+   ?preview na URL desliga para quem está trabalhando na página. */
+.wip {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: var(--s24);
+  background: var(--c-ink);
+  color: var(--c-white);
+  text-align: center;
+}
+.wip__in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s16);
+  max-width: min(40rem, 100%);
+}
+.wip__mark { width: clamp(48px, 7vw, 84px); height: auto; color: var(--c-magenta); }
+.wip__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.05;
+  font-weight: var(--fw-regular);
+  margin: 0;
+  text-wrap: balance;
+}
+.wip__lead { margin: 0; color: var(--fg-muted); }
+body:has(.wip) { overflow: hidden; }
+.wip-off .wip { display: none; }
+.wip-off body:has(.wip) { overflow: auto; }
+
+.reframe__table { padding-block: var(--s64) var(--section-y); }
+
+.reason {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s64);
+  align-items: start;
+}
+@media (max-width: 900px) { .reason { grid-template-columns: 1fr; gap: var(--s32); } }
+.reason h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 3.6rem);
+  line-height: 0.98;
+  font-weight: var(--fw-regular);
+  max-width: 14ch;
+}
+.reason__body { display: flex; flex-direction: column; gap: var(--s16); max-width: 52ch; }
+.reason__disclosure {
+  padding: var(--s16) var(--s24);
+  border-left: 2px solid var(--accent-text);
+}
+
+.final { padding-block: clamp(var(--s120), 16vw, var(--s240)); }
+.final h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6.4vw, 6rem);
+  line-height: 0.95;
+  font-weight: var(--fw-regular);
+  max-width: 12ch;
+}
+.final .t-lead { max-width: 44ch; }
+
+.section .sec-head + * { margin-top: var(--s48); }
+@media (min-width: 900px) { .section .sec-head + * { margin-top: var(--s64); } }
+@media (max-width: 767px) {
+  .section .sec-head + * { margin-top: var(--s32); }
+  .final { padding-block: var(--s80); }
+  .reframe__table { padding-top: var(--s48); }
+}

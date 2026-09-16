@@ -1,0 +1,121 @@
+/* Página de documento legal: uma coluna de leitura, sem navegação competindo
+   com o texto. O cabeçalho aqui é só a marca, sem links: a home está em obras e
+   a Connect é isolada, então não há para onde mandar quem chegou até aqui. */
+
+.hdr--legal .hdr__in { grid-template-columns: auto; }
+.hdr--legal .hdr__logo { cursor: default; }
+.hdr--legal .hdr__logo:hover { opacity: 1; }
+.hdr__kicker {
+  padding: 3px var(--s8);
+  border: 1px solid var(--c-magenta);
+  color: var(--c-magenta);
+  line-height: 1.4;
+}
+
+.ftr--legal { border-top: 1px solid var(--rule); margin-top: var(--s80); }
+.ftr--legal .ftr__bottom { padding-block: var(--s32) var(--s48); }
+
+/* O cabeçalho aqui é só a marca, então o texto pode começar mais alto
+   que numa página com hero. */
+.legal { padding-block: var(--s64) var(--s80); }
+
+.legal__in { max-width: 44rem; }
+
+/* Escala própria: o h1 do site é de hero e, dentro de uma coluna de leitura,
+   viraria nove linhas de título antes da primeira frase do documento. */
+.legal__title {
+  margin-block: var(--s16) var(--s24);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: var(--lh-tight);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-tight);
+  text-wrap: balance;
+}
+
+.legal__meta {
+  padding-bottom: var(--s48);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Índice: o documento é longo e quem chega quer um assunto só. */
+.legal__toc {
+  margin-block: var(--s48);
+  padding: var(--s24);
+  border: 1px solid var(--border-ui);
+}
+.legal__toc h2 {
+  margin: 0 0 var(--s16);
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.legal__toc ol {
+  display: grid;
+  gap: var(--s8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: toc;
+}
+.legal__toc li { counter-increment: toc; }
+.legal__toc a {
+  display: flex;
+  gap: var(--s12);
+  font-size: var(--fs-small);
+  text-decoration: none;
+  color: var(--fg);
+}
+.legal__toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--font-mono);
+  color: var(--accent-text);
+}
+.legal__toc a:hover { color: var(--accent-text); }
+
+.legal__body > * + * { margin-top: var(--s16); }
+
+.legal__body h2 {
+  margin-top: var(--s64);
+  padding-top: var(--s24);
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-regular);
+  text-wrap: balance;
+}
+.legal__body h3 {
+  margin-top: var(--s32);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+}
+.legal__body p,
+.legal__body li { color: var(--fg-muted); }
+.legal__body ul {
+  display: grid;
+  gap: var(--s8);
+  margin: 0;
+  padding-left: var(--s24);
+}
+.legal__body strong { font-weight: var(--fw-medium); color: var(--fg); }
+.legal__body a { color: var(--accent-text); }
+
+/* Lista de direitos: o termo legal em destaque e a explicação em seguida. */
+.legal__terms { display: grid; gap: var(--s16); margin: 0; }
+.legal__terms dt {
+  font-weight: var(--fw-medium);
+  color: var(--fg);
+}
+.legal__terms dd {
+  margin: var(--s4) 0 0;
+  color: var(--fg-muted);
+}
+
+@media (max-width: 560px) {
+  .legal__toc { padding: var(--s16); }
+  .legal__body h2 { margin-top: var(--s48); }
+}

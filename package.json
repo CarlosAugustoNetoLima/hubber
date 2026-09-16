@@ -1,0 +1,6 @@
+{
+  "name": "hubber-site",
+  "private": true,
+  "type": "module",
+  "description": "Site estático da Hubber. O HTML da raiz é gerado por build.py a partir de src/ e partials/; api/ são funções serverless da Vercel."
+}
