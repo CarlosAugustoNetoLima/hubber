@@ -69,12 +69,18 @@ function buildAnswers(body) {
         .map((v) => String(v).trim())
         .filter(Boolean)
         .filter((v) => spec.options.includes(v));
-      if (list.length) answers.push({ field: spec.id, value: list });
+      answers.push({ field: spec.id, value: list });
       continue;
     }
 
     raw = typeof raw === 'string' ? raw.trim() : raw == null ? '' : String(raw).trim();
-    if (!raw) { if (spec.required) missing.push(name); continue; }
+    // O JSYNQ recusa o envio se algum campo do formulário ficar de fora da
+    // lista, então campo opcional em branco vai como string vazia, não some.
+    if (!raw) {
+      if (spec.required) missing.push(name);
+      else answers.push({ field: spec.id, value: '' });
+      continue;
+    }
     if (spec.max && raw.length > spec.max) { invalid.push(name); continue; }
     if (spec.options && !spec.options.includes(raw)) { invalid.push(name); continue; }
     if (spec.date) {
