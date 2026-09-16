@@ -196,7 +196,8 @@ async function anexarPdf(cardId, anexo, token) {
   console.error('[anexo][diag] upload ->', envio.status, bruto.slice(0, 400));
   let criado = null;
   try { criado = JSON.parse(bruto); } catch { /* segue com null */ }
-  const anexoId = criado?.attachment?._id || criado?._id || criado?.data?._id;
+  // A API devolve o anexo sob "newAttachment"; os outros nomes ficam de reserva.
+  const anexoId = criado?.newAttachment?._id || criado?.attachment?._id || criado?._id || criado?.data?._id;
   if (!anexoId) return { ok: false, etapa: 'upload', status: 200, body: 'resposta sem id de anexo' };
 
   const liga = await fetch(
