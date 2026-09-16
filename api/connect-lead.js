@@ -90,9 +90,12 @@ function buildCard(body) {
   const missing = [];
   const invalid = [];
 
+  // O id é sempre o do campo do formulário, nunca o crmKey: o JSYNQ já cria
+  // sozinho os campos de contato a partir do que vai no topo do card, e usar
+  // o mesmo id aqui faria um sobrescrever o outro.
   const push = (spec, value) => {
     customFields.push({
-      fieldId: spec.crmKey || spec.id,
+      fieldId: spec.id,
       fieldName: spec.label,
       fieldType: spec.type,
       value,
@@ -123,9 +126,10 @@ function buildCard(body) {
       continue;
     }
     if (spec.date) {
-      const iso = toISODate(raw);
-      if (!iso) { invalid.push(name); continue; }
-      push(spec, iso);
+      // Valida que a data existe, mas grava no formato que a pessoa digitou:
+      // em ISO o JSYNQ devolve a data entre aspas dentro do próprio texto.
+      if (!toISODate(raw)) { invalid.push(name); continue; }
+      push(spec, raw);
       continue;
     }
     if (name === 'email' && !isEmail(raw)) { invalid.push(name); continue; }
