@@ -13,6 +13,7 @@
 
 import { drenar, contarPendentes, filaAtiva } from './_fila.js';
 import { entregarLead } from './connect-lead.js';
+import { entregarDiagnostico } from './diagnostico.js';
 
 export default async function handler(req, res) {
   const segredo = process.env.CRON_SECRET;
@@ -29,12 +30,22 @@ export default async function handler(req, res) {
   const token = process.env.JSYNQ_API_TOKEN;
   if (!token) return res.status(503).json({ ok: false, error: 'not_configured' });
 
-  const r = await drenar('connect', (d) => entregarLead(d, token), 50);
-  const restantes = await contarPendentes('connect');
+  // Os dois formulários do site, cada um com a sua entrega. Um formulário novo
+  // que grave no CRM entra aqui também, senão a fila dele nunca anda sozinha.
+  const filas = [
+    ['connect', (d) => entregarLead(d, token)],
+    ['diagnostico', (d) => entregarDiagnostico(d, token)],
+  ];
 
-  // Fila que não anda é sintoma de problema que ninguém viu ainda.
-  if (restantes) console.error('[drenar] ainda pendentes:', restantes);
-  console.log('[drenar]', JSON.stringify({ ...r, restantes }));
+  const saida = {};
+  for (const [tipo, entregar] of filas) {
+    const r = await drenar(tipo, entregar, 50);
+    const restantes = await contarPendentes(tipo);
+    // Fila que não anda é sintoma de problema que ninguém viu ainda.
+    if (restantes) console.error('[drenar] ainda pendentes em', tipo, restantes);
+    saida[tipo] = { ...r, restantes };
+  }
 
-  return res.status(200).json({ ok: true, ...r, restantes });
+  console.log('[drenar]', JSON.stringify(saida));
+  return res.status(200).json({ ok: true, filas: saida });
 }

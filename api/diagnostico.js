@@ -26,9 +26,14 @@
  * Este projeto recebe todo lead que o site gera, de qualquer landing page. Não
  * criar projeto separado por LP: a origem se distingue pela etiqueta e pelo
  * campo Origem, dentro do mesmo quadro.
+ *
+ * Nenhuma resposta se perde quando o CRM está fora: ela é gravada na fila antes
+ * da tentativa e reenviada depois, pelo próximo envio do site ou pelo cron
+ * diário. Ver _fila.js e drenar.js.
  */
 
 import { computeRoute, ROUTE_LABEL, NOTE_LABEL } from '../js/route.js';
+import { guardar, concluir, drenar, filaAtiva } from './_fila.js';
 
 const API_BASE = 'https://api.jsynq.com';
 const PROJECT_ID = process.env.JSYNQ_DIAG_PROJECT_ID || '6aaac5d2f1edc4c698019729';
@@ -285,6 +290,22 @@ function paginaHtml(rota, recebido, ingles) {
 </html>`;
 }
 
+/* Uma entrega completa: recalcula a rota, monta o card e cria. Usada tanto pelo
+   envio ao vivo quanto pelo reenvio da fila, para os dois caminhos não
+   divergirem com o tempo. A rota é recalculada em vez de guardada porque é
+   função pura das respostas: a fila só precisa do que a pessoa preencheu. */
+export async function entregarDiagnostico(dados, token) {
+  const rota = computeRoute(dados);
+  const { card } = buildCard(dados, rota);
+  const out = await criarCard(card, token);
+  if (!out.ok) {
+    // O corpo da resposta do JSYNQ fica só no log, nunca vai para o navegador.
+    console.error('[diagnostico] JSYNQ recusou:', out.status, out.body?.slice(0, 500), resumo(dados, rota));
+    return false;
+  }
+  return true;
+}
+
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') {
@@ -317,7 +338,7 @@ export default async function handler(req, res) {
   }
 
   const rota = computeRoute(body);
-  const { card, missing, invalid } = buildCard(body, rota);
+  const { missing, invalid } = buildCard(body, rota);
   if (missing.length || invalid.length) {
     if (navegador) {
       // Sem JS não há como marcar os campos na página: devolve para o formulário.
@@ -333,18 +354,32 @@ export default async function handler(req, res) {
     return responder(res, navegador, false, rota, 503, 'not_configured', ingles);
   }
 
+  // Guardar vem antes de entregar. Se o JSYNQ estiver fora, a resposta já está
+  // a salvo e entra na fila em vez de sumir.
+  const naFila = await guardar('diagnostico', body);
+
   try {
-    const out = await criarCard(card, token);
-    if (!out.ok) {
-      // O corpo da resposta do JSYNQ fica só no log, nunca vai para o navegador.
-      console.error('[diagnostico] JSYNQ recusou:', out.status, out.body?.slice(0, 500), resumo(body, rota));
-      return responder(res, navegador, false, rota, 502, 'upstream', ingles);
+    if (await entregarDiagnostico(body, token)) {
+      await concluir(naFila);
+      // O CRM respondeu, então é boa hora de empurrar o que ficou para trás.
+      if (filaAtiva()) {
+        const r = await drenar('diagnostico', (d) => entregarDiagnostico(d, token), 2);
+        if (r.entregues) console.log('[diagnostico] fila: reenviados', r.entregues);
+      }
+      return responder(res, navegador, true, rota, 200, null, ingles);
     }
-    return responder(res, navegador, true, rota, 200, null, ingles);
   } catch (err) {
     console.error('[diagnostico] falha ao falar com o JSYNQ:', err?.message, resumo(body, rota));
-    return responder(res, navegador, false, rota, 502, 'upstream', ingles);
   }
+
+  // Aqui o CRM não aceitou. Se a resposta está na fila, o diagnóstico foi
+  // recebido de fato e será gravado depois: mostrar erro faria a pessoa
+  // responder tudo de novo, e daria dois cards para a mesma empresa.
+  if (naFila) {
+    console.error('[diagnostico] na fila para reenvio:', naFila, resumo(body, rota));
+    return responder(res, navegador, true, rota, 200, null, ingles, true);
+  }
+  return responder(res, navegador, false, rota, 502, 'upstream', ingles);
 }
 
 /* Se o CRM estiver fora do ar, o lead não pode sumir junto: o log guarda o
@@ -353,12 +388,14 @@ function resumo(body, rota) {
   return `| ${body.empresa || '?'} · ${body.nome || '?'} · ${body.email || '?'} · ${body.telefone || '?'} · rota ${rota.route}`;
 }
 
-function responder(res, navegador, gravou, rota, status, erro, ingles) {
+function responder(res, navegador, gravou, rota, status, erro, ingles, pendente) {
   if (navegador) {
     res.setHeader('content-type', 'text/html; charset=utf-8');
     return res.status(gravou ? 200 : status).send(paginaHtml(rota.route, gravou, ingles));
   }
+  // `pendente` é só para o log e para teste: a página mostra a rota igual, que
+  // é o que a pessoa veio buscar.
   return gravou
-    ? res.status(200).json({ ok: true, rota: rota.route, notas: rota.notes })
+    ? res.status(200).json({ ok: true, rota: rota.route, notas: rota.notes, ...(pendente && { pendente: true }) })
     : res.status(status).json({ ok: false, error: erro, rota: rota.route, notas: rota.notes });
 }
