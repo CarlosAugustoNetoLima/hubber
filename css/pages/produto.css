@@ -33,12 +33,20 @@
   .tl__band span { display: none; }
 }
 
+/* A legenda repete a grade das faixas, em vez de três colunas iguais: cada
+   item ocupa exatamente as colunas da sua faixa, então a borda esquerda do
+   texto cai no mesmo ponto da borda da faixa acima. Com colunas iguais e
+   faixas proporcionais à duração, os dois só coincidiriam por acaso. */
 .tl__legend {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--s24);
+  grid-template-columns: repeat(var(--tl-n, 12), minmax(0, 1fr));
+  gap: 3px;
   margin: var(--s24) 0 0;
 }
+.tl__legend > div:nth-child(1) { grid-column: span var(--tl-1, 2); }
+.tl__legend > div:nth-child(2) { grid-column: span var(--tl-2, 2); }
+.tl__legend > div:nth-child(3) { grid-column: span var(--tl-3, 8); }
+.tl__legend > div { padding-right: var(--s24); }
 .tl__legend > div { display: flex; flex-direction: column; gap: var(--s4); }
 .tl__legend dt {
   font-family: var(--font-display);
@@ -51,7 +59,16 @@
   font-family: var(--font-mono);
   font-size: var(--fs-small);
 }
-@media (max-width: 560px) { .tl__legend { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  /* Abaixo disso as faixas perdem o rótulo e a legenda vira lista: alinhar
+     colunas estreitas demais quebraria as palavras no meio. */
+  .tl__legend { grid-template-columns: 1fr; gap: var(--s24); }
+  /* Precisa casar a especificidade das regras de span acima, senão o
+     grid-column continua valendo e o navegador cria colunas implícitas. */
+  .tl__legend > div:nth-child(1),
+  .tl__legend > div:nth-child(2),
+  .tl__legend > div:nth-child(3) { grid-column: auto; padding-right: 0; }
+}
 
 .phase-rows {
   list-style: none;
@@ -167,3 +184,41 @@
 
 .section .sec-head + * { margin-top: var(--s48); }
 @media (min-width: 900px) { .section .sec-head + * { margin-top: var(--s64); } }
+
+/* A grade de rotas é de duas colunas. Com um item só (a página de cases
+   enquanto houver um case publicado), a carta ficaria em meia largura com um
+   vão vazio ao lado, o que lê como erro em vez de escolha. */
+.routes--um { grid-template-columns: minmax(0, 1fr); }
+
+/* Os depoimentos em vídeo, fora do baralho da home. Na home eles são uma cena
+   presa, um por vez; aqui a página é de prova, então os três aparecem juntos.
+   Os arquivos são 9:16, gravados no celular. */
+.vcards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--s32);
+}
+.vcard { display: flex; flex-direction: column; gap: var(--s16); }
+.vcard video {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background-color: #000;
+  border-radius: var(--radius);
+}
+.vcard blockquote { margin: 0; }
+.vcard blockquote + blockquote { margin-top: var(--s16); }
+.vcard blockquote p {
+  margin: 0 0 var(--s8);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.35;
+}
+.vcard blockquote footer { color: var(--fg-muted); font-size: var(--fs-small); line-height: 1.4; }
+.vcard__meta {
+  display: flex;
+  gap: var(--s16);
+  margin: auto 0 0;
+  color: var(--fg-muted);
+}

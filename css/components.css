@@ -365,25 +365,37 @@
 .route__cta { margin-top: auto; color: var(--accent-text); font-weight: var(--fw-medium); }
 @media (max-width: 767px) { .route { padding: var(--s24); } }
 
+/* O fechamento é a única superfície de marca inteira do site. Repetir ali a
+   grade de duas colunas das outras seções deixava a frase de um lado, o texto
+   solto do outro e um vão morto no topo. Aqui vira um bloco só, tudo no mesmo
+   eixo central: rótulo, frase, explicação e botão, nessa ordem de leitura. */
 .cta-final {
   display: grid;
-  gap: var(--s32);
+  justify-items: center;
+  text-align: center;
+  gap: var(--s24);
+  max-width: 900px;
+  margin-inline: auto;
 }
-.cta-final .t-lead { max-width: 32ch; }
-.cta-final__actions { display: flex; flex-wrap: wrap; gap: var(--s16); }
+.cta-final .t-lead { max-width: 46ch; }
+.cta-final__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s16);
+  /* O fechamento em degradê é a última decisão da página: o botão fica
+     centrado e na mesma largura da coluna do formulário de diagnóstico, em vez
+     de pequeno e encostado num canto. */
+  justify-content: center;
+  width: min(100%, 720px);
+  margin-inline: auto;
+  margin-top: var(--s8);
+}
+.cta-final__actions .btn {
+  flex: 1 1 260px;
+  justify-content: center;
+}
 
-@media (min-width: 900px) {
-  .cta-final {
-    grid-template-columns: minmax(0, max-content) minmax(0, max-content);
-    justify-content: center;
-    column-gap: var(--s64);
-    align-items: end;
-  }
-  .cta-final > .t-label       { grid-area: 1 / 1; }
-  .cta-final > h2             { grid-area: 2 / 1; }
-  .cta-final > .t-lead        { grid-area: 2 / 2; }
-  .cta-final > .cta-final__actions { grid-area: 3 / 2; }
-}
+
 
 .faq { border-top: 1.5px solid var(--fg); }
 .faq details { border-bottom: 1px solid var(--rule); }

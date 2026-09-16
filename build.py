@@ -42,6 +42,9 @@ SLUGS = {
     "diagnostico": "diagnostic",
     "termos": "terms",
     "privacidade": "privacy",
+    "cases": "case-studies",
+    "cases/florida-rental-car": "case-studies/florida-rental-car",
+    "sobre": "about",
 }
 EN_PARA_PT = {en: pt for pt, en in SLUGS.items()}
 
@@ -107,7 +110,7 @@ def build():
         # <!--page:build--> resolve o seletor de idioma e marca o link da
         # página atual com aria-current, em qualquer lugar onde ele apareça.
         ingles = rel.parts[0] == "en"
-        m = re.search(r"<!--page:([\w-]+)-->\s*", html)
+        m = re.search(r"<!--page:([\w/-]+)-->\s*", html)
         if m:
             slug = m.group(1)
             tem_par = slug in (EN_PARA_PT if ingles else SLUGS)
