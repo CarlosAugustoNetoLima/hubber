@@ -153,6 +153,24 @@ export default async function handler(req, res) {
     if (!out.ok) {
       // O corpo da resposta do JSYNQ fica só no log, nunca vai para o navegador.
       console.error('[connect-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500));
+      // TEMPORÁRIO: mede o alcance do token. Nada do segredo é registrado,
+      // só o comprimento, para eu perceber se ele trocou entre um teste e outro.
+      const auth = /^bearer\s/i.test(token) ? token : `Bearer ${token}`;
+      const linhas = [`token com ${token.length} caracteres`];
+      for (const [metodo, caminho] of [
+        ['GET ', `/api/projects/${PROJECT_ID}`],
+        ['GET ', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}`],
+        ['POST', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/responses`],
+      ]) {
+        const r = await fetch(`${API_BASE}${caminho}`, {
+          method: metodo.trim(),
+          headers: { 'content-type': 'application/json', authorization: auth },
+          ...(metodo.trim() === 'POST' ? { body: JSON.stringify({ answers }) } : {}),
+        });
+        const t = (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
+        linhas.push(`${metodo} ${caminho} -> ${r.status} ${t}`);
+      }
+      console.error('[connect-lead][diag]\n' + linhas.join('\n'));
       return res.status(502).json({ ok: false, error: 'upstream' });
     }
     return res.status(200).json({ ok: true });
