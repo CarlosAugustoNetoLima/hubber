@@ -72,13 +72,21 @@ const MAX_BODY = 16 * 1024;
    as permissões do token. Roda na inicialização, com um id fixo, sem nenhuma
    entrada vinda de fora: não existe jeito de um visitante pedir outra coisa.
    É idempotente, e some deste arquivo assim que o log confirmar. */
-fetch(`${API_BASE}/api/projects/${PROJECT_ID}/lead-sources/6aaa5827ef105cbe3ade489e`, {
-  method: 'DELETE',
-  headers: { authorization: `Bearer ${process.env.JSYNQ_API_TOKEN || ''}` },
-})
-  .then(async (r) => console.error('[limpeza] apagar __probe__:', r.status,
-    (await r.text().catch(() => '')).slice(0, 160)))
-  .catch((e) => console.error('[limpeza] falhou:', e?.message));
+let limpezaFeita = false;
+async function limparProbe(token) {
+  if (limpezaFeita) return;
+  limpezaFeita = true;
+  try {
+    const r = await fetch(
+      `${API_BASE}/api/projects/${PROJECT_ID}/lead-sources/6aaa5827ef105cbe3ade489e`,
+      { method: 'DELETE', headers: { authorization: `Bearer ${token}` } },
+    );
+    console.error('[limpeza] apagar __probe__:', r.status,
+      (await r.text().catch(() => '')).slice(0, 160));
+  } catch (e) {
+    console.error('[limpeza] falhou:', e?.message);
+  }
+}
 
 /* dd/mm/aaaa para ISO, validando que a data existe de verdade (31/02 não passa). */
 function toISODate(value) {
@@ -211,6 +219,7 @@ export default async function handler(req, res) {
     console.error('[connect-lead] JSYNQ_API_TOKEN ausente: lead não foi gravado.');
     return res.status(503).json({ ok: false, error: 'not_configured' });
   }
+  await limparProbe(token); // TEMPORÁRIO, sai junto com a função acima
 
   try {
     const out = await criarCard(card, token);
