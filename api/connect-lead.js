@@ -164,17 +164,41 @@ function buildCard(body) {
 
 /* O Swagger declara o token no header Authorization sem dizer se leva "Bearer".
    Tenta a forma mais comum e, se o servidor recusar a credencial, tenta a outra. */
+/* Se o CRM estiver fora do ar, a aplicação não pode sumir junto: o log guarda
+   o suficiente para a equipe retomar o contato à mão. */
+function resumo(body) {
+  return `| ${body.nome || '?'} · ${body.perfil || '?'} · ${body.email || '?'}`
+    + ` · ${body.whatsapp || '?'} · ${body.destino || '?'} ${body.data_ida || ''}`;
+}
+
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+
 async function criarCard(card, token) {
   const url = `${API_BASE}/api/projects/${PROJECT_ID}/cards`;
   const variants = /^bearer\s/i.test(token) ? [token] : [`Bearer ${token}`, token];
 
   let last;
   for (const authorization of variants) {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', authorization },
-      body: JSON.stringify(card),
-    });
+    // Falha de rede e 5xx costumam ser passageiras, e a API do JSYNQ já se
+    // mostrou instável. Tentar de novo custa menos que perder o lead.
+    let res = null;
+    for (let tentativa = 0; tentativa < 3; tentativa++) {
+      if (tentativa) await espera(tentativa * 600);
+      try {
+        res = await fetch(url, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', authorization },
+          body: JSON.stringify(card),
+        });
+      } catch (err) {
+        console.error('[connect-lead] tentativa', tentativa + 1, 'falhou:', err?.message);
+        res = null;
+        continue;
+      }
+      if (res.ok || res.status < 500) break;
+      console.error('[connect-lead] tentativa', tentativa + 1, 'devolveu', res.status);
+    }
+    if (!res) { last = { status: 0, body: 'sem resposta do JSYNQ' }; break; }
     if (res.ok) {
       const dados = await res.json().catch(() => null);
       // A API já devolveu o card ora na raiz, ora sob "card". Aceita os dois.
@@ -271,7 +295,7 @@ export default async function handler(req, res) {
 
   const token = process.env.JSYNQ_API_TOKEN;
   if (!token) {
-    console.error('[connect-lead] JSYNQ_API_TOKEN ausente: lead não foi gravado.');
+    console.error('[connect-lead] JSYNQ_API_TOKEN ausente: lead não foi gravado.', resumo(body));
     return res.status(503).json({ ok: false, error: 'not_configured' });
   }
 
@@ -279,7 +303,7 @@ export default async function handler(req, res) {
     const out = await criarCard(card, token);
     if (!out.ok) {
       // O corpo da resposta do JSYNQ fica só no log, nunca vai para o navegador.
-      console.error('[connect-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500));
+      console.error('[connect-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500), resumo(body));
       return res.status(502).json({ ok: false, error: 'upstream' });
     }
 
@@ -297,7 +321,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ ok: true });
   } catch (err) {
-    console.error('[connect-lead] falha ao falar com o JSYNQ:', err?.message);
+    console.error('[connect-lead] falha ao falar com o JSYNQ:', err?.message, resumo(body));
     return res.status(502).json({ ok: false, error: 'upstream' });
   }
 }
