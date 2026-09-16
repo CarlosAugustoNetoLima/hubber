@@ -157,11 +157,16 @@ export default async function handler(req, res) {
       // só o comprimento, para eu perceber se ele trocou entre um teste e outro.
       const auth = /^bearer\s/i.test(token) ? token : `Bearer ${token}`;
       const linhas = [`token com ${token.length} caracteres`];
+      const WS = '6a5a8295e06970144f916603';
       const provas = [
-        ['GET ', `/api/projects/${PROJECT_ID}`, null],
-        // escrita simples, para saber se o token grava alguma coisa
-        ['POST', `/api/projects/${PROJECT_ID}/lead-sources`, { text: '__probe__ (apagar)', color: '#999999' }],
+        ['GET ', `/api/workspaces`, null],
+        ['GET ', `/api/workspaces/${WS}`, null],
+        ['GET ', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/answers`, null],
         ['POST', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/responses`, { answers }],
+        // mesma rota, formato de objeto que o conector menciona para formulário CRM
+        ['POST', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/responses`,
+          { answers: { title: 'TESTE forma objeto (apagar)', description: '',
+                       customFields: answers.map((a) => ({ fieldId: a.field, value: a.value })) } }],
       ];
       for (const [metodo, caminho, corpo] of provas) {
         const r = await fetch(`${API_BASE}${caminho}`, {
