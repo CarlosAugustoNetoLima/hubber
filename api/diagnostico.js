@@ -296,10 +296,6 @@ function paginaHtml(rota, recebido, ingles) {
    função pura das respostas: a fila só precisa do que a pessoa preencheu. */
 export async function entregarDiagnostico(dados, token) {
   const rota = computeRoute(dados);
-  if (dados.__teste_forcar_falha) {
-    console.error('[diagnostico] falha forçada para teste da fila', resumo(dados, rota));
-    return false;
-  }
   const { card } = buildCard(dados, rota);
   const out = await criarCard(card, token);
   if (!out.ok) {
