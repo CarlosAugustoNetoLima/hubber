@@ -172,22 +172,29 @@ no log, com o id do card, para a equipe pedir o PDF depois.
 ### A fila: por que o lead não se perde
 
 O JSYNQ é o canal onde a equipe recebe, mas é serviço de terceiro e sai do ar.
-Por isso a ordem na Connect é **guardar primeiro, entregar depois**:
+Por isso a ordem, nos **dois** formulários do site, é **guardar primeiro,
+entregar depois**:
 
 1. A submissão vai para um Blob privado, antes de tocar no CRM
 2. Tenta o JSYNQ, com três tentativas para falha de rede e 5xx
 3. Deu certo: sai da fila
 4. Deu errado: **fica pendente** e é reenviada até entrar
 
-O reenvio tem dois caminhos, para não depender de um só. Cada submissão nova
-drena dois pendentes, o que resolve sozinho enquanto houver movimento no site.
-E `/api/drenar` faz o mesmo uma vez por dia pelo cron, para o caso sem movimento.
+Cada formulário tem a sua fila, separada por prefixo: `pendentes/connect/` e
+`pendentes/diagnostico/`. A entrega de cada um mora numa função exportada só,
+`entregarLead` e `entregarDiagnostico`, usada tanto pelo envio ao vivo quanto
+pelo reenvio, para os dois caminhos não divergirem com o tempo.
 
-Quando o CRM recusa mas o lead **está na fila**, a página responde sucesso. É o
-comportamento certo: a aplicação foi de fato recebida, e dizer que falhou faria
-a pessoa desistir ou reenviar, criando card repetido. É diferente do diagnóstico,
-descrito em "Quando o CRM não responde", que ainda não tem fila e por isso avisa
-a falha na hora.
+O reenvio tem dois caminhos, para não depender de um só. Cada submissão nova
+drena dois pendentes da fila dela, o que resolve sozinho enquanto houver
+movimento no site. E `/api/drenar` faz o mesmo nas duas filas uma vez por dia
+pelo cron, para o caso sem movimento.
+
+Quando o CRM recusa mas a submissão **está na fila**, a página responde sucesso:
+a aplicação foi de fato recebida, e dizer que falhou faria a pessoa desistir ou
+preencher de novo, criando card repetido. No diagnóstico isso quer dizer que a
+pessoa continua vendo a rota dela, que é o que ela veio buscar; a rota é
+recalculada no reenvio em vez de guardada, porque é função pura das respostas.
 
 O armazenamento é **privado** (`access: 'private'`): os arquivos têm nome,
 e-mail e telefone, e sem o token não há URL que abra.
@@ -205,6 +212,15 @@ Duas variáveis, ambas no painel da Vercel:
 
 Um risco conhecido: se a remoção da fila falhar depois de o CRM aceitar, o item
 é reenviado e vira card repetido. Preferimos repetido a perdido.
+
+O que ainda pode perder dado: o Blob e o JSYNQ fora **ao mesmo tempo**. Aí a
+pessoa vê o aviso de falha e o log guarda nome, e-mail e telefone para a equipe
+retomar à mão. Não há o que fazer do lado do servidor nesse caso.
+
+**Formulário novo que grave no CRM precisa de três coisas**: chamar `guardar`
+antes de tentar, expor a entrega como função exportada, e entrar na lista
+`filas` de `api/drenar.js`. Sem a terceira, a fila dele só anda quando o próprio
+formulário recebe uma submissão nova.
 
 ### Ao mexer no formulário
 
@@ -251,9 +267,14 @@ servido pela CDN, ele não teria como reagir a um redirect com a rota.
 
 ### Quando o CRM não responde
 
-A página **não** mostra a devolutiva. O botão volta ao normal, o formulário
-continua preenchido e a caixa de erro pede para tentar de novo. Antes o erro era
-engolido e a pessoa via "recebemos" com o lead perdido.
+Se a resposta entrou na fila, a página mostra a devolutiva normalmente: o dado
+está a salvo e será gravado depois, então a rota é o que a pessoa veio buscar.
+Ver "A fila: por que o lead não se perde".
+
+Só quando nem a fila aceitou é que a página **não** mostra a devolutiva: o botão
+volta ao normal, o formulário continua preenchido e a caixa de erro pede para
+tentar de novo. Antes o erro era engolido e a pessoa via "recebemos" com o lead
+perdido.
 
 No servidor, toda falha registra empresa, nome, e-mail, telefone e rota no log,
 para a equipe retomar o contato à mão se o JSYNQ estiver fora do ar.
