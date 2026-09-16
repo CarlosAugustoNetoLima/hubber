@@ -189,9 +189,17 @@
 .hdr__burger[aria-expanded="true"] .ic-close { display: block; }
 
 @media (max-width: 900px) {
-  .hdr__in { grid-template-columns: auto 1fr auto; }
+  /* Duas colunas, não três: com o .nav escondido sobravam dois itens numa grade
+     de três, e a coluna vazia mais o gap afastavam o menu da borda direita. */
+  .hdr__in {
+    grid-template-columns: 1fr auto;
+    gap: var(--s16);
+  }
   .nav, .hdr__cta, .lang { display: none; }
   .hdr__burger { display: inline-flex; }
+  /* Sem a navegação ao lado, a marca pode crescer. O clamp evita que ela
+     empurre o menu para fora em tela estreita. */
+  .hdr__logo svg { height: clamp(26px, 9vw, 34px); }
 }
 
 .mobile {

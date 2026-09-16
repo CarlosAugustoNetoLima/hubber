@@ -141,10 +141,14 @@
   .hero:has(.hero__reel) { padding-top: var(--s24); }
   .hero:has(.hero__reel) .hero__in { padding-top: calc(min(34vw, 24svh) + var(--s32)); }
 
+  /* A faixa aqui tem pouca altura (min(34vw, 24svh)), então um tamanho fixo
+     fica desproporcional. O nome acompanha a largura da tela. */
   .hero__reel-name {
     white-space: normal;
     overflow-wrap: break-word;
-    font-size: 0.5rem;
+    font-size: clamp(5px, 1.7vw, 7px);
+    letter-spacing: 0.02em;
+    padding: var(--s4);
   }
 }
 
