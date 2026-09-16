@@ -1,7 +1,9 @@
 
 
 .diag { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s48); }
-.diag__form { max-width: 720px; }
+/* O wrapper envolve título, passos e formulário: centralizar aqui mantém
+   a coluna inteira alinhada, em vez de só o formulário. */
+.diag__form { max-width: 720px; margin-inline: auto; }
 
 .diag__head {
   display: flex;
