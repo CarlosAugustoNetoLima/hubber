@@ -68,6 +68,18 @@ const FIELDS = {
 
 const MAX_BODY = 16 * 1024;
 
+/* TEMPORÁRIO: apaga a origem de lead "__probe__" que eu criei ao diagnosticar
+   as permissões do token. Roda na inicialização, com um id fixo, sem nenhuma
+   entrada vinda de fora: não existe jeito de um visitante pedir outra coisa.
+   É idempotente, e some deste arquivo assim que o log confirmar. */
+fetch(`${API_BASE}/api/projects/${PROJECT_ID}/lead-sources/6aaa5827ef105cbe3ade489e`, {
+  method: 'DELETE',
+  headers: { authorization: `Bearer ${process.env.JSYNQ_API_TOKEN || ''}` },
+})
+  .then(async (r) => console.error('[limpeza] apagar __probe__:', r.status,
+    (await r.text().catch(() => '')).slice(0, 160)))
+  .catch((e) => console.error('[limpeza] falhou:', e?.message));
+
 /* dd/mm/aaaa para ISO, validando que a data existe de verdade (31/02 não passa). */
 function toISODate(value) {
   const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(value).trim());
