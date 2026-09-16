@@ -31,12 +31,16 @@ formulário do CRM mudar: `JSYNQ_PROJECT_ID` e `JSYNQ_FORM_ID`.
 
 ### Como gerar o token
 
-O token da API do JSYNQ é **por usuário**, e é ele que define quem assina cada
-lead que entra. Por isso quem gera é o **Carlos** (`carlosnetolima@gmail.com`),
-logado na conta dele: assim toda aplicação da LP entra no CRM como dele.
-
-Gerar nas configurações de conta do JSYNQ, na seção de API. A rota por trás é
+Nas configurações de conta do JSYNQ, seção **Tokens de API**. A rota por trás é
 `POST /api/users/{userId}/api-token/generate`.
+
+O propósito precisa ser **Automação** ou **MCP / Assistente IA**, com escrita em
+projetos. O propósito "Geral (orientado à leitura)" não grava.
+
+O token é por usuário, mas **não é ele que define quem assina o lead**: o JSYNQ
+carimba o reporter do card a partir do **leader do projeto**, que é o Carlos.
+Testado: um envio feito com o token de outra pessoa entrou com o Carlos como
+reporter mesmo assim.
 
 O token vai direto do JSYNQ para o painel da Vercel. Ele não deve passar por
 chat, e-mail, commit ou qualquer arquivo do repositório: quem tem o token
@@ -46,8 +50,14 @@ consegue escrever no workspace inteiro.
 
 ```
 formulário da LP  →  POST /api/connect-lead  →  POST https://api.jsynq.com
-                                                 /api/projects/{projectId}/forms/{formId}/answer
+                                                 /api/projects/{projectId}/forms/{formId}/responses
 ```
+
+Atenção ao nome da rota. O Swagger do JSYNQ, em `api.jsynq.com/api-docs`,
+documenta `/answer` no singular, mas essa rota responde `404` para autenticação
+por token. A que funciona é **`/responses`**, no plural. Outras entradas daquela
+especificação também estão desatualizadas, como `/api/me`, que não existe. Ou
+seja: confie no comportamento observado, não no Swagger.
 
 A função valida tudo antes de repassar: campos obrigatórios, formato de e-mail e
 telefone, datas que existem de verdade, e uma lista fechada de valores para cada

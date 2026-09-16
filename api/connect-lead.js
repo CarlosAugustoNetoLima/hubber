@@ -5,9 +5,11 @@
  * navegador, e o mapa de campos também fica no servidor: a página não precisa
  * conhecer os ids internos do CRM.
  *
+ * Quem aparece como responsável pelo lead não depende de quem gerou o token:
+ * o JSYNQ carimba o reporter do card a partir do leader do projeto.
+ *
  * Variáveis de ambiente (painel da Vercel, nunca no código):
- *   JSYNQ_API_TOKEN   token de API do JSYNQ, gerado pelo Carlos. Define quem
- *                     assina cada lead que entra.
+ *   JSYNQ_API_TOKEN   token de API do JSYNQ, com permissão de escrita em projetos
  *   JSYNQ_PROJECT_ID  projeto CRM (opcional, já tem padrão abaixo)
  *   JSYNQ_FORM_ID     formulário do projeto (opcional, já tem padrão abaixo)
  */
@@ -111,48 +113,6 @@ async function postToJsynq(answers, token) {
   return { ok: false, ...last };
 }
 
-/* TEMPORÁRIO: roda só quando o envio falha, e só escreve no log da Vercel.
-   Serve para distinguir rota errada de escopo faltando: se a leitura na mesma
-   forma de caminho responde e a escrita não, o problema é permissão do token.
-   Remover assim que o token estiver ajustado. */
-async function diagnosticar(token) {
-  const auth = /^bearer\s/i.test(token) ? token : `Bearer ${token}`;
-  const P = PROJECT_ID, F = FORM_ID;
-  const alvos = [
-    ['GET ', `/api/me`],
-    ['GET ', `/api/projects/${P}/cards/count`],
-    // variantes do caminho de resposta
-    ['POST', `/api/projects/${P}/forms/${F}/answers`],
-    ['POST', `/api/projects/${P}/forms/${F}/response`],
-    ['POST', `/api/projects/${P}/forms/${F}/responses`],
-    ['POST', `/api/projects/${P}/forms/${F}/submit`],
-    ['POST', `/api/projects/${P}/forms/${F}/submissions`],
-    ['POST', `/api/forms/${F}/answer`],
-    ['POST', `/api/project-forms/${F}/answer`],
-    ['POST', `/api/projects/${P}/forms/answer`],
-    // plano B: criar o card direto, rota que sei que existe
-    ['POST', `/api/projects/${P}/cards`],
-  ];
-  const linhas = [];
-  for (const [metodo, caminho] of alvos) {
-    try {
-      // Corpo vazio de propósito: quero distinguir 404 (rota não existe) de
-      // 400/422 (rota existe e recusou o corpo), sem criar nada no CRM.
-      const corpo = {};
-      const r = await fetch(`${API_BASE}${caminho}`, {
-        method: metodo.trim(),
-        headers: { 'content-type': 'application/json', authorization: auth },
-        ...(metodo.trim() === 'POST' ? { body: JSON.stringify(corpo) } : {}),
-      });
-      const texto = (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 110);
-      linhas.push(`${metodo} ${caminho} -> ${r.status}  ${texto}`);
-    } catch (e) {
-      linhas.push(`${metodo} ${caminho} -> erro ${e?.message}`);
-    }
-  }
-  console.error('[connect-lead][diag]\n' + linhas.join('\n'));
-}
-
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') {
@@ -187,7 +147,6 @@ export default async function handler(req, res) {
     if (!out.ok) {
       // O corpo da resposta do JSYNQ fica só no log, nunca vai para o navegador.
       console.error('[connect-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500));
-      await diagnosticar(token);
       return res.status(502).json({ ok: false, error: 'upstream' });
     }
     return res.status(200).json({ ok: true });
