@@ -18,8 +18,6 @@ const API_BASE = 'https://api.jsynq.com';
 const PROJECT_ID = process.env.JSYNQ_PROJECT_ID || '6aaa3f3bef105cbe3adc9849';
 const FORM_ID = process.env.JSYNQ_FORM_ID || '6aaa3f82ef105cbe3adc9df4';
 
-/* Cada campo da LP apontando para o campo correspondente no formulário do JSYNQ.
-   `options` é uma lista fechada: valor fora dela é recusado, não repassado. */
 const BOARD_ID = process.env.JSYNQ_BOARD_ID || '6aaa3f3bef105cbe3adc984d';
 const COLUMN_ID = process.env.JSYNQ_COLUMN_ID || '6aaa3f3bef105cbe3adc9855';
 const LEAD_SOURCE_ID = process.env.JSYNQ_LEAD_SOURCE_ID || '6aaa506696e0e036ab0805ae';
@@ -67,26 +65,6 @@ const FIELDS = {
 };
 
 const MAX_BODY = 16 * 1024;
-
-/* TEMPORÁRIO: apaga a origem de lead "__probe__" que eu criei ao diagnosticar
-   as permissões do token. Roda na inicialização, com um id fixo, sem nenhuma
-   entrada vinda de fora: não existe jeito de um visitante pedir outra coisa.
-   É idempotente, e some deste arquivo assim que o log confirmar. */
-let limpezaFeita = false;
-async function limparProbe(token) {
-  if (limpezaFeita) return;
-  limpezaFeita = true;
-  try {
-    const r = await fetch(
-      `${API_BASE}/api/projects/${PROJECT_ID}/lead-sources/6aaa5827ef105cbe3ade489e`,
-      { method: 'DELETE', headers: { authorization: `Bearer ${token}` } },
-    );
-    console.error('[limpeza] apagar __probe__:', r.status,
-      (await r.text().catch(() => '')).slice(0, 160));
-  } catch (e) {
-    console.error('[limpeza] falhou:', e?.message);
-  }
-}
 
 /* dd/mm/aaaa para ISO, validando que a data existe de verdade (31/02 não passa). */
 function toISODate(value) {
@@ -219,7 +197,6 @@ export default async function handler(req, res) {
     console.error('[connect-lead] JSYNQ_API_TOKEN ausente: lead não foi gravado.');
     return res.status(503).json({ ok: false, error: 'not_configured' });
   }
-  await limparProbe(token); // TEMPORÁRIO, sai junto com a função acima
 
   try {
     const out = await criarCard(card, token);
