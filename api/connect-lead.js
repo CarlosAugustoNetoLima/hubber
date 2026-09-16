@@ -109,6 +109,35 @@ async function postToJsynq(answers, token) {
   return { ok: false, ...last };
 }
 
+/* TEMPORÁRIO: roda só quando o envio falha, e só escreve no log da Vercel.
+   Serve para distinguir rota errada de escopo faltando: se a leitura na mesma
+   forma de caminho responde e a escrita não, o problema é permissão do token.
+   Remover assim que o token estiver ajustado. */
+async function diagnosticar(token) {
+  const auth = /^bearer\s/i.test(token) ? token : `Bearer ${token}`;
+  const alvos = [
+    ['GET ', `/api/projects/${PROJECT_ID}`],
+    ['GET ', `/api/projects/${PROJECT_ID}/forms`],
+    ['GET ', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}`],
+    ['GET ', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/answers`],
+    ['POST', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/answer`],
+  ];
+  const linhas = [];
+  for (const [metodo, caminho] of alvos) {
+    try {
+      const r = await fetch(`${API_BASE}${caminho}`, {
+        method: metodo.trim(),
+        headers: { 'content-type': 'application/json', authorization: auth },
+        ...(metodo.trim() === 'POST' ? { body: JSON.stringify({ answers: [] }) } : {}),
+      });
+      linhas.push(`${metodo} ${caminho} -> ${r.status}`);
+    } catch (e) {
+      linhas.push(`${metodo} ${caminho} -> erro ${e?.message}`);
+    }
+  }
+  console.error('[connect-lead][diag]\n' + linhas.join('\n'));
+}
+
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') {
@@ -143,6 +172,7 @@ export default async function handler(req, res) {
     if (!out.ok) {
       // O corpo da resposta do JSYNQ fica só no log, nunca vai para o navegador.
       console.error('[connect-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500));
+      await diagnosticar(token);
       return res.status(502).json({ ok: false, error: 'upstream' });
     }
     return res.status(200).json({ ok: true });
