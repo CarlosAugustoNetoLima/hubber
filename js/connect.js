@@ -16,12 +16,63 @@ export function initConnectForm(root = document) {
   function wrapOf(el) { return el.closest('[data-field]'); }
   // Campos controlados por plugin (Choices) ficam hidden: foca o gatilho visível.
   function focusField(el) {
+    // O input de arquivo é invisível por desenho; o anel de foco aparece no
+    // botão pelo :focus-within, então basta rolar o campo até a vista.
+    if (el.type === 'file') {
+      wrapOf(el)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.focus({ preventScroll: true });
+      return;
+    }
     if (!el.offsetParent) {
       const proxy = wrapOf(el)?.querySelector('.choices[tabindex]');
       if (proxy) { proxy.focus(); return; }
     }
     el.focus();
   }
+  /* Campo de arquivo: mostra o nome escolhido e valida tipo e tamanho.
+     A crítica entra por setCustomValidity para reaproveitar a mesma máquina
+     de erro dos outros campos, em vez de um caminho paralelo. */
+  const ANEXO_MAX = 3 * 1024 * 1024;
+  const fileWrap = form.querySelector('[data-file]');
+  const fileInput = fileWrap?.querySelector('input[type="file"]');
+  const fileName = fileWrap?.querySelector('[data-file-name]');
+  const fileClear = fileWrap?.querySelector('[data-file-clear]');
+
+  function syncFile() {
+    if (!fileInput) return;
+    const f = fileInput.files && fileInput.files[0];
+    if (!f) {
+      fileInput.setCustomValidity('');
+      fileWrap.classList.remove('is-set');
+      if (fileName) fileName.textContent = 'Nenhum arquivo escolhido';
+      if (fileClear) fileClear.hidden = true;
+      return;
+    }
+    const ehPdf = f.type === 'application/pdf' || /\.pdf$/i.test(f.name);
+    if (!ehPdf) fileInput.setCustomValidity('Esse arquivo não é um PDF. Envie o mídia kit em PDF.');
+    else if (f.size > ANEXO_MAX) fileInput.setCustomValidity('O arquivo tem mais de 3 MB. Envie uma versão menor ou deixe só o link.');
+    else fileInput.setCustomValidity('');
+    fileWrap.classList.add('is-set');
+    if (fileName) fileName.textContent = `${f.name} (${(f.size / 1048576).toFixed(1)} MB)`;
+    if (fileClear) fileClear.hidden = false;
+  }
+  fileInput?.addEventListener('change', syncFile);
+  fileClear?.addEventListener('click', () => {
+    fileInput.value = '';
+    syncFile();
+    clearError(fileInput);
+    fileInput.focus();
+  });
+
+  function lerBase64(file) {
+    return new Promise((ok, falha) => {
+      const fr = new FileReader();
+      fr.onload = () => ok(String(fr.result).split(',')[1] || '');
+      fr.onerror = () => falha(fr.error);
+      fr.readAsDataURL(file);
+    });
+  }
+
   function messageFor(el) {
     const w = wrapOf(el) || {}; const d = w.dataset || {};
     if (el.validity.valueMissing) return d.errorRequired || 'Preencha este campo.';
@@ -88,6 +139,17 @@ export function initConnectForm(root = document) {
     const data = Object.fromEntries(fd.entries());
     if (hp?.name) delete data[hp.name];
     data.parceria = fd.getAll('parceria');
+
+    // O FormData entrega um File, que não sobrevive ao JSON. Vai como base64.
+    const arquivo = fileInput?.files && fileInput.files[0];
+    if (fileInput?.name) delete data[fileInput.name];
+    if (arquivo) {
+      data.anexo = {
+        nome: arquivo.name,
+        tipo: arquivo.type || 'application/pdf',
+        dados: await lerBase64(arquivo),
+      };
+    }
 
     const endpoint = form.dataset.endpoint;
     if (!endpoint) {

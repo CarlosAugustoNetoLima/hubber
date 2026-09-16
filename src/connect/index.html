@@ -8,14 +8,14 @@
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');
 window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();
 </script>
-<title>Hubber Connect | Parcerias para criadores que vão para Orlando e Miami</title>
-<meta name="description" content="Você vai viajar para os Estados Unidos e quer chegar com parceria fechada. A Hubber conecta criadores às empresas que já são suas clientes em Orlando e Miami.">
+<title>Hubber Connect | Parcerias para criadores que vêm para Orlando e Miami</title>
+<meta name="description" content="Você vem para os Estados Unidos e quer chegar com parceria fechada. A Hubber conecta criadores às empresas que já são suas clientes em Orlando e Miami.">
 <link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
 <link rel="canonical" href="https://hubber.com/connect/">
 <link rel="alternate" hreflang="pt-BR" href="https://hubber.com/connect/">
 <link rel="alternate" hreflang="en-US" href="https://hubber.com/en/connect/">
 <link rel="alternate" hreflang="x-default" href="https://hubber.com/connect/">
-<meta property="og:title" content="Hubber Connect | Vai para os Estados Unidos? Chegue com parceria fechada.">
+<meta property="og:title" content="Hubber Connect | Vem para os Estados Unidos? Chegue com parceria fechada.">
 <meta property="og:description" content="A Hubber conecta criadores às empresas que já são suas clientes em Orlando e Miami.">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:type" content="website">
@@ -25,7 +25,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
   "@type": "Service",
   "serviceType": "Hubber Connect",
   "name": "Hubber Connect",
-  "description": "Você vai viajar para os Estados Unidos e quer chegar com parceria fechada. A Hubber conecta criadores às empresas que já são suas clientes em Orlando e Miami.",
+  "description": "Você vem para os Estados Unidos e quer chegar com parceria fechada. A Hubber conecta criadores às empresas que já são suas clientes em Orlando e Miami.",
   "provider": { "@type": "Organization", "name": "Hubber", "url": "https://hubber.com/" },
   "areaServed": ["Orlando", "Miami"],
   "audience": { "@type": "Audience", "audienceType": "Criadores de conteúdo e influenciadores" },
@@ -86,8 +86,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
   </div>
   </div>
   <div class="wrap hero__in">
-    <p class="t-label t-accent" data-intro>Hubber Connect · para criadores que vão para os Estados Unidos</p>
-    <h1 class="hero__title js-intro-title" id="hero-title">Vai para os Estados Unidos? <span class="hero__title-accent">Chegue com parceria fechada.</span></h1>
+    <p class="t-label t-accent" data-intro>Hubber Connect · para criadores que vêm para os Estados Unidos</p>
+    <h1 class="hero__title js-intro-title" id="hero-title">Vem para os Estados Unidos? <span class="hero__title-accent">Chegue com parceria fechada.</span></h1>
     <p class="t-lead hero__lead" data-intro>A Hubber <strong class="hero__lead-accent">constrói o marketing</strong> de empresas brasileiras em Orlando e Miami. Quando você vem, fechamos parceria com você e te apresentamos aos nossos clientes <strong class="hero__lead-strong">antes do embarque</strong>.</p>
     <div class="hero__actions" data-intro>
       <a class="btn btn--primary" href="#formulario">Contar minha viagem</a>
@@ -424,6 +424,18 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           <label class="field__label" for="midiakit" data-field-label>Link do mídia kit ou portfólio <small>opcional</small></label>
           <input id="midiakit" name="midiakit" type="url" autocomplete="url" inputmode="url" placeholder="https://" aria-describedby="e-midiakit">
           <p class="field__error" id="e-midiakit" data-error hidden></p>
+        </div>
+
+        <div class="field" data-field data-error-format="Envie um arquivo PDF de até 3 MB.">
+          <label class="field__label" for="anexo" data-field-label>Anexar mídia kit <small>opcional</small></label>
+          <p class="field__hint" id="h-anexo">PDF de até 3 MB. Se preferir, deixe só o link acima.</p>
+          <div class="file" data-file>
+            <input class="file__input" id="anexo" name="anexo" type="file" accept="application/pdf,.pdf" aria-describedby="h-anexo e-anexo">
+            <label class="file__btn" for="anexo">Escolher arquivo</label>
+            <p class="file__name" data-file-name>Nenhum arquivo escolhido</p>
+            <button class="file__clear" type="button" data-file-clear hidden>Remover</button>
+          </div>
+          <p class="field__error" id="e-anexo" data-error hidden></p>
         </div>
 
         <div class="field" data-field data-error-required="Digite o seu e-mail." data-error-format="Digite um e-mail válido, como nome@email.com.">

@@ -64,7 +64,7 @@ const FIELDS = {
                    required: true, options: { sim: 'Autorizo' } },
 };
 
-const MAX_BODY = 16 * 1024;
+const MAX_BODY = 5 * 1024 * 1024; // base64 de um PDF de 3 MB dá ~4 MB
 
 /* dd/mm/aaaa para ISO, validando que a data existe de verdade (31/02 não passa). */
 function toISODate(value) {
@@ -162,11 +162,71 @@ async function criarCard(card, token) {
       headers: { 'content-type': 'application/json', authorization },
       body: JSON.stringify(card),
     });
-    if (res.ok) return { ok: true };
+    if (res.ok) {
+      const dados = await res.json().catch(() => null);
+      // A API já devolveu o card ora na raiz, ora sob "card". Aceita os dois.
+      const id = dados?.card?._id || dados?._id || dados?.data?.card?._id || null;
+      return { ok: true, cardId: id };
+    }
     last = { status: res.status, body: await res.text().catch(() => '') };
     if (res.status !== 401 && res.status !== 403) break;
   }
   return { ok: false, ...last };
+}
+
+/* Sobe o PDF para o S3 do JSYNQ e amarra no card. São duas chamadas: a de
+   upload devolve o id do anexo, a segunda faz a associação. */
+async function anexarPdf(cardId, anexo, token) {
+  const authorization = /^bearer\s/i.test(token) ? token : `Bearer ${token}`;
+  const bytes = Buffer.from(anexo.dados, 'base64');
+
+  const form = new FormData();
+  // O boundary quem monta é o fetch; definir content-type na mão quebra.
+  form.append('file', new Blob([bytes], { type: 'application/pdf' }), anexo.nome);
+  form.append('type', 'CARD');
+
+  const envio = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/attachments`, {
+    method: 'POST', headers: { authorization }, body: form,
+  });
+  if (!envio.ok) {
+    return { ok: false, etapa: 'upload', status: envio.status,
+             body: (await envio.text().catch(() => '')).slice(0, 300) };
+  }
+  const criado = await envio.json().catch(() => null);
+  const anexoId = criado?.attachment?._id || criado?._id || criado?.data?._id;
+  if (!anexoId) return { ok: false, etapa: 'upload', status: 200, body: 'resposta sem id de anexo' };
+
+  const liga = await fetch(
+    `${API_BASE}/api/projects/${PROJECT_ID}/cards/${cardId}/attachments/${anexoId}`,
+    { method: 'POST', headers: { authorization } },
+  );
+  if (!liga.ok) {
+    return { ok: false, etapa: 'associar', status: liga.status,
+             body: (await liga.text().catch(() => '')).slice(0, 300) };
+  }
+  return { ok: true };
+}
+
+/* Aceita só PDF de verdade: confere a assinatura do arquivo, não a extensão
+   nem o content-type, que qualquer cliente pode mentir. */
+const ANEXO_MAX = 3 * 1024 * 1024;
+function lerAnexo(bruto) {
+  if (!bruto || typeof bruto !== 'object') return { anexo: null };
+  const dados = typeof bruto.dados === 'string' ? bruto.dados : '';
+  if (!dados) return { anexo: null };
+  if (!/^[A-Za-z0-9+/=\s]+$/.test(dados)) return { erro: 'anexo_invalido' };
+
+  let bytes;
+  try { bytes = Buffer.from(dados, 'base64'); } catch { return { erro: 'anexo_invalido' }; }
+  if (!bytes.length) return { erro: 'anexo_invalido' };
+  if (bytes.length > ANEXO_MAX) return { erro: 'anexo_grande' };
+  if (bytes.subarray(0, 5).toString('latin1') !== '%PDF-') return { erro: 'anexo_nao_pdf' };
+
+  const nome = String(bruto.nome || 'midia-kit.pdf')
+    .replace(/[\\/\r\n\t]/g, ' ')
+    .trim()
+    .slice(0, 120) || 'midia-kit.pdf';
+  return { anexo: { nome: /\.pdf$/i.test(nome) ? nome : `${nome}.pdf`, dados } };
 }
 
 export default async function handler(req, res) {
@@ -192,6 +252,9 @@ export default async function handler(req, res) {
     return res.status(422).json({ ok: false, error: 'validation', missing, invalid });
   }
 
+  const { anexo, erro: erroAnexo } = lerAnexo(body.anexo);
+  if (erroAnexo) return res.status(422).json({ ok: false, error: erroAnexo });
+
   const token = process.env.JSYNQ_API_TOKEN;
   if (!token) {
     console.error('[connect-lead] JSYNQ_API_TOKEN ausente: lead não foi gravado.');
@@ -205,6 +268,19 @@ export default async function handler(req, res) {
       console.error('[connect-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500));
       return res.status(502).json({ ok: false, error: 'upstream' });
     }
+
+    // O lead já está salvo. Se o anexo falhar, não vale perder a aplicação
+    // inteira: registra no log para a equipe pedir o PDF depois.
+    if (anexo && out.cardId) {
+      const anexado = await anexarPdf(out.cardId, anexo, token);
+      if (!anexado.ok) {
+        console.error('[connect-lead] anexo falhou em', anexado.etapa, anexado.status,
+          anexado.body, '| card', out.cardId);
+      }
+    } else if (anexo) {
+      console.error('[connect-lead] anexo recebido mas a API não devolveu id de card.');
+    }
+
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('[connect-lead] falha ao falar com o JSYNQ:', err?.message);
