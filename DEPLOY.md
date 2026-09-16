@@ -91,6 +91,28 @@ Dois detalhes que custaram caro e é melhor não mexer:
   `crmKey` que o campo tem no formulário. Mandar nos dois lugares faz o card
   listar "Contact name", "Email" e "Phone" duas vezes cada.
 
+### O anexo em PDF
+
+O campo de mídia kit aceita um PDF de até 3 MB. O arquivo viaja em base64 dentro
+do mesmo JSON do formulário, e o servidor faz duas chamadas depois de criar o
+card:
+
+```
+POST /api/projects/{projectId}/attachments          (multipart, campo "file")
+POST /api/projects/{projectId}/cards/{cardId}/attachments/{attachmentId}
+```
+
+A primeira sobe para o S3 e devolve o anexo **sob a chave `newAttachment`**, não
+`attachment`. Ler a chave errada não dá erro: o upload responde 200, o arquivo
+fica no S3 e nunca aparece no card.
+
+O servidor confere a assinatura do arquivo (`%PDF-`), não a extensão nem o
+content-type, que qualquer cliente pode forjar. O limite de 3 MB existe porque a
+função da Vercel aceita no máximo 4,5 MB de corpo e o base64 infla cerca de 33%.
+
+Se o anexo falhar, o lead **não** se perde: o card já foi criado e a falha fica
+no log, com o id do card, para a equipe pedir o PDF depois.
+
 ### Ao mexer no formulário
 
 Os `value` dos campos de escolha na LP são iguais às chaves de `options` em
