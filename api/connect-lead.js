@@ -92,7 +92,9 @@ function buildAnswers(body) {
 /* O Swagger declara o token no header Authorization sem dizer se leva "Bearer".
    Tenta a forma mais comum e, se o servidor recusar a credencial, tenta a outra. */
 async function postToJsynq(answers, token) {
-  const url = `${API_BASE}/api/projects/${PROJECT_ID}/forms/${FORM_ID}/answer`;
+  // O Swagger do JSYNQ documenta /answer, mas essa rota responde 404 para
+  // autenticação por token. A que existe de verdade é /responses.
+  const url = `${API_BASE}/api/projects/${PROJECT_ID}/forms/${FORM_ID}/responses`;
   const variants = /^bearer\s/i.test(token) ? [token] : [`Bearer ${token}`, token];
 
   let last;
