@@ -192,7 +192,10 @@ async function anexarPdf(cardId, anexo, token) {
     return { ok: false, etapa: 'upload', status: envio.status,
              body: (await envio.text().catch(() => '')).slice(0, 300) };
   }
-  const criado = await envio.json().catch(() => null);
+  const bruto = await envio.text().catch(() => '');
+  console.error('[anexo][diag] upload ->', envio.status, bruto.slice(0, 400));
+  let criado = null;
+  try { criado = JSON.parse(bruto); } catch { /* segue com null */ }
   const anexoId = criado?.attachment?._id || criado?._id || criado?.data?._id;
   if (!anexoId) return { ok: false, etapa: 'upload', status: 200, body: 'resposta sem id de anexo' };
 
@@ -200,10 +203,9 @@ async function anexarPdf(cardId, anexo, token) {
     `${API_BASE}/api/projects/${PROJECT_ID}/cards/${cardId}/attachments/${anexoId}`,
     { method: 'POST', headers: { authorization } },
   );
-  if (!liga.ok) {
-    return { ok: false, etapa: 'associar', status: liga.status,
-             body: (await liga.text().catch(() => '')).slice(0, 300) };
-  }
+  const ligaBody = (await liga.text().catch(() => '')).slice(0, 400);
+  console.error('[anexo][diag] associar', cardId, anexoId, '->', liga.status, ligaBody);
+  if (!liga.ok) return { ok: false, etapa: 'associar', status: liga.status, body: ligaBody };
   return { ok: true };
 }
 
