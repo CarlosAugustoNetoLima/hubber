@@ -169,6 +169,43 @@ função da Vercel aceita no máximo 4,5 MB de corpo e o base64 infla cerca de 3
 Se o anexo falhar, o lead **não** se perde: o card já foi criado e a falha fica
 no log, com o id do card, para a equipe pedir o PDF depois.
 
+### A fila: por que o lead não se perde
+
+O JSYNQ é o canal onde a equipe recebe, mas é serviço de terceiro e sai do ar.
+Por isso a ordem na Connect é **guardar primeiro, entregar depois**:
+
+1. A submissão vai para um Blob privado, antes de tocar no CRM
+2. Tenta o JSYNQ, com três tentativas para falha de rede e 5xx
+3. Deu certo: sai da fila
+4. Deu errado: **fica pendente** e é reenviada até entrar
+
+O reenvio tem dois caminhos, para não depender de um só. Cada submissão nova
+drena dois pendentes, o que resolve sozinho enquanto houver movimento no site.
+E `/api/drenar` faz o mesmo uma vez por dia pelo cron, para o caso sem movimento.
+
+Quando o CRM recusa mas o lead **está na fila**, a página responde sucesso. É o
+comportamento certo: a aplicação foi de fato recebida, e dizer que falhou faria
+a pessoa desistir ou reenviar, criando card repetido. É diferente do diagnóstico,
+descrito em "Quando o CRM não responde", que ainda não tem fila e por isso avisa
+a falha na hora.
+
+O armazenamento é **privado** (`access: 'private'`): os arquivos têm nome,
+e-mail e telefone, e sem o token não há URL que abra.
+
+**Enquanto não houver um Blob conectado ao projeto, tudo isso é no-op** e a
+função se comporta como antes. Testado com a fila desligada e com a fila
+quebrada: nos dois casos o formulário continua funcionando.
+
+Duas variáveis, ambas no painel da Vercel:
+
+| Nome | Para quê |
+| --- | --- |
+| `BLOB_READ_WRITE_TOKEN` | criada sozinha ao conectar um Blob store ao projeto |
+| `CRON_SECRET` | protege `/api/drenar`. Sem ela a rota recusa, de propósito |
+
+Um risco conhecido: se a remoção da fila falhar depois de o CRM aceitar, o item
+é reenviado e vira card repetido. Preferimos repetido a perdido.
+
 ### Ao mexer no formulário
 
 Os `value` dos campos de escolha na LP são iguais às chaves de `options` em
