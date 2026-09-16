@@ -137,6 +137,9 @@ function buildCard(body) {
     push(spec, raw);
   }
 
+  // Os dados de contato não vão no topo do card: o JSYNQ já os deduz pelo
+  // crmKey que os campos têm no formulário. Mandar nos dois lugares fazia o
+  // card repetir "Contact name", "Email" e "Phone" duas vezes cada.
   const card = {
     title: contato.contactName || 'Aplicação sem nome',
     type: 'task',
@@ -144,7 +147,6 @@ function buildCard(body) {
     column: COLUMN_ID,
     leadSource: [LEAD_SOURCE_ID],
     customFields,
-    ...contato,
   };
   return { card, missing, invalid };
 }
