@@ -273,13 +273,6 @@ function lerAnexo(bruto) {
    envio ao vivo quanto pelo reenvio da fila, para os dois caminhos não
    divergirem com o tempo. */
 export async function entregarLead(dados, token) {
-  // TEMPORÁRIO: prova de que o lead sobrevive ao CRM fora do ar. Quem usar só
-  // consegue fazer o próprio lead chegar mais tarde, então não há risco; ainda
-  // assim sai daqui assim que o teste terminar.
-  if (dados.__teste_forcar_falha) {
-    console.error('[connect-lead] falha forçada para teste da fila', resumo(dados));
-    return false;
-  }
   const { card } = buildCard(dados);
   const { anexo } = lerAnexo(dados.anexo);
 
