@@ -115,22 +115,35 @@ async function postToJsynq(answers, token) {
    Remover assim que o token estiver ajustado. */
 async function diagnosticar(token) {
   const auth = /^bearer\s/i.test(token) ? token : `Bearer ${token}`;
+  const P = PROJECT_ID, F = FORM_ID;
   const alvos = [
-    ['GET ', `/api/projects/${PROJECT_ID}`],
-    ['GET ', `/api/projects/${PROJECT_ID}/forms`],
-    ['GET ', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}`],
-    ['GET ', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/answers`],
-    ['POST', `/api/projects/${PROJECT_ID}/forms/${FORM_ID}/answer`],
+    ['GET ', `/api/me`],
+    ['GET ', `/api/projects/${P}/cards/count`],
+    // variantes do caminho de resposta
+    ['POST', `/api/projects/${P}/forms/${F}/answers`],
+    ['POST', `/api/projects/${P}/forms/${F}/response`],
+    ['POST', `/api/projects/${P}/forms/${F}/responses`],
+    ['POST', `/api/projects/${P}/forms/${F}/submit`],
+    ['POST', `/api/projects/${P}/forms/${F}/submissions`],
+    ['POST', `/api/forms/${F}/answer`],
+    ['POST', `/api/project-forms/${F}/answer`],
+    ['POST', `/api/projects/${P}/forms/answer`],
+    // plano B: criar o card direto, rota que sei que existe
+    ['POST', `/api/projects/${P}/cards`],
   ];
   const linhas = [];
   for (const [metodo, caminho] of alvos) {
     try {
+      // Corpo vazio de propósito: quero distinguir 404 (rota não existe) de
+      // 400/422 (rota existe e recusou o corpo), sem criar nada no CRM.
+      const corpo = {};
       const r = await fetch(`${API_BASE}${caminho}`, {
         method: metodo.trim(),
         headers: { 'content-type': 'application/json', authorization: auth },
-        ...(metodo.trim() === 'POST' ? { body: JSON.stringify({ answers: [] }) } : {}),
+        ...(metodo.trim() === 'POST' ? { body: JSON.stringify(corpo) } : {}),
       });
-      linhas.push(`${metodo} ${caminho} -> ${r.status}`);
+      const texto = (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 110);
+      linhas.push(`${metodo} ${caminho} -> ${r.status}  ${texto}`);
     } catch (e) {
       linhas.push(`${metodo} ${caminho} -> erro ${e?.message}`);
     }
