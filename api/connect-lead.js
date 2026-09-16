@@ -21,6 +21,8 @@
  *   JSYNQ_CONNECT_LABEL_ID     etiqueta que marca a origem do lead (idem)
  */
 
+import { guardar, concluir, drenar, filaAtiva } from './_fila.js';
+
 const API_BASE = 'https://api.jsynq.com';
 const PROJECT_ID = process.env.JSYNQ_CONNECT_PROJECT_ID || '6aaac5d2f1edc4c698019729';
 const FORM_ID    = process.env.JSYNQ_CONNECT_FORM_ID    || '6aaaca2ef1edc4c69802a9e5';
@@ -267,6 +269,33 @@ function lerAnexo(bruto) {
   return { anexo: { nome: /\.pdf$/i.test(nome) ? nome : `${nome}.pdf`, dados } };
 }
 
+/* Uma entrega completa: monta o card, cria e anexa o PDF. Usada tanto pelo
+   envio ao vivo quanto pelo reenvio da fila, para os dois caminhos não
+   divergirem com o tempo. */
+export async function entregarLead(dados, token) {
+  const { card } = buildCard(dados);
+  const { anexo } = lerAnexo(dados.anexo);
+
+  const out = await criarCard(card, token);
+  if (!out.ok) {
+    console.error('[connect-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500), resumo(dados));
+    return false;
+  }
+
+  // O lead já está salvo. Se o anexo falhar, não vale perder a aplicação
+  // inteira: registra no log para a equipe pedir o PDF depois.
+  if (anexo && out.cardId) {
+    const anexado = await anexarPdf(out.cardId, anexo, token);
+    if (!anexado.ok) {
+      console.error('[connect-lead] anexo falhou em', anexado.etapa, anexado.status,
+        anexado.body, '| card', out.cardId);
+    }
+  } else if (anexo) {
+    console.error('[connect-lead] anexo recebido mas a API não devolveu id de card.');
+  }
+  return true;
+}
+
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') {
@@ -285,12 +314,12 @@ export default async function handler(req, res) {
   // aprender nada com a diferença entre aceitar e recusar.
   if (body.website_extra) return res.status(200).json({ ok: true });
 
-  const { card, missing, invalid } = buildCard(body);
+  const { missing, invalid } = buildCard(body);
   if (missing.length || invalid.length) {
     return res.status(422).json({ ok: false, error: 'validation', missing, invalid });
   }
 
-  const { anexo, erro: erroAnexo } = lerAnexo(body.anexo);
+  const { erro: erroAnexo } = lerAnexo(body.anexo);
   if (erroAnexo) return res.status(422).json({ ok: false, error: erroAnexo });
 
   const token = process.env.JSYNQ_API_TOKEN;
@@ -299,29 +328,30 @@ export default async function handler(req, res) {
     return res.status(503).json({ ok: false, error: 'not_configured' });
   }
 
+  // Guardar vem antes de entregar. Se o JSYNQ estiver fora, o lead já está a
+  // salvo e entra na fila em vez de sumir.
+  const naFila = await guardar('connect', body);
+
   try {
-    const out = await criarCard(card, token);
-    if (!out.ok) {
-      // O corpo da resposta do JSYNQ fica só no log, nunca vai para o navegador.
-      console.error('[connect-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500), resumo(body));
-      return res.status(502).json({ ok: false, error: 'upstream' });
-    }
-
-    // O lead já está salvo. Se o anexo falhar, não vale perder a aplicação
-    // inteira: registra no log para a equipe pedir o PDF depois.
-    if (anexo && out.cardId) {
-      const anexado = await anexarPdf(out.cardId, anexo, token);
-      if (!anexado.ok) {
-        console.error('[connect-lead] anexo falhou em', anexado.etapa, anexado.status,
-          anexado.body, '| card', out.cardId);
+    if (await entregarLead(body, token)) {
+      await concluir(naFila);
+      // O CRM respondeu, então é boa hora de empurrar o que ficou para trás.
+      if (filaAtiva()) {
+        const r = await drenar('connect', (d) => entregarLead(d, token), 2);
+        if (r.entregues) console.log('[connect-lead] fila: reenviados', r.entregues);
       }
-    } else if (anexo) {
-      console.error('[connect-lead] anexo recebido mas a API não devolveu id de card.');
+      return res.status(200).json({ ok: true });
     }
-
-    return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('[connect-lead] falha ao falar com o JSYNQ:', err?.message, resumo(body));
-    return res.status(502).json({ ok: false, error: 'upstream' });
   }
+
+  // Aqui o CRM não aceitou. Se o lead está na fila, a aplicação foi recebida de
+  // fato e será entregue depois: dizer que falhou faria a pessoa desistir ou
+  // reenviar, criando card repetido.
+  if (naFila) {
+    console.error('[connect-lead] na fila para reenvio:', naFila, resumo(body));
+    return res.status(200).json({ ok: true, pendente: true });
+  }
+  return res.status(502).json({ ok: false, error: 'upstream' });
 }
