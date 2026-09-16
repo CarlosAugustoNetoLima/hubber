@@ -50,14 +50,8 @@ consegue escrever no workspace inteiro.
 
 ```
 formulário da LP  →  POST /api/connect-lead  →  POST https://api.jsynq.com
-                                                 /api/projects/{projectId}/forms/{formId}/responses
+                                                 /api/projects/{projectId}/cards
 ```
-
-Atenção ao nome da rota. O Swagger do JSYNQ, em `api.jsynq.com/api-docs`,
-documenta `/answer` no singular, mas essa rota responde `404` para autenticação
-por token. A que funciona é **`/responses`**, no plural. Outras entradas daquela
-especificação também estão desatualizadas, como `/api/me`, que não existe. Ou
-seja: confie no comportamento observado, não no Swagger.
 
 A função valida tudo antes de repassar: campos obrigatórios, formato de e-mail e
 telefone, datas que existem de verdade, e uma lista fechada de valores para cada
@@ -69,12 +63,41 @@ campos fica em `FIELDS`, no topo de `api/connect-lead.js`.
 Se o envio falhar, a página mostra um aviso e mantém o formulário preenchido.
 Ela nunca diz "aplicação recebida" sem confirmação do servidor.
 
+### Por que o card é criado direto, e não pela rota de formulário
+
+Existe uma rota de resposta de formulário, mas ela **não funciona com token de
+API**. O caminho até essa conclusão, para ninguém repetir:
+
+- O Swagger em `api.jsynq.com/api-docs` documenta `POST .../forms/{formId}/answer`.
+  Essa rota responde `404` para token. A que existe é `/responses`, no plural.
+  Aquela especificação tem outras entradas mortas, como `/api/me`. Confie no
+  comportamento observado, não nela.
+- `/responses` aceitou exatamente um envio e passou a responder `400 Invalid
+  request data` para todo o resto, inclusive para o mesmo corpo que tinha
+  funcionado. Não é permissão: com o mesmo token, `POST .../lead-sources`
+  grava normalmente, e leitura de projeto, formulário e workspace responde 200.
+  Também não é o corpo: o conector MCP aceita o mesmo JSON.
+
+`POST /api/projects/{projectId}/cards` é estável e produz um card idêntico ao
+que o formulário hospedado gera: mesmos 13 campos, mesma coluna, mesma origem de
+lead, e o contato criado a partir dos campos marcados com `crmKey`.
+
+Dois detalhes que custaram caro e é melhor não mexer:
+
+- **Datas vão em `dd/mm/aaaa`**, o formato que a pessoa digitou. Em ISO o JSYNQ
+  grava a string com aspas dentro dela, tipo `"2026-10-20T00:00:00.000Z"`.
+- **O `fieldId` é sempre o id do campo do formulário**, nunca o `crmKey`, e os
+  dados de contato não vão no topo do card. O JSYNQ já deduz o contato pelo
+  `crmKey` que o campo tem no formulário. Mandar nos dois lugares faz o card
+  listar "Contact name", "Email" e "Phone" duas vezes cada.
+
 ### Ao mexer no formulário
 
-Os `value` dos campos de escolha na LP são iguais aos ids das opções no JSYNQ
-(`viagem`, `10-50k`, `orlando`...). Ao adicionar ou renomear uma opção, mudar nos
+Os `value` dos campos de escolha na LP são iguais às chaves de `options` em
+`api/connect-lead.js` (`viagem`, `10-50k`, `orlando`...), e o valor de cada chave
+é o rótulo que aparece no card. Ao adicionar ou renomear uma opção, mudar nos
 dois lugares: no HTML em `src/connect/index.html` e na lista `options` do campo
-correspondente em `api/connect-lead.js`.
+correspondente na função.
 
 ## Content Security Policy
 
