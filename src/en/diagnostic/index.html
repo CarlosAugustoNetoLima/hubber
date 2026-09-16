@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){var h=document.documentElement;h.classList.add('has-js');
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');
+window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();
+</script>
+<title>Growth Diagnostic | Hubber</title>
+<meta name="description" content="Tell us where the business is today, what the next stage looks like and what keeps getting in the way. In five steps we identify whether Build, Agency, Pocket or no engagement is the right next step.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
+<link rel="canonical" href="https://hubbermarketing.com/en/diagnostic/">
+<link rel="alternate" hreflang="pt-BR" href="https://hubbermarketing.com/diagnostico/">
+<link rel="alternate" hreflang="en-US" href="https://hubbermarketing.com/en/diagnostic/">
+<link rel="alternate" hreflang="x-default" href="https://hubbermarketing.com/diagnostico/">
+<meta property="og:title" content="Growth Diagnostic | Hubber">
+<meta property="og:description" content="Find the constraint before buying another solution.">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="/assets/fonts/946-latin-wide-3.DEV-PREVIEW.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,300..700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/css/fonts.css">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/pages/diagnostico.css">
+</head>
+<body data-surface="ink" data-sticky-cta="off">
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!--page:diagnostic-->
+<!--partial:header-en-->
+
+<main id="main">
+
+<section class="hero" data-hero data-surface="ink" aria-labelledby="hero-title">
+  <div class="wrap hero__in">
+    <p class="t-label t-accent" data-intro>Growth Diagnostic · 5 steps · about 3 minutes</p>
+    <h1 class="hero__title js-intro-title" id="hero-title">Find the constraint before buying another solution.</h1>
+    <p class="t-lead hero__lead" data-intro>Tell us where the business is today, what the next stage looks like and what keeps getting in the way. We will identify whether Build, Agency, Pocket or no engagement at all is the right next step.</p>
+    <div class="hero__actions" data-intro>
+      <a class="btn btn--primary" href="#form">Start the diagnostic</a>
+    </div>
+    <p class="hero__signal t-small" data-intro>
+      <span>Nicolas reads every answer personally</span>
+      <span>No forced call: if it is not the moment, we say so</span>
+    </p>
+  </div>
+</section>
+
+<section class="section" id="form" data-surface="light" aria-labelledby="form-title">
+  <div class="wrap diag">
+    <div class="diag__form">
+
+      <div class="sec-head">
+        <p class="t-label t-accent" data-step-counter>Step 1 of 5</p>
+        <h2 class="t-h2" id="form-title">Five steps, about three minutes.</h2>
+      </div>
+
+      <ol class="steps" data-progress aria-label="Diagnostic steps" style="margin-bottom: var(--s48);">
+        <li><span>01</span> Company</li>
+        <li><span>02</span> Constraint</li>
+        <li><span>03</span> Readiness</li>
+        <li><span>04</span> Objective</li>
+        <li><span>05</span> Contact</li>
+      </ol>
+
+      <form class="form" data-diagnostic method="post" action="/api/diagnostico" novalidate="">
+
+        <input type="hidden" name="idioma" value="en-US">
+
+        <div class="form__errors" data-errors role="alert" aria-live="assertive" hidden></div>
+
+
+        <fieldset class="step" data-step>
+          <legend class="step__legend" tabindex="-1" data-step-focus>
+            <span class="t-label t-accent">Step 1 of 5</span>
+            <span class="step__title">About the company</span>
+          </legend>
+
+          <div class="field" data-field data-error-required="Enter the company name.">
+            <label class="field__label" for="empresa" data-field-label>Company</label>
+            <input id="empresa" name="empresa" type="text" required autocomplete="organization" aria-describedby="e-empresa">
+            <p class="field__error" id="e-empresa" data-error hidden></p>
+          </div>
+
+          <div class="field" data-field data-error-required="Pick the closest revenue range.">
+            <fieldset class="field__group" aria-describedby="h-fat e-fat">
+              <legend data-field-label>Monthly revenue <small>in US dollars</small></legend>
+              <p class="field__hint" id="h-fat">An estimate is enough. This is what tells us whether Build pays for itself.</p>
+              <div class="opts opts--2">
+                <label class="opt"><input type="radio" name="faturamento" id="fat-1" value="<50k" required><span>Under $50k</span></label>
+                <label class="opt"><input type="radio" name="faturamento" id="fat-2" value="50-85k"><span>$50k to $85k</span></label>
+                <label class="opt"><input type="radio" name="faturamento" id="fat-3" value="85-200k"><span>$85k to $200k <small>≈ $1M to $2.4M a year</small></span></label>
+                <label class="opt"><input type="radio" name="faturamento" id="fat-4" value="200-500k"><span>$200k to $500k</span></label>
+                <label class="opt"><input type="radio" name="faturamento" id="fat-5" value="500k+"><span>Over $500k</span></label>
+              </div>
+              <p class="field__error" id="e-fat" data-error hidden></p>
+            </fieldset>
+          </div>
+
+          <div class="field" data-field data-error-required="Tell us what industry the company is in.">
+            <label class="field__label" for="setor" data-field-label>Industry</label>
+            <input id="setor" name="setor" type="text" required list="setores" autocomplete="off" aria-describedby="e-setor">
+            <datalist id="setores">
+              <option value="Car rental"><option value="Vacation rentals"><option value="Law">
+              <option value="Logistics"><option value="Real estate"><option value="Currency exchange and finance">
+              <option value="Health and aesthetics"><option value="Services"><option value="Retail"><option value="Other">
+            </datalist>
+            <p class="field__error" id="e-setor" data-error hidden></p>
+          </div>
+
+          <div class="field" data-field data-error-required="Pick where the company operates.">
+            <fieldset class="field__group" aria-describedby="e-mercado">
+              <legend data-field-label>Where the company operates</legend>
+              <div class="opts opts--2">
+                <label class="opt"><input type="radio" name="mercado" id="mer-1" value="eua" required><span>United States</span></label>
+                <label class="opt"><input type="radio" name="mercado" id="mer-2" value="brasil"><span>Brazil</span></label>
+                <label class="opt"><input type="radio" name="mercado" id="mer-3" value="ambos"><span>Both</span></label>
+              </div>
+              <p class="field__error" id="e-mercado" data-error hidden></p>
+            </fieldset>
+          </div>
+
+          <div class="step__nav">
+            <button type="button" class="btn btn--primary" data-next>Continue</button>
+          </div>
+        </fieldset>
+
+
+        <fieldset class="step" data-step hidden>
+          <legend class="step__legend" tabindex="-1" data-step-focus>
+            <span class="t-label t-accent">Step 2 of 5</span>
+            <span class="step__title">The constraint</span>
+          </legend>
+
+          <div class="field" data-field data-error-required="Pick where growth is stuck today.">
+            <fieldset class="field__group" aria-describedby="h-garg e-garg">
+              <legend data-field-label>Where growth is stuck today</legend>
+              <p class="field__hint" id="h-garg">If it is more than one, pick the one that costs the most.</p>
+              <div class="opts">
+                <label class="opt"><input type="radio" name="gargalo" id="gar-1" value="demanda" required><span>Demand <small>not enough leads, or the wrong ones</small></span></label>
+                <label class="opt"><input type="radio" name="gargalo" id="gar-2" value="vendas"><span>Sales <small>leads arrive and do not close</small></span></label>
+                <label class="opt"><input type="radio" name="gargalo" id="gar-3" value="operacao"><span>Operations <small>it sells, but delivery cannot keep up</small></span></label>
+                <label class="opt"><input type="radio" name="gargalo" id="gar-4" value="time"><span>Team <small>missing people, or no structure for the ones we have</small></span></label>
+                <label class="opt"><input type="radio" name="gargalo" id="gar-5" value="gestao"><span>Management and data <small>I cannot tell what works and what does not</small></span></label>
+              </div>
+              <p class="field__error" id="e-garg" data-error hidden></p>
+            </fieldset>
+          </div>
+
+          <div class="field" data-field data-error-required="Tell us what you have already tried." data-error-short="Write a little more: at least 20 characters.">
+            <label class="field__label" for="tentou" data-field-label>What have you already tried?</label>
+            <p class="field__hint" id="h-tentou">Agencies, freelancers, hires, tools. And why it did not work.</p>
+            <textarea id="tentou" name="tentou" required minlength="20" rows="4" aria-describedby="h-tentou e-tentou"></textarea>
+            <p class="field__error" id="e-tentou" data-error hidden></p>
+          </div>
+
+          <div class="field" data-field data-error-required="Tell us what still depends on you." data-error-short="Write a little more: at least 10 characters.">
+            <label class="field__label" for="depende" data-field-label>What still depends on you personally?</label>
+            <p class="field__hint" id="h-dep">Approving, reminding, fixing, deciding. Whatever stops moving when you are not there.</p>
+            <textarea id="depende" name="depende" required minlength="10" rows="3" aria-describedby="h-dep e-dep"></textarea>
+            <p class="field__error" id="e-dep" data-error hidden></p>
+          </div>
+
+          <div class="step__nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Continue</button>
+          </div>
+        </fieldset>
+
+
+        <fieldset class="step" data-step hidden>
+          <legend class="step__legend" tabindex="-1" data-step-focus>
+            <span class="t-label t-accent">Step 3 of 5</span>
+            <span class="step__title">Readiness</span>
+          </legend>
+
+          <div class="field" data-field data-error-required="Tell us who handles marketing today.">
+            <fieldset class="field__group" aria-describedby="e-time">
+              <legend data-field-label>Who handles marketing today</legend>
+              <div class="opts opts--2">
+                <label class="opt"><input type="radio" name="time" id="tim-1" value="agencia" required><span>An outside agency</span></label>
+                <label class="opt"><input type="radio" name="time" id="tim-2" value="freelancers"><span>Freelancers</span></label>
+                <label class="opt"><input type="radio" name="time" id="tim-3" value="uma-pessoa"><span>One person in house</span></label>
+                <label class="opt"><input type="radio" name="time" id="tim-4" value="time-interno"><span>An in-house team</span></label>
+                <label class="opt"><input type="radio" name="time" id="tim-5" value="ninguem"><span>Nobody: me, when I can</span></label>
+              </div>
+              <p class="field__error" id="e-time" data-error hidden></p>
+            </fieldset>
+          </div>
+
+          <div class="field" data-field data-error-required="Pick what you want for the coming months.">
+            <fieldset class="field__group" aria-describedby="h-est e-est">
+              <legend data-field-label>What you want</legend>
+              <p class="field__hint" id="h-est">It does not have to be right. It is what decides the route.</p>
+              <div class="opts">
+                <label class="opt"><input type="radio" name="estrutura" id="est-1" value="time-interno" required><span>A marketing team inside the company <small>mine, with process and management</small></span></label>
+                <label class="opt"><input type="radio" name="estrutura" id="est-2" value="executar"><span>Someone to execute for me <small>with results tied to sales, without me building a team</small></span></label>
+                <label class="opt"><input type="radio" name="estrutura" id="est-3" value="base"><span>Just the digital foundation working <small>website, Google, social and ads, coordinated</small></span></label>
+                <label class="opt"><input type="radio" name="estrutura" id="est-4" value="nao-sei"><span>I do not know yet</span></label>
+              </div>
+              <p class="field__error" id="e-est" data-error hidden></p>
+            </fieldset>
+          </div>
+
+          <div class="field" data-field data-error-required="Tell us whether there is budget for the next 90 days.">
+            <fieldset class="field__group" aria-describedby="e-verba">
+              <legend data-field-label>Budget for people and tools over the next 90 days</legend>
+              <div class="opts opts--2">
+                <label class="opt"><input type="radio" name="verba" id="ver-1" value="definida" required><span>Yes, already set</span></label>
+                <label class="opt"><input type="radio" name="verba" id="ver-2" value="a-definir"><span>Yes, to be set</span></label>
+                <label class="opt"><input type="radio" name="verba" id="ver-3" value="nao"><span>Not yet</span></label>
+              </div>
+              <p class="field__error" id="e-verba" data-error hidden></p>
+            </fieldset>
+          </div>
+
+          <div class="field" data-field data-error-required="Tell us your role in the decision.">
+            <fieldset class="field__group" aria-describedby="e-papel">
+              <legend data-field-label>Your role in the decision</legend>
+              <div class="opts opts--2">
+                <label class="opt"><input type="radio" name="papel" id="pap-1" value="sozinho" required><span>I decide alone</span></label>
+                <label class="opt"><input type="radio" name="papel" id="pap-2" value="socios"><span>I decide with partners</span></label>
+                <label class="opt"><input type="radio" name="papel" id="pap-3" value="influencio"><span>I influence; someone else decides</span></label>
+              </div>
+              <p class="field__error" id="e-papel" data-error hidden></p>
+            </fieldset>
+          </div>
+
+          <div class="step__nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Continue</button>
+          </div>
+        </fieldset>
+
+
+        <fieldset class="step" data-step hidden>
+          <legend class="step__legend" tabindex="-1" data-step-focus>
+            <span class="t-label t-accent">Step 4 of 5</span>
+            <span class="step__title">The objective</span>
+          </legend>
+
+          <div class="field" data-field data-error-required="Tell us what needs to change." data-error-short="Write a little more: at least 20 characters.">
+            <label class="field__label" for="objetivo" data-field-label>What needs to change over the next 12 months?</label>
+            <p class="field__hint" id="h-obj">A number, a deadline and a reason. Revenue, margin, capacity, independence from the founder.</p>
+            <textarea id="objetivo" name="objetivo" required minlength="20" rows="4" aria-describedby="h-obj e-obj"></textarea>
+            <p class="field__error" id="e-obj" data-error hidden></p>
+          </div>
+
+          <div class="field" data-field>
+            <label class="field__label" for="porque" data-field-label>Why now? <small>optional</small></label>
+            <p class="field__hint" id="h-pq">What happens if nothing changes.</p>
+            <textarea id="porque" name="porque" rows="3" aria-describedby="h-pq"></textarea>
+          </div>
+
+          <div class="step__nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Continue</button>
+          </div>
+        </fieldset>
+
+
+        <fieldset class="step" data-step hidden>
+          <legend class="step__legend" tabindex="-1" data-step-focus>
+            <span class="t-label t-accent">Step 5 of 5</span>
+            <span class="step__title">How Nicolas reaches you</span>
+          </legend>
+
+          <div class="field" data-field data-error-required="Enter your name.">
+            <label class="field__label" for="nome" data-field-label>Name</label>
+            <input id="nome" name="nome" type="text" required autocomplete="name" aria-describedby="e-nome">
+            <p class="field__error" id="e-nome" data-error hidden></p>
+          </div>
+
+          <div class="field" data-field data-error-required="Enter your email." data-error-format="Enter a valid email, like name@company.com.">
+            <label class="field__label" for="email" data-field-label>Email</label>
+            <input id="email" name="email" type="email" required autocomplete="email" inputmode="email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" aria-describedby="e-email">
+            <p class="field__error" id="e-email" data-error hidden></p>
+          </div>
+
+          <div class="field" data-field data-error-required="Enter a phone number with area or country code." data-error-format="Use only numbers, spaces, + and parentheses.">
+            <label class="field__label" for="telefone" data-field-label>Phone <small>WhatsApp, if you have it</small></label>
+            <input id="telefone" name="telefone" type="tel" required autocomplete="tel" inputmode="tel" pattern="[0-9+\(\)\s\-]{8,}" aria-describedby="e-tel">
+            <p class="field__error" id="e-tel" data-error hidden></p>
+          </div>
+
+          <div class="field" data-field data-error-format="Enter a full address, like https://yourcompany.com.">
+            <label class="field__label" for="site" data-field-label>Company website <small>optional</small></label>
+            <input id="site" name="site" type="url" autocomplete="url" inputmode="url" placeholder="https://" aria-describedby="e-site">
+            <p class="field__error" id="e-site" data-error hidden></p>
+          </div>
+
+          <div class="field" data-field data-error-required="We need your permission to get in touch.">
+            <label class="check">
+              <input type="checkbox" name="consentimento" id="consent" value="sim" required aria-describedby="e-consent">
+              <span class="t-small" data-field-label>I authorize Hubber to use this information to respond to my diagnostic. No lists, no spam. <a href="/en/privacy/">Privacy policy</a>.</span>
+            </label>
+            <p class="field__error" id="e-consent" data-error hidden></p>
+          </div>
+
+
+          <div class="hp" aria-hidden="true">
+            <label for="website_extra">Leave blank</label>
+            <input id="website_extra" name="website_extra" type="text" tabindex="-1" autocomplete="off" data-honeypot>
+          </div>
+
+          <div class="step__nav">
+            <button type="button" class="btn btn--ghost" data-prev>Back</button>
+            <button type="submit" class="btn btn--primary">Send diagnostic</button>
+          </div>
+        </fieldset>
+
+      </form>
+
+      <p class="t-small diag__privacy">Your information goes only to Hubber, to answer this diagnostic. No lists, no spam, no forced call.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-result data-surface="ink" hidden aria-labelledby="res-build-title">
+  <div class="wrap">
+
+    <div class="result__block" data-route="build" hidden>
+      <p class="t-label t-accent">Preliminary diagnostic · Build</p>
+      <h2 id="res-build-title" tabindex="-1">The next step is a conversation with Nicolas.</h2>
+      <p class="t-lead t-muted">From what you answered, the company is already above the revenue floor, wants internal structure and has someone who decides. That is the Build profile.</p>
+      <p class="t-body">The conversation is there to confirm the constraint, choose the track (reorganize the team you have or build from scratch) and close the readiness gate. Only after that does a proposal exist.</p>
+      <p class="t-body result__note" data-note="sponsor" hidden>You indicated the decision is not yours. Bring whoever decides into the conversation: Build does not start without an executive sponsor.</p>
+      <p class="t-body result__note" data-note="verba-a-definir" hidden>Budget is still to be set. The conversation also serves to size it, before any number.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#">Book the conversation</a>
+        <a class="btn btn--ghost" href="/en/build/">Review Build</a>
+      </div>
+    </div>
+
+    <div class="result__block" data-route="agencia" hidden>
+      <p class="t-label t-accent">Preliminary diagnostic · Agency</p>
+      <h2 id="res-agencia-title" tabindex="-1">It makes sense to talk about execution.</h2>
+      <p class="t-lead t-muted">You want someone executing now, not an internal department. Or you want one, but without an internal sponsor yet.</p>
+      <p class="t-body">Agency runs marketing tied to pipeline and revenue, launching in 10 business days after the readiness gate. The conversation confirms the scope and what sits on each side.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#">Book the conversation</a>
+        <a class="btn btn--ghost" href="/en/agency/">Explore Agency</a>
+      </div>
+    </div>
+
+    <div class="result__block" data-route="pocket" hidden>
+      <p class="t-label t-accent">Preliminary diagnostic · Pocket</p>
+      <h2 id="res-pocket-title" tabindex="-1">Start with the foundation.</h2>
+      <p class="t-lead t-muted">The company does not have the minimum digital structure yet. Or it has one, but scattered across vendors that do not talk to each other.</p>
+      <p class="t-body">Pocket covers the essentials: paid media, website, Google Business Profile and social, coordinated to be found and to convert. From $997 per month, with one strategic review each month.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/en/pocket/">Explore Pocket</a>
+        <a class="btn btn--ghost" href="#">Book the conversation</a>
+      </div>
+    </div>
+
+    <div class="result__block" data-route="nutricao" hidden>
+      <p class="t-label t-accent">Preliminary diagnostic</p>
+      <h2 id="res-nutricao-title" tabindex="-1">It is not time to hire yet, and that is fine.</h2>
+      <p class="t-body result__note" data-note="piso" hidden>Below $85k a month, Build does not pay for itself. We would rather say that now than inside a proposal.</p>
+      <p class="t-body result__note" data-note="verba" hidden>Without budget for people and tools over the next 90 days, none of the three routes works, and forcing one would be selling what it cannot deliver.</p>
+      <p class="t-lead t-muted">You will receive material on how to structure marketing before scaling. When it makes sense, we talk, with no forced call.</p>
+      <div class="hero__actions">
+        <a class="btn btn--ghost" href="/en/">Back to the home page</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section after" data-surface="ink" aria-labelledby="after-title">
+  <div class="wrap">
+    <div class="sec-head sec-head--wide">
+      <p class="t-label t-accent">After</p>
+      <h2 class="t-h2 js-split" id="after-title">What happens to what you send.</h2>
+    </div>
+    <ol class="phases" role="list" data-reveal-group>
+      <li class="phase">
+        <p class="phase__num" aria-hidden="true">01</p>
+        <p class="phase__name"><span class="visually-hidden">Step 1: </span>You send it</p>
+        <p class="t-body phase__desc">Five steps, about three minutes. The form already shows the likely route at the end.</p>
+      </li>
+      <li class="phase">
+        <p class="phase__num" aria-hidden="true">02</p>
+        <p class="phase__name"><span class="visually-hidden">Step 2: </span>Nicolas reads it</p>
+        <p class="t-body phase__desc">Personally, every answer. If it is not time to hire, he says so and sends material instead of a proposal.</p>
+      </li>
+      <li class="phase">
+        <p class="phase__num" aria-hidden="true">03</p>
+        <p class="phase__name"><span class="visually-hidden">Step 3: </span>The conversation</p>
+        <p class="t-body phase__desc">A diagnostic conversation, online, or a coffee if you are in Florida. You talk 80% of the time. Price only after the constraint is confirmed.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<!--partial:footer-en-->
+
+<script defer src="/assets/vendor/gsap.3.15.0.min.js"></script>
+<script defer src="/assets/vendor/ScrollTrigger.3.15.0.min.js"></script>
+<script defer src="/assets/vendor/SplitText.3.15.0.min.js"></script>
+<script defer src="/assets/vendor/CustomEase.3.15.0.min.js"></script>
+<script defer src="/assets/vendor/lenis.1.3.26.min.js"></script>
+<script type="module" src="/js/main.js"></script>
+
+</body>
+</html>

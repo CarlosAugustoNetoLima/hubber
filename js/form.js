@@ -1,31 +1,33 @@
+import { computeRoute } from './route.js';
 
-
-const PISO = new Set(['85-200k', '200-500k', '500k+']);
-
-export function computeRoute(a) {
-  const piso = PISO.has(a.faturamento);
-  const semVerba = a.verba === 'nao';
-  const decide = a.papel === 'sozinho' || a.papel === 'socios';
-  const notes = [];
-
-  if (!piso || semVerba) {
-    if (!piso) notes.push('piso');
-    if (semVerba) notes.push('verba');
-    return { route: 'nutricao', notes };
-  }
-  if (a.verba === 'a-definir') notes.push('verba-a-definir');
-
-  if (a.estrutura === 'time-interno') {
-    if (!decide) notes.push('sponsor');
-    return { route: 'build', notes };
-  }
-  if (a.estrutura === 'executar') return { route: 'agencia', notes };
-  if (a.estrutura === 'base')     return { route: 'pocket', notes };
-
-  if (a.time === 'ninguem') return { route: 'pocket', notes };
-  if ((a.gargalo === 'time' || a.gargalo === 'gestao') && decide) return { route: 'build', notes };
-  return { route: 'agencia', notes };
-}
+/* As frases que este arquivo escreve na tela. Tudo o mais já vem traduzido do
+   HTML da página, inclusive as mensagens de erro por campo, que vêm dos
+   data-error-* de cada `[data-field]`. Aqui ficam só as que não existem no
+   markup. O idioma sai do <html lang>. */
+const TEXTOS = {
+  'pt-BR': {
+    passo: (i, n) => `Passo ${i} de ${n}`,
+    faltam: (n) => (n === 1 ? 'Falta um campo para continuar:' : `Faltam ${n} campos para continuar:`),
+    obrigatorio: 'Preencha este campo.',
+    formato: 'Confira o formato deste campo.',
+    curto: (n) => `Escreva pelo menos ${n} caracteres.`,
+    confira: 'Confira este campo.',
+    enviando: 'Enviando…',
+    falha: 'Não conseguimos enviar o diagnóstico agora. '
+         + 'Suas respostas continuam preenchidas aqui: toque em enviar de novo em alguns instantes.',
+  },
+  'en-US': {
+    passo: (i, n) => `Step ${i} of ${n}`,
+    faltam: (n) => (n === 1 ? 'One field is missing:' : `${n} fields are missing:`),
+    obrigatorio: 'Please fill in this field.',
+    formato: 'Check the format of this field.',
+    curto: (n) => `Write at least ${n} characters.`,
+    confira: 'Check this field.',
+    enviando: 'Sending…',
+    falha: 'We could not send your diagnostic right now. '
+         + 'Your answers are still here: try sending again in a moment.',
+  },
+};
 
 export function initDiagnostic(root = document) {
   const form = root.querySelector('[data-diagnostic]');
@@ -38,6 +40,7 @@ export function initDiagnostic(root = document) {
   const summary = form.querySelector('[data-errors]');
   const result = root.querySelector('[data-result]');
   const startedAt = Date.now();
+  const T = TEXTOS[root.documentElement?.lang || document.documentElement.lang] || TEXTOS['pt-BR'];
   let i = 0;
 
   form.setAttribute('novalidate', '');
@@ -51,7 +54,7 @@ export function initDiagnostic(root = document) {
       li.classList.toggle('is-current', k === i);
       if (k === i) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
     });
-    if (counter) counter.textContent = `Passo ${i + 1} de ${steps.length}`;
+    if (counter) counter.textContent = T.passo(i + 1, steps.length);
     clearSummary();
     if (moveFocus) {
       const legend = steps[i].querySelector('[data-step-focus]');
@@ -84,10 +87,10 @@ export function initDiagnostic(root = document) {
   function wrapOf(el) { return el.closest('[data-field]'); }
   function messageFor(el) {
     const w = wrapOf(el) || {}; const d = w.dataset || {};
-    if (el.validity.valueMissing) return d.errorRequired || 'Preencha este campo.';
-    if (el.validity.typeMismatch || el.validity.patternMismatch) return d.errorFormat || 'Confira o formato deste campo.';
-    if (el.validity.tooShort) return d.errorShort || `Escreva pelo menos ${el.minLength} caracteres.`;
-    return el.validationMessage || 'Confira este campo.';
+    if (el.validity.valueMissing) return d.errorRequired || T.obrigatorio;
+    if (el.validity.typeMismatch || el.validity.patternMismatch) return d.errorFormat || T.formato;
+    if (el.validity.tooShort) return d.errorShort || T.curto(el.minLength);
+    return el.validationMessage || T.confira;
   }
   function setError(el, msg) {
     const w = wrapOf(el); if (!w) return;
@@ -124,11 +127,18 @@ export function initDiagnostic(root = document) {
   function announce(errors) {
     if (!summary) return;
     const n = errors.length;
-    summary.innerHTML = `<p>${n === 1 ? 'Falta um campo' : `Faltam ${n} campos`} para continuar:</p><ul>${
+    summary.innerHTML = `<p>${T.faltam(n)}</p><ul>${
       errors.map((er) => `<li><a href="#${er.el.id || ''}" data-focus>${er.label}</a>: ${er.msg}</li>`).join('')
     }</ul>`;
     summary.hidden = false;
   }
+  function falhaNoEnvio() {
+    if (!summary) return;
+    summary.innerHTML = `<p>${T.falha}</p>`;
+    summary.hidden = false;
+    summary.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
   function clearSummary() { if (summary) { summary.hidden = true; summary.innerHTML = ''; } }
   summary?.addEventListener('click', (e) => {
     const a = e.target.closest('[data-focus]'); if (!a) return;
@@ -148,23 +158,35 @@ export function initDiagnostic(root = document) {
     const data = Object.fromEntries(new FormData(form).entries());
     delete data[hp?.name];
     const { route, notes } = computeRoute(data);
-    Object.assign(data, {
-      rota: route, notas: notes.join(','),
-      idioma: document.documentElement.lang, origem: location.pathname,
-      enviado_em: new Date().toISOString(),
-    });
+    Object.assign(data, { idioma: document.documentElement.lang, origem: location.pathname });
 
-    const endpoint = form.dataset.endpoint;
-    if (endpoint) {
-      const btn = form.querySelector('[type="submit"]'); btn && (btn.disabled = true);
-      try {
-        await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-      } catch (_) {}
-      btn && (btn.disabled = false);
-    } else {
+    const endpoint = form.dataset.endpoint || form.getAttribute('action');
+    if (!endpoint) {
       console.info('[hubber] diagnóstico: sem endpoint configurado; payload:', data);
+      showResult(route, notes);
+      return;
     }
-    showResult(route, notes);
+
+    const btn = form.querySelector('[type="submit"]');
+    const rotulo = btn?.textContent;
+    if (btn) { btn.disabled = true; btn.textContent = T.enviando; }
+
+    // A devolutiva só aparece depois que o servidor confirma que gravou. Antes
+    // o erro era engolido e a pessoa via "recebemos" com o lead perdido.
+    let resposta = null;
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),
+      });
+      if (res.ok) resposta = await res.json().catch(() => ({ ok: true }));
+    } catch (_) {}
+
+    if (btn) { btn.disabled = false; if (rotulo) btn.textContent = rotulo; }
+
+    if (!resposta?.ok) { falhaNoEnvio(); return; }
+
+    // A rota que vale é a do servidor: é a que foi gravada no CRM.
+    showResult(resposta.rota || route, resposta.notas || notes);
   });
 
   function showResult(route, notes) {

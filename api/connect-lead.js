@@ -5,62 +5,73 @@
  * navegador, e o mapa de campos também fica no servidor: a página não precisa
  * conhecer os ids internos do CRM.
  *
- * Quem aparece como responsável pelo lead não depende de quem gerou o token:
- * o JSYNQ carimba o reporter do card a partir do leader do projeto.
+ * Quem assina o lead é o dono do token: o JSYNQ carimba o reporter do card a
+ * partir de quem gerou a credencial, não do leader do projeto. Medido.
+ *
+ * O destino é o projeto "Hubber Site · Diagnósticos", o mesmo de todo lead que
+ * o site gera. Não criar projeto separado por landing page: origem se distingue
+ * por etiqueta e pelo campo Origem, dentro do mesmo quadro.
  *
  * Variáveis de ambiente (painel da Vercel, nunca no código):
- *   JSYNQ_API_TOKEN   token de API do JSYNQ, com permissão de escrita em projetos
- *   JSYNQ_PROJECT_ID  projeto CRM (opcional, já tem padrão abaixo)
- *   JSYNQ_FORM_ID     formulário do projeto (opcional, já tem padrão abaixo)
+ *   JSYNQ_API_TOKEN            token de API do JSYNQ, com escrita em projetos
+ *   JSYNQ_CONNECT_PROJECT_ID   projeto CRM (opcional, já tem padrão abaixo)
+ *   JSYNQ_CONNECT_FORM_ID      formulário com a definição dos campos (idem)
+ *   JSYNQ_CONNECT_BOARD_ID     quadro (idem)
+ *   JSYNQ_CONNECT_COLUMN_ID    coluna de entrada (idem)
+ *   JSYNQ_CONNECT_LABEL_ID     etiqueta que marca a origem do lead (idem)
  */
 
 const API_BASE = 'https://api.jsynq.com';
-const PROJECT_ID = process.env.JSYNQ_PROJECT_ID || '6aaa3f3bef105cbe3adc9849';
-const FORM_ID = process.env.JSYNQ_FORM_ID || '6aaa3f82ef105cbe3adc9df4';
-
-const BOARD_ID = process.env.JSYNQ_BOARD_ID || '6aaa3f3bef105cbe3adc984d';
-const COLUMN_ID = process.env.JSYNQ_COLUMN_ID || '6aaa3f3bef105cbe3adc9855';
-const LEAD_SOURCE_ID = process.env.JSYNQ_LEAD_SOURCE_ID || '6aaa506696e0e036ab0805ae';
+const PROJECT_ID = process.env.JSYNQ_CONNECT_PROJECT_ID || '6aaac5d2f1edc4c698019729';
+const FORM_ID    = process.env.JSYNQ_CONNECT_FORM_ID    || '6aaaca2ef1edc4c69802a9e5';
+const BOARD_ID   = process.env.JSYNQ_CONNECT_BOARD_ID   || '6aaac5d2f1edc4c69801972d';
+const COLUMN_ID  = process.env.JSYNQ_CONNECT_COLUMN_ID  || '6aaac5d2f1edc4c698019735';
+const LABEL_ID   = process.env.JSYNQ_CONNECT_LABEL_ID   || '6aaaca4ef1edc4c69802b021';
 const FORM_NAME = 'Hubber Connect · Aplicação de criador';
+
+/* Todo lead do site vive no mesmo projeto do CRM. A etiqueta é o que separa as
+   origens no quadro: cada LP nova entra aqui com a sua, não com projeto novo. */
+const ORIGEM_FIELD = { id: '6aaaca2ef1edc4c69802a9f6', label: 'Origem', type: 'text' };
+const ORIGEM = 'Connect · LP de influencers';
 
 /* `label` e `type` reproduzem como o JSYNQ grava o campo no card; `crmKey`
    marca os três que o CRM trata como dados de contato. `options` é uma lista
    fechada: valor fora dela é recusado, não repassado. O rótulo de cada opção
    é o que aparece no card, no lugar do id. */
 const FIELDS = {
-  nome:          { id: '6aaa40cfef105cbe3adcb863', label: 'Nome', type: 'text',
+  nome:          { id: '6aaaca2ef1edc4c69802a9e9', label: 'Nome', type: 'text',
                    crmKey: 'contactName', required: true, max: 120 },
-  perfil:        { id: '6aaa40cfef105cbe3adcb864', label: 'Instagram ou TikTok', type: 'text',
+  perfil:        { id: '6aaaca2ef1edc4c69802a9ea', label: 'Instagram ou TikTok', type: 'text',
                    required: true, max: 200 },
-  nicho:         { id: '6aaa40cfef105cbe3adcb865', label: 'Nicho', type: 'select', required: true,
+  nicho:         { id: '6aaaca2ef1edc4c69802a9eb', label: 'Nicho', type: 'select', required: true,
                    options: { lifestyle: 'Lifestyle', viagem: 'Viagem', gastronomia: 'Gastronomia',
                               'moda-beleza': 'Moda e beleza', 'fitness-saude': 'Fitness e saúde',
                               familia: 'Família', esporte: 'Esporte',
                               humor: 'Humor e entretenimento', outro: 'Outro' } },
-  seguidores:    { id: '6aaa40cfef105cbe3adcb866', label: 'Faixa de seguidores', type: 'select', required: true,
+  seguidores:    { id: '6aaaca2ef1edc4c69802a9ec', label: 'Faixa de seguidores', type: 'select', required: true,
                    options: { 'ate-10k': 'Até 10 mil', '10-50k': '10 a 50 mil',
                               '50-150k': '50 a 150 mil', '150k-mais': 'Acima de 150 mil' } },
-  destino:       { id: '6aaa40cfef105cbe3adcb867', label: 'Destino', type: 'select', required: true,
+  destino:       { id: '6aaaca2ef1edc4c69802a9ed', label: 'Destino', type: 'select', required: true,
                    options: { orlando: 'Orlando', miami: 'Miami',
                               'outra-fl': 'Outra cidade da Flórida', 'outra-eua': 'Outra cidade dos EUA' } },
-  data_ida:      { id: '6aaa40cfef105cbe3adcb868', label: 'Data de ida', type: 'date',
+  data_ida:      { id: '6aaaca2ef1edc4c69802a9ee', label: 'Data de ida', type: 'date',
                    required: true, date: true },
-  data_volta:    { id: '6aaa40cfef105cbe3adcb869', label: 'Data de volta', type: 'date', date: true },
-  motivo:        { id: '6aaa40cfef105cbe3adcb86a', label: 'Motivo da viagem', type: 'select', required: true,
+  data_volta:    { id: '6aaaca2ef1edc4c69802a9ef', label: 'Data de volta', type: 'date', date: true },
+  motivo:        { id: '6aaaca2ef1edc4c69802a9f0', label: 'Motivo da viagem', type: 'select', required: true,
                    options: { ferias: 'Férias', trabalho: 'Trabalho', evento: 'Evento',
                               mudanca: 'Mudança para os EUA' } },
-  parceria:      { id: '6aaa40cfef105cbe3adcb86b', label: 'Tipo de parceria que te interessa',
+  parceria:      { id: '6aaaca2ef1edc4c69802a9f1', label: 'Tipo de parceria que interessa',
                    type: 'multiselect', multiple: true,
                    options: { 'post-pago': 'Post pago', 'produto-servico': 'Produto ou serviço em troca de conteúdo',
                               'evento-presencial': 'Evento presencial', 'longo-prazo': 'Parceria de longo prazo' } },
-  midiakit:      { id: '6aaa40cfef105cbe3adcb86c', label: 'Link do mídia kit ou portfólio',
+  midiakit:      { id: '6aaaca2ef1edc4c69802a9f2', label: 'Link do mídia kit ou portfólio',
                    type: 'text', max: 500 },
-  email:         { id: '6aaa40cfef105cbe3adcb86d', label: 'E-mail', type: 'email',
+  email:         { id: '6aaaca2ef1edc4c69802a9f3', label: 'E-mail', type: 'email',
                    crmKey: 'email', required: true, max: 200 },
-  whatsapp:      { id: '6aaa40cfef105cbe3adcb86e', label: 'WhatsApp', type: 'text',
+  whatsapp:      { id: '6aaaca2ef1edc4c69802a9f4', label: 'WhatsApp', type: 'text',
                    crmKey: 'phone', required: true, max: 40 },
-  consentimento: { id: '6aaa40cfef105cbe3adcb86f', type: 'select',
-                   label: 'Autorizo a Hubber a usar estes dados para avaliar minha aplicação',
+  consentimento: { id: '6aaaca2ef1edc4c69802a9f5', type: 'select',
+                   label: 'Autoriza a Hubber a usar os dados para avaliar a aplicação',
                    required: true, options: { sim: 'Autorizo' } },
 };
 
@@ -138,12 +149,14 @@ function buildCard(body) {
   // Os dados de contato não vão no topo do card: o JSYNQ já os deduz pelo
   // crmKey que os campos têm no formulário. Mandar nos dois lugares fazia o
   // card repetir "Contact name", "Email" e "Phone" duas vezes cada.
+  if (!missing.length && !invalid.length) push(ORIGEM_FIELD, ORIGEM);
+
   const card = {
     title: contato.contactName || 'Aplicação sem nome',
     type: 'task',
     board: BOARD_ID,
     column: COLUMN_ID,
-    leadSource: [LEAD_SOURCE_ID],
+    labels: [LABEL_ID],
     customFields,
   };
   return { card, missing, invalid };

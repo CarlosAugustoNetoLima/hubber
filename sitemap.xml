@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://hubbermarketing.com/</loc>
+  </url>
+  <url>
     <loc>https://hubbermarketing.com/build/</loc>
+  </url>
+  <url>
+    <loc>https://hubbermarketing.com/agencia/</loc>
+  </url>
+  <url>
+    <loc>https://hubbermarketing.com/pocket/</loc>
+  </url>
+  <url>
+    <loc>https://hubbermarketing.com/diagnostico/</loc>
   </url>
   <url>
     <loc>https://hubbermarketing.com/connect/</loc>

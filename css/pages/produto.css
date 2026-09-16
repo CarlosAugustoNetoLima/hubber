@@ -2,7 +2,7 @@
 
 .tl {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--tl-n, 12), minmax(0, 1fr));
   gap: 3px;
 }
 .tl__band {
@@ -12,9 +12,10 @@
   padding: var(--s8) var(--s12);
   border-top: 2px solid var(--fg-muted);
 }
-.tl__band--1, .tl__band--2 { grid-column: span 2; }
+.tl__band--1 { grid-column: span var(--tl-1, 2); }
+.tl__band--2 { grid-column: span var(--tl-2, 2); }
 .tl__band--3 {
-  grid-column: span 8;
+  grid-column: span var(--tl-3, 8);
   border-top-color: var(--accent-text);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }

@@ -1,6 +1,5 @@
-
-
-/* Aviso de obra: cobre a home enquanto ela está sendo refeita.
+/* Aviso de obra. A home em português já foi ao ar; isto serve só à home em
+   inglês, que continua sendo refeita. Some junto com o aviso de lá.
    ?preview na URL desliga para quem está trabalhando na página. */
 .wip {
   position: fixed;
