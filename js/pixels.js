@@ -6,7 +6,7 @@ const MARK = [
 ];
 const MARK_W = 1924, MARK_H = 1711.43;
 
-const COLORS = ['#6A6A6A', '#5E5E5E'];
+const COLORS = ['#9E9E9E', '#787878'];
 const LEVELS = 16;
 const TAU = Math.PI * 2;
 
@@ -206,7 +206,7 @@ class Field {
         dur: p.halo ? 1.6 : 2.0 + Math.random() * 0.5,
 
         color: rnd < 0.5 ? 0 : 1,
-        a0: 0.7 * (p.halo ? 0.3 + Math.random() * 0.25 : 0.34 + Math.random() * 0.36),
+        a0: 0.8 * (p.halo ? 0.2 + Math.random() * 0.3 : 0.26 + Math.random() * 0.74),
         a: 0, halo: p.halo,
       };
 
@@ -279,7 +279,7 @@ class Field {
 
       const wl = wave * (0.35 + 0.65 * p.k);
       p.drawSize = Math.max(1.2, p.size * (1 + wl * 0.4));
-      p.a = Math.min(1, p.a0 * Math.max(0.3, 1 + wl * 0.65) * (1 - disperse));
+      p.a = Math.min(1, p.a0 * Math.max(0.24, 1 + wl * 0.85) * (1 - disperse));
       let tx = p.hx + p.nx * wave * amp * p.k;
       let ty = p.hy + p.ny * wave * amp * p.k;
       if (disperse > 0) { tx += (p.sx - p.hx) * disperse; ty += (p.sy - p.hy) * disperse; }
