@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://reels.hubbermarketing.com/sitemap.xml
