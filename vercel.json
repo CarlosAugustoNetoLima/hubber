@@ -36,68 +36,6 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "reels.hubbermarketing.com"
-        }
-      ],
-      "destination": "/reels/index.html"
-    },
-    {
-      "source": "/pt",
-      "has": [
-        {
-          "type": "host",
-          "value": "reels.hubbermarketing.com"
-        }
-      ],
-      "destination": "/reels/pt/index.html"
-    },
-    {
-      "source": "/pt/",
-      "has": [
-        {
-          "type": "host",
-          "value": "reels.hubbermarketing.com"
-        }
-      ],
-      "destination": "/reels/pt/index.html"
-    },
-    {
-      "source": "/robots.txt",
-      "has": [
-        {
-          "type": "host",
-          "value": "reels.hubbermarketing.com"
-        }
-      ],
-      "destination": "/reels/robots.txt"
-    },
-    {
-      "source": "/sitemap.xml",
-      "has": [
-        {
-          "type": "host",
-          "value": "reels.hubbermarketing.com"
-        }
-      ],
-      "destination": "/reels/sitemap.xml"
-    },
-    {
-      "source": "/llms.txt",
-      "has": [
-        {
-          "type": "host",
-          "value": "reels.hubbermarketing.com"
-        }
-      ],
-      "destination": "/reels/llms.txt"
-    }
-  ],
   "crons": [
     {
       "path": "/api/drenar",
