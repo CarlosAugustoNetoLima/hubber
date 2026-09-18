@@ -13,6 +13,9 @@ Marcadores suportados dentro de src/*.html:
     <!--partial:footer-->     conteúdo de partials/footer.html
     <!--partial:NOME-->       qualquer partials/NOME.html
     <!--partial:NOME:TEXTO-->  idem, trocando {{1}} dentro do partial por TEXTO
+
+Um partial pode chamar outro: a estampagem repete até não sobrar marcador,
+no máximo cinco voltas. É o que evita manter quatro cópias do logotipo.
     <!--page:SLUG-->          marca href="/SLUG/" com aria-current e resolve o
                               seletor de idioma; "home" vira "/"
 
@@ -106,7 +109,10 @@ def build():
     for src in sorted(SRC.rglob("*.html")):
         rel = src.relative_to(SRC)
         html = src.read_text(encoding="utf8")
-        html = re.sub(r"<!--partial:([\w-]+)(?::([^>]*?))?-->", stamp, html)
+        for _ in range(5):
+            html, trocas = re.subn(r"<!--partial:([\w-]+)(?::([^>]*?))?-->", stamp, html)
+            if not trocas:
+                break
         # <!--page:build--> resolve o seletor de idioma e marca o link da
         # página atual com aria-current, em qualquer lugar onde ele apareça.
         ingles = rel.parts[0] == "en"

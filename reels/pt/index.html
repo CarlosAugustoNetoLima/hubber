@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07080A">
 <script>
 (function(){var h=document.documentElement;h.classList.add('has-js');
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');
@@ -22,15 +23,16 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://reels.hubbermarketing.com/pt/">
 <meta property="og:site_name" content="Hubber">
-<meta property="og:image" content="https://reels.hubbermarketing.com/assets/img/reels/og.jpg">
+<meta property="og:image" content="https://reels.hubbermarketing.com/assets/img/reels/og-pt.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Uma equipe da Hubber gravando um empresário em Orlando, com a chamada 12 Reels por US$ 1.500.">
+<meta property="og:image:alt" content="Transforme uma única captação em um mês inteiro de conteúdo. 12 Reels por US$ 1.500, pela Hubber.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Transforme uma única captação em um mês inteiro de conteúdo.">
 <meta name="twitter:description" content="A Hubber planeja, roteiriza, grava e edita 12 Reels estratégicos para empresas na região de Orlando.">
-<meta name="twitter:image" content="https://reels.hubbermarketing.com/assets/img/reels/og.jpg">
+<meta name="twitter:image" content="https://reels.hubbermarketing.com/assets/img/reels/og-pt.jpg">
+<meta name="twitter:image:alt" content="Transforme uma única captação em um mês inteiro de conteúdo. 12 Reels por US$ 1.500, pela Hubber.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -40,30 +42,85 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       "@id": "https://hubbermarketing.com/#org",
       "name": "Hubber",
       "url": "https://hubbermarketing.com/",
-      "parentOrganization": { "@type": "Organization", "name": "Cinnamon Group" },
-      "sameAs": ["https://instagram.com/hubber", "https://linkedin.com/company/hubber"]
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Cinnamon Group"
+      },
+      "sameAs": [
+        "https://instagram.com/hubber",
+        "https://linkedin.com/company/hubber"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://reels.hubbermarketing.com/#site",
+      "url": "https://reels.hubbermarketing.com/",
+      "name": "12 Reels by Hubber",
+      "publisher": {
+        "@id": "https://hubbermarketing.com/#org"
+      },
+      "inLanguage": [
+        "en-US",
+        "pt-BR"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://reels.hubbermarketing.com/pt/#page",
+      "url": "https://reels.hubbermarketing.com/pt/",
+      "name": "Transforme uma única captação em um mês inteiro de conteúdo.",
+      "description": "A Hubber planeja, roteiriza, grava e edita 12 Reels estratégicos para sua empresa aparecer com mais frequência, autoridade e profissionalismo.",
+      "inLanguage": "pt-BR",
+      "isPartOf": {
+        "@id": "https://reels.hubbermarketing.com/#site"
+      },
+      "about": {
+        "@id": "https://reels.hubbermarketing.com/#service"
+      },
+      "primaryImageOfPage": "https://reels.hubbermarketing.com/assets/img/reels/og-pt.jpg"
     },
     {
       "@type": "LocalBusiness",
-      "@id": "https://reels.hubbermarketing.com/pt/#business",
+      "@id": "https://reels.hubbermarketing.com/#business",
       "name": "Hubber",
-      "parentOrganization": { "@id": "https://hubbermarketing.com/#org" },
-      "url": "https://reels.hubbermarketing.com/pt/",
-      "areaServed": { "@type": "City", "name": "Orlando", "containedInPlace": { "@type": "State", "name": "Florida" } },
-      "knowsLanguage": ["en-US", "pt-BR"]
+      "description": "Produção de vídeo vertical para empresas da região da Grande Orlando, na Flórida.",
+      "parentOrganization": {
+        "@id": "https://hubbermarketing.com/#org"
+      },
+      "url": "https://reels.hubbermarketing.com/",
+      "image": "https://reels.hubbermarketing.com/assets/img/reels/og-pt.jpg",
+      "areaServed": {
+        "@type": "City",
+        "name": "Orlando",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Florida"
+        }
+      },
+      "knowsLanguage": [
+        "en-US",
+        "pt-BR"
+      ],
+      "priceRange": "$1,500-$2,700"
     },
     {
       "@type": "Service",
-      "@id": "https://reels.hubbermarketing.com/pt/#service",
+      "@id": "https://reels.hubbermarketing.com/#service",
       "serviceType": "Produção de vídeo vertical",
       "name": "12 Reels em uma única captação",
-      "description": "A Hubber planeja, roteiriza, grava e edita 12 Reels estratégicos para sua empresa aparecer com mais frequência, autoridade e profissionalismo.",
-      "provider": { "@id": "https://reels.hubbermarketing.com/pt/#business" },
-      "areaServed": { "@type": "City", "name": "Orlando" },
+      "description": "Doze Reels estratégicos a partir de uma única captação: roteiro, gravação profissional no local, direção durante a gravação e edição, entregues prontos para publicar.",
+      "provider": {
+        "@id": "https://reels.hubbermarketing.com/#business"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Orlando"
+      },
       "offers": [
         {
           "@type": "Offer",
           "name": "Captação avulsa",
+          "url": "https://reels.hubbermarketing.com/pt/",
           "price": "1500",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
@@ -72,6 +129,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
         {
           "@type": "Offer",
           "name": "Plano Consistência",
+          "url": "https://reels.hubbermarketing.com/pt/",
           "price": "2700",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
@@ -103,7 +161,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 
     <div class="hdr__brand">
       <a class="hdr__logo" href="./" aria-label="Hubber, início">
-        <svg role="img" aria-labelledby="hubber-lockup-title" id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 375.48"><title id="hubber-lockup-title">Hubber, uma empresa do Grupo Cinnamon</title>
+        <svg role="img" aria-labelledby="hubber-lockup-title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 375.48"><title id="hubber-lockup-title">Hubber, uma empresa do Grupo Cinnamon</title>
   <defs>
     <style>
       .lk-mark { fill: var(--logo-mark, currentColor); }
@@ -145,6 +203,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     </g>
   </g>
 </svg>
+
       </a>
     </div>
 
@@ -366,7 +425,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
   <div class="wrap ftr__top">
     <div class="ftr__brand">
       <a href="./" aria-label="Hubber, início">
-        <svg role="img" aria-labelledby="hubber-lockup-title-ftr" id="Camada_1-ftr" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 375.48"><title id="hubber-lockup-title-ftr">Hubber, uma empresa do Grupo Cinnamon</title>
+        <svg role="img" aria-labelledby="hubber-lockup-title-ftr" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 375.48"><title id="hubber-lockup-title-ftr">Hubber, uma empresa do Grupo Cinnamon</title>
   <defs>
     <style>
       .lk-mark { fill: var(--logo-mark, currentColor); }
@@ -408,6 +467,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     </g>
   </g>
 </svg>
+
       </a>
       <p class="t-lead t-muted">Vídeos verticais profissionais para negócios da região da Grande Orlando.</p>
     </div>

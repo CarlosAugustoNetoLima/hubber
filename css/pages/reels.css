@@ -6,7 +6,6 @@
   --lp-base:        #0C0D10;
   --lp-on-accent:   #111111;
   --lp-light:       #F4F1EA;
-  --lp-light-2:     #E8E4DB;
 
   --lp-raised:      rgba(255, 255, 255, 0.035);
   --lp-raised-2:    rgba(255, 255, 255, 0.062);
@@ -21,7 +20,6 @@
   --lp-r-sm:   8px;
   --lp-r-md:   14px;
   --lp-r-lg:   20px;
-  --lp-r-media: 16px;
   --lp-r-pill: 999px;
 
   --lp-gap-section: clamp(64px, 7vw, 112px);
@@ -685,13 +683,5 @@ html.reveal-ready [data-reveal].is-in {
 
 @supports not (backdrop-filter: blur(4px)) {
   [data-lp="reels"] .hdr { background: rgba(12, 13, 16, 0.96); }
-  .close__panel p { margin: 0; max-width: 46ch; }
-.close__title {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
-  line-height: 1.12;
-  text-transform: uppercase;
-  margin: 0;
-}
-.close__panel { background: rgba(255, 255, 255, 0.22); }
+  .close__panel { background: rgba(255, 255, 255, 0.22); }
 }

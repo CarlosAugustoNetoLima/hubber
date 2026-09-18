@@ -118,18 +118,12 @@ function videosNaTela() {
     return;
   }
 
-  const tocando = new Set();
-  const LIMITE = 3;
-
   const observador = new IntersectionObserver((entradas) => {
     for (const entrada of entradas) {
-      const video = entrada.target;
-      if (entrada.isIntersecting && tocando.size < LIMITE) {
-        if (video.preload === 'none') video.preload = 'auto';
-        video.play().then(() => tocando.add(video)).catch(() => {});
-      } else if (!entrada.isIntersecting) {
-        video.pause();
-        tocando.delete(video);
+      if (entrada.isIntersecting) {
+        entrada.target.play().catch(() => {});
+      } else {
+        entrada.target.pause();
       }
     }
   }, { rootMargin: '10% 0px', threshold: 0.25 });

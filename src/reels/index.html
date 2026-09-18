@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07080A">
 <script>
 (function(){var h=document.documentElement;h.classList.add('has-js');
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');
@@ -26,11 +27,12 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A Hubber crew filming a business owner in Orlando, with the headline 12 Reels for $1,500.">
+<meta property="og:image:alt" content="Turn one shoot into a full month of content. 12 Reels for $1,500, by Hubber.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Turn one shoot into a full month of content.">
 <meta name="twitter:description" content="Hubber plans, scripts, films, and edits 12 strategic Reels for businesses in the Orlando area.">
 <meta name="twitter:image" content="https://reels.hubbermarketing.com/assets/img/reels/og.jpg">
+<meta name="twitter:image:alt" content="Turn one shoot into a full month of content. 12 Reels for $1,500, by Hubber.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -40,30 +42,85 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       "@id": "https://hubbermarketing.com/#org",
       "name": "Hubber",
       "url": "https://hubbermarketing.com/",
-      "parentOrganization": { "@type": "Organization", "name": "Cinnamon Group" },
-      "sameAs": ["https://instagram.com/hubber", "https://linkedin.com/company/hubber"]
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Cinnamon Group"
+      },
+      "sameAs": [
+        "https://instagram.com/hubber",
+        "https://linkedin.com/company/hubber"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://reels.hubbermarketing.com/#site",
+      "url": "https://reels.hubbermarketing.com/",
+      "name": "12 Reels by Hubber",
+      "publisher": {
+        "@id": "https://hubbermarketing.com/#org"
+      },
+      "inLanguage": [
+        "en-US",
+        "pt-BR"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://reels.hubbermarketing.com/#page",
+      "url": "https://reels.hubbermarketing.com/",
+      "name": "Turn one shoot into a full month of content.",
+      "description": "Hubber plans, scripts, films, and edits 12 strategic Reels designed to help your business show up consistently, build authority, and look professional online.",
+      "inLanguage": "en-US",
+      "isPartOf": {
+        "@id": "https://reels.hubbermarketing.com/#site"
+      },
+      "about": {
+        "@id": "https://reels.hubbermarketing.com/#service"
+      },
+      "primaryImageOfPage": "https://reels.hubbermarketing.com/assets/img/reels/og.jpg"
     },
     {
       "@type": "LocalBusiness",
       "@id": "https://reels.hubbermarketing.com/#business",
       "name": "Hubber",
-      "parentOrganization": { "@id": "https://hubbermarketing.com/#org" },
+      "description": "Short-form video production for businesses in the Greater Orlando area, Florida.",
+      "parentOrganization": {
+        "@id": "https://hubbermarketing.com/#org"
+      },
       "url": "https://reels.hubbermarketing.com/",
-      "areaServed": { "@type": "City", "name": "Orlando", "containedInPlace": { "@type": "State", "name": "Florida" } },
-      "knowsLanguage": ["en-US", "pt-BR"]
+      "image": "https://reels.hubbermarketing.com/assets/img/reels/og.jpg",
+      "areaServed": {
+        "@type": "City",
+        "name": "Orlando",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Florida"
+        }
+      },
+      "knowsLanguage": [
+        "en-US",
+        "pt-BR"
+      ],
+      "priceRange": "$1,500-$2,700"
     },
     {
       "@type": "Service",
       "@id": "https://reels.hubbermarketing.com/#service",
       "serviceType": "Short-form video production",
       "name": "12 Reels from one shoot",
-      "description": "Hubber plans, scripts, films, and edits 12 strategic Reels designed to help your business show up consistently, build authority, and look professional online.",
-      "provider": { "@id": "https://reels.hubbermarketing.com/#business" },
-      "areaServed": { "@type": "City", "name": "Orlando" },
+      "description": "Twelve strategic Reels from one shoot day: scripting, professional on-site filming, on-camera direction and editing, delivered ready to post.",
+      "provider": {
+        "@id": "https://reels.hubbermarketing.com/#business"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Orlando"
+      },
       "offers": [
         {
           "@type": "Offer",
           "name": "One-time content shoot",
+          "url": "https://reels.hubbermarketing.com/",
           "price": "1500",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
@@ -72,6 +129,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
         {
           "@type": "Offer",
           "name": "Consistency Plan",
+          "url": "https://reels.hubbermarketing.com/",
           "price": "2700",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
