@@ -169,6 +169,7 @@ export function initConnectForm(root = document) {
       });
       if (!res.ok) throw new Error(String(res.status));
       clearSummary();
+      marcarLead();
       showResult();
     } catch (_) {
       // Sem confirmação do servidor a aplicação não chegou: dizer que deu certo
@@ -178,6 +179,15 @@ export function initConnectForm(root = document) {
       if (btn) { btn.disabled = false; btn.textContent = label; }
     }
   });
+
+  // Conversão para a campanha da Meta. Só aqui, depois do 200: o caminho do
+  // honeypot e o de endpoint ausente também mostram a tela de sucesso, e contar
+  // esses como lead ensinaria a campanha a perseguir robô. Não vai nada do que
+  // a pessoa escreveu: para a Meta só vai navegação, como diz a política.
+  function marcarLead() {
+    if (typeof window.fbq !== 'function') return;
+    window.fbq('track', 'Lead', { content_name: 'Hubber Connect' });
+  }
 
   function announceFailure() {
     if (!summary) return;
