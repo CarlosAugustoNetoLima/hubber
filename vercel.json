@@ -36,19 +36,6 @@
       ]
     }
   ],
-  "redirects": [
-    {
-      "source": "/reels/:path*",
-      "missing": [
-        {
-          "type": "host",
-          "value": "reels.hubbermarketing.com"
-        }
-      ],
-      "destination": "https://reels.hubbermarketing.com/:path*",
-      "permanent": true
-    }
-  ],
   "crons": [
     {
       "path": "/api/drenar",
