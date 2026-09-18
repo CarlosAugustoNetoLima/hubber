@@ -1,0 +1,10 @@
+<div class="consent-controle" data-consent-controle hidden>
+  <p data-consent-resumo></p>
+  <button class="btn consent__btn" type="button" data-consent-trocar></button>
+</div>
+<!-- As páginas legais não carregam o main.js, que é pesado e cheio de coisa que
+     elas não usam. Só o módulo do consentimento entra aqui. -->
+<script type="module">
+import { initConsentimento } from '/js/consentimento.js';
+initConsentimento();
+</script>

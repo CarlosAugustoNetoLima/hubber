@@ -982,3 +982,59 @@ html:not(.has-js) .step + .step { padding-top: var(--s48); border-top: 1px solid
   }
   .film--live.is-playing .film__play { display: none; }
 }
+
+/* Consentimento de cookies
+   A tarja é fixa no rodapé e não bloqueia a página: quem não escolhe nada
+   simplesmente não é medido, que já é o lado seguro. */
+.consent {
+  position: fixed;
+  z-index: var(--z-overlay);
+  inset-inline: var(--gutter);
+  bottom: var(--gutter);
+  max-width: 42rem;
+  margin-inline: auto;
+  padding: var(--s24);
+  background: var(--bg-raised);
+  color: var(--fg);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.45);
+}
+.consent[hidden] { display: none; }
+.consent__caixa { display: grid; gap: var(--s16); }
+.consent__texto {
+  margin: 0;
+  font-size: var(--fs-small);
+  color: var(--fg-muted);
+}
+.consent__texto a { color: var(--accent-text); }
+.consent__acoes { display: flex; gap: var(--s12); }
+
+/* Recusar tem exatamente o peso visual de aceitar. Destacar um dos dois
+   induziria a escolha, e consentimento induzido não é consentimento. */
+.consent__btn {
+  flex: 1 1 0;
+  justify-content: center;
+  background: transparent;
+  color: var(--fg);
+  border-color: var(--border-ui);
+}
+.consent__btn:hover { border-color: var(--fg); }
+
+@media (max-width: 767px) {
+  .consent { padding: var(--s16); }
+  .consent__acoes { flex-direction: column; }
+}
+
+/* O controle que mora na política, para mudar de ideia depois. */
+.consent-controle {
+  display: grid;
+  gap: var(--s12);
+  justify-items: start;
+  margin-block: var(--s24);
+  padding: var(--s24);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+.consent-controle[hidden] { display: none; }
+.consent-controle p { margin: 0; }

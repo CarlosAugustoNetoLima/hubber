@@ -1,0 +1,60 @@
+<!-- Onde a escolha sobre medição é guardada e aplicada -->
+<script>
+(function(){
+  var CHAVE = 'hubber:consentimento';
+  var VERSAO = 1;
+  var ouvintes = [];
+
+  function registro(){
+    try {
+      var bruto = window.localStorage.getItem(CHAVE);
+      if (!bruto) return null;
+      var d = JSON.parse(bruto);
+      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
+      // vale como se não houvesse escolha, e a tarja pergunta de novo.
+      return d && d.versao === VERSAO ? d : null;
+    } catch (e) { return null; }
+  }
+
+  function aceitou(){
+    var d = registro();
+    return !!d && d.estado === 'aceito';
+  }
+
+  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // no navegador sai também. O domínio do cookie depende de como o fbevents o
+  // gravou, então apaga nos escopos possíveis.
+  function apagarCookies(){
+    var host = location.hostname;
+    var raiz = host.split('.').slice(-2).join('.');
+    var escopos = ['', '; domain=' + host, '; domain=.' + host, '; domain=' + raiz, '; domain=.' + raiz];
+    ['_fbp', '_fbc'].forEach(function(nome){
+      escopos.forEach(function(escopo){
+        document.cookie = nome + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + escopo;
+      });
+    });
+  }
+
+  window.consentimento = {
+    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    registro: registro,
+    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
+    // hora, para não atrasar quem autorizou numa visita anterior.
+    aoAceitar: function(fn){
+      ouvintes.push(fn);
+      if (aceitou()) fn();
+    },
+    registrar: function(estado){
+      try {
+        window.localStorage.setItem(CHAVE, JSON.stringify({
+          estado: estado,
+          em: new Date().toISOString(),
+          versao: VERSAO
+        }));
+      } catch (e) {}
+      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
+      else apagarCookies();
+    }
+  };
+})();
+</script>

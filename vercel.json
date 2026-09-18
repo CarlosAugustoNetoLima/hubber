@@ -22,7 +22,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'sha256-Fv2JuqYooxDR9MXx3raEaRVhNjpL2XNK5HAjv8S78DM=' 'sha256-Orx/7HAiNq/JE3OVjyhku6LkrwHr4uUB2VZuCz+xVi0=' https://connect.facebook.net; connect-src 'self' https://www.facebook.com; upgrade-insecure-requests"
+          "value": "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'sha256-Fv2JuqYooxDR9MXx3raEaRVhNjpL2XNK5HAjv8S78DM=' 'sha256-FnTuzFW9QNtL1HZJF3KhaOt9iEQtPfFEP1ZlGxeqUZY=' 'sha256-/7y1l8zjiux2HGr+IyChbr23/UyRanLjTunW79YIJD0=' 'sha256-nUTrRKpZQr5z9TKinDvKRqCo0SHmMwk0aN3XnSdPt9E=' https://connect.facebook.net; connect-src 'self' https://www.facebook.com; upgrade-insecure-requests"
         }
       ]
     },

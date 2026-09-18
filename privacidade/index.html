@@ -27,6 +27,67 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
 <link rel="stylesheet" href="/css/pages/legal.css">
+<!-- Onde a escolha sobre medição é guardada e aplicada -->
+<script>
+(function(){
+  var CHAVE = 'hubber:consentimento';
+  var VERSAO = 1;
+  var ouvintes = [];
+
+  function registro(){
+    try {
+      var bruto = window.localStorage.getItem(CHAVE);
+      if (!bruto) return null;
+      var d = JSON.parse(bruto);
+      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
+      // vale como se não houvesse escolha, e a tarja pergunta de novo.
+      return d && d.versao === VERSAO ? d : null;
+    } catch (e) { return null; }
+  }
+
+  function aceitou(){
+    var d = registro();
+    return !!d && d.estado === 'aceito';
+  }
+
+  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // no navegador sai também. O domínio do cookie depende de como o fbevents o
+  // gravou, então apaga nos escopos possíveis.
+  function apagarCookies(){
+    var host = location.hostname;
+    var raiz = host.split('.').slice(-2).join('.');
+    var escopos = ['', '; domain=' + host, '; domain=.' + host, '; domain=' + raiz, '; domain=.' + raiz];
+    ['_fbp', '_fbc'].forEach(function(nome){
+      escopos.forEach(function(escopo){
+        document.cookie = nome + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + escopo;
+      });
+    });
+  }
+
+  window.consentimento = {
+    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    registro: registro,
+    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
+    // hora, para não atrasar quem autorizou numa visita anterior.
+    aoAceitar: function(fn){
+      ouvintes.push(fn);
+      if (aceitou()) fn();
+    },
+    registrar: function(estado){
+      try {
+        window.localStorage.setItem(CHAVE, JSON.stringify({
+          estado: estado,
+          em: new Date().toISOString(),
+          versao: VERSAO
+        }));
+      } catch (e) {}
+      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
+      else apagarCookies();
+    }
+  };
+})();
+</script>
+
 </head>
 <body data-surface="ink">
 
@@ -117,10 +178,24 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       </ul>
 
       <h2 id="cookies">5. Cookies e rastreamento</h2>
-      <p>Uma página deste site, a da <strong>Hubber Connect</strong>, usa o <strong>pixel da Meta</strong>, a ferramenta de medição do Facebook e do Instagram. Ali ele grava dois cookies no seu navegador: o <strong>_fbp</strong>, um identificador do seu navegador, e o <strong>_fbc</strong>, que guarda o código do anúncio pelo qual você chegou, quando você chegou por um. Os dois duram até três meses. Nas demais páginas o pixel não carrega e nada é gravado.</p>
+      <p>Uma página deste site, a da <strong>Hubber Connect</strong>, pode usar o <strong>pixel da Meta</strong>, a ferramenta de medição do Facebook e do Instagram. Ele <strong>só carrega se você autorizar</strong>: na primeira visita aparece uma tarja perguntando, e enquanto você não responder, ou se você recusar, ele não carrega e nada é gravado no seu navegador.</p>
+      <p>Se você autorizar, ele grava dois cookies: o <strong>_fbp</strong>, um identificador do seu navegador, e o <strong>_fbc</strong>, que guarda o código do anúncio pelo qual você chegou, quando você chegou por um. Os dois duram até três meses. Nas demais páginas o pixel não carrega e nada é gravado.</p>
       <p>Ele serve para duas coisas: medir quantas pessoas chegam até aqui por cada anúncio e mostrar os nossos anúncios de novo a quem já visitou o site. Nesse caminho, o seu endereço IP e a sua visita a essa página vão para a Meta.</p>
       <p>Fora isso, o site não usa Google Analytics nem nenhuma outra ferramenta de medição de audiência.</p>
-      <p>Para sair: bloqueie cookies de terceiros no seu navegador, ou ajuste o que a Meta pode usar para anúncios nas preferências de anúncio da sua conta no Facebook ou no Instagram. O site continua funcionando igual.</p>
+            <p>A sua resposta fica guardada no seu próprio navegador, com a data, e não vai para os nossos servidores. Serve só para não perguntarmos de novo a cada visita.</p>
+
+      <div class="consent-controle" data-consent-controle hidden>
+  <p data-consent-resumo></p>
+  <button class="btn consent__btn" type="button" data-consent-trocar></button>
+</div>
+<!-- As páginas legais não carregam o main.js, que é pesado e cheio de coisa que
+     elas não usam. Só o módulo do consentimento entra aqui. -->
+<script type="module">
+import { initConsentimento } from '/js/consentimento.js';
+initConsentimento();
+</script>
+
+      <p>Você pode mudar de ideia quando quiser, no botão acima. Retirar a autorização apaga do seu navegador os cookies que o pixel tinha gravado. Se preferir, dá para bloquear cookies de terceiros no navegador, ou ajustar o que a Meta pode usar para anúncios nas preferências de anúncio da sua conta no Facebook ou no Instagram. O site continua funcionando igual nos dois casos.</p>
 
       <h2 id="prazo">6. Por quanto tempo guardamos</h2>
       <p>Guardamos a sua aplicação enquanto ela estiver em avaliação e, se virar parceria, enquanto durar a relação e pelo prazo que a lei exigir depois disso.</p>

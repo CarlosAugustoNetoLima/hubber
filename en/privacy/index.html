@@ -27,6 +27,67 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
 <link rel="stylesheet" href="/css/pages/legal.css">
+<!-- Onde a escolha sobre medição é guardada e aplicada -->
+<script>
+(function(){
+  var CHAVE = 'hubber:consentimento';
+  var VERSAO = 1;
+  var ouvintes = [];
+
+  function registro(){
+    try {
+      var bruto = window.localStorage.getItem(CHAVE);
+      if (!bruto) return null;
+      var d = JSON.parse(bruto);
+      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
+      // vale como se não houvesse escolha, e a tarja pergunta de novo.
+      return d && d.versao === VERSAO ? d : null;
+    } catch (e) { return null; }
+  }
+
+  function aceitou(){
+    var d = registro();
+    return !!d && d.estado === 'aceito';
+  }
+
+  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // no navegador sai também. O domínio do cookie depende de como o fbevents o
+  // gravou, então apaga nos escopos possíveis.
+  function apagarCookies(){
+    var host = location.hostname;
+    var raiz = host.split('.').slice(-2).join('.');
+    var escopos = ['', '; domain=' + host, '; domain=.' + host, '; domain=' + raiz, '; domain=.' + raiz];
+    ['_fbp', '_fbc'].forEach(function(nome){
+      escopos.forEach(function(escopo){
+        document.cookie = nome + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + escopo;
+      });
+    });
+  }
+
+  window.consentimento = {
+    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    registro: registro,
+    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
+    // hora, para não atrasar quem autorizou numa visita anterior.
+    aoAceitar: function(fn){
+      ouvintes.push(fn);
+      if (aceitou()) fn();
+    },
+    registrar: function(estado){
+      try {
+        window.localStorage.setItem(CHAVE, JSON.stringify({
+          estado: estado,
+          em: new Date().toISOString(),
+          versao: VERSAO
+        }));
+      } catch (e) {}
+      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
+      else apagarCookies();
+    }
+  };
+})();
+</script>
+
 </head>
 <body data-surface="ink">
 
@@ -117,10 +178,24 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       </ul>
 
       <h2 id="cookies">5. Cookies and tracking</h2>
-      <p>One page of this site, the <strong>Hubber Connect</strong> page, uses the <strong>Meta pixel</strong>, the measurement tool behind Facebook and Instagram. There it writes two cookies in your browser: <strong>_fbp</strong>, an identifier for your browser, and <strong>_fbc</strong>, which stores the code of the ad you came through, when you came through one. Both last up to three months. On the other pages the pixel does not load and nothing is stored.</p>
+      <p>One page of this site, the <strong>Hubber Connect</strong> page, may use the <strong>Meta pixel</strong>, the measurement tool behind Facebook and Instagram. It <strong>only loads if you allow it</strong>: on your first visit a bar asks you, and while you have not answered, or if you decline, it does not load and nothing is written to your browser.</p>
+      <p>If you allow it, it writes two cookies: <strong>_fbp</strong>, an identifier for your browser, and <strong>_fbc</strong>, which stores the code of the ad you came through, when you came through one. Both last up to three months. On the other pages the pixel does not load and nothing is stored.</p>
       <p>It does two things: it measures how many people reach us through each ad, and it lets us show our ads again to people who have already visited the site. Along the way, your IP address and your visit to that page go to Meta.</p>
       <p>Beyond that, the site does not use Google Analytics or any other audience measurement tool.</p>
-      <p>To opt out: block third party cookies in your browser, or adjust what Meta may use for advertising in the ad preferences of your Facebook or Instagram account. The site keeps working the same.</p>
+            <p>Your answer is kept in your own browser, with the date, and never reaches our servers. It exists only so we do not ask again on every visit.</p>
+
+      <div class="consent-controle" data-consent-controle hidden>
+  <p data-consent-resumo></p>
+  <button class="btn consent__btn" type="button" data-consent-trocar></button>
+</div>
+<!-- As páginas legais não carregam o main.js, que é pesado e cheio de coisa que
+     elas não usam. Só o módulo do consentimento entra aqui. -->
+<script type="module">
+import { initConsentimento } from '/js/consentimento.js';
+initConsentimento();
+</script>
+
+      <p>You can change your mind at any time, using the button above. Withdrawing removes from your browser the cookies the pixel had written. If you prefer, you can block third party cookies in your browser, or adjust what Meta may use for advertising in the ad preferences of your Facebook or Instagram account. The site keeps working the same either way.</p>
 
       <h2 id="retention">6. How long we keep it</h2>
       <p>We keep your application while it is under review and, if it becomes a partnership, for as long as the relationship lasts and for the period the law requires afterwards.</p>

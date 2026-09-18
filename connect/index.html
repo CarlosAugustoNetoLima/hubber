@@ -44,23 +44,91 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <link rel="stylesheet" href="/assets/vendor/flatpickr.4.6.13.min.css">
 <link rel="stylesheet" href="/assets/vendor/choices.10.2.0.min.css">
 <link rel="stylesheet" href="/css/pages/connect.css">
-<!-- Meta Pixel Code -->
+<!-- Onde a escolha sobre medição é guardada e aplicada -->
 <script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '28479871351653198');
-fbq('track', 'PageView');
+(function(){
+  var CHAVE = 'hubber:consentimento';
+  var VERSAO = 1;
+  var ouvintes = [];
+
+  function registro(){
+    try {
+      var bruto = window.localStorage.getItem(CHAVE);
+      if (!bruto) return null;
+      var d = JSON.parse(bruto);
+      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
+      // vale como se não houvesse escolha, e a tarja pergunta de novo.
+      return d && d.versao === VERSAO ? d : null;
+    } catch (e) { return null; }
+  }
+
+  function aceitou(){
+    var d = registro();
+    return !!d && d.estado === 'aceito';
+  }
+
+  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // no navegador sai também. O domínio do cookie depende de como o fbevents o
+  // gravou, então apaga nos escopos possíveis.
+  function apagarCookies(){
+    var host = location.hostname;
+    var raiz = host.split('.').slice(-2).join('.');
+    var escopos = ['', '; domain=' + host, '; domain=.' + host, '; domain=' + raiz, '; domain=.' + raiz];
+    ['_fbp', '_fbc'].forEach(function(nome){
+      escopos.forEach(function(escopo){
+        document.cookie = nome + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + escopo;
+      });
+    });
+  }
+
+  window.consentimento = {
+    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    registro: registro,
+    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
+    // hora, para não atrasar quem autorizou numa visita anterior.
+    aoAceitar: function(fn){
+      ouvintes.push(fn);
+      if (aceitou()) fn();
+    },
+    registrar: function(estado){
+      try {
+        window.localStorage.setItem(CHAVE, JSON.stringify({
+          estado: estado,
+          em: new Date().toISOString(),
+          versao: VERSAO
+        }));
+      } catch (e) {}
+      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
+      else apagarCookies();
+    }
+  };
+})();
 </script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=28479871351653198&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+
+<!-- Pixel da Meta. Só carrega com autorização; ver partial consentimento-api -->
+<script>
+(function(){
+  if (!window.consentimento) return;
+  var ID = '28479871351653198';
+  var carregado = false;
+
+  window.consentimento.aoAceitar(function(){
+    if (carregado) return;
+    carregado = true;
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', ID);
+    window.fbq('track', 'PageView');
+  });
+})();
+</script>
+<!-- Fim do pixel da Meta -->
 
 </head>
 <body data-surface="ink">
@@ -611,6 +679,22 @@ src="https://www.facebook.com/tr?id=28479871351653198&ev=PageView&noscript=1"
 <script defer src="/assets/vendor/flatpickr-pt.4.6.13.js"></script>
 <script defer src="/assets/vendor/choices.10.2.0.min.js"></script>
 <script type="module" src="/js/main.js"></script>
+
+<div class="consent" data-consent data-surface="ink" role="region" aria-label="Cookies de medição" hidden>
+  <div class="consent__caixa">
+    <p class="consent__texto">
+      Esta página pode usar o pixel da Meta para medir de qual anúncio você chegou e
+      mostrar os nossos anúncios a quem já esteve aqui. Ele grava dois cookies no seu
+      navegador. Se você recusar, nada é gravado e a página funciona igual.
+      <a href="/privacidade/#cookies">O que é gravado</a>.
+    </p>
+    <div class="consent__acoes">
+      <button class="btn consent__btn" type="button" data-consent-aceitar>Aceitar</button>
+      <button class="btn consent__btn" type="button" data-consent-recusar>Recusar</button>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>

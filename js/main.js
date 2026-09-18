@@ -8,6 +8,7 @@ import { initConnectForm } from './connect.js';
 import { initPixels } from './pixels.js';
 import { initReel } from './reel.js';
 import { initPickers } from './pickers.js';
+import { initConsentimento } from './consentimento.js';
 
 initHeader();
 initClocks();
@@ -17,3 +18,4 @@ initPickers();
 initMotion();
 initPixels();
 initReel();
+initConsentimento();
