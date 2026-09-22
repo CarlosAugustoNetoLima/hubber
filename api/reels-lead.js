@@ -161,11 +161,19 @@ async function criarCard(card, token) {
 }
 
 /* O horário ainda está livre? A lista que o navegador tem pode ter envelhecido,
-   e duas pessoas podem escolher o mesmo bloco no mesmo minuto. */
+   e duas pessoas podem escolher o mesmo bloco no mesmo minuto.
+
+   A janela vai até o dia seguinte, e não até o mesmo dia: a disponibilidade do
+   JSYNQ responde 400 quando começo e fim são iguais, e o 400 virava erro aqui,
+   que virava 502 na cara de quem tentou marcar. O dia a mais não atrapalha,
+   porque a conferência é pelo instante exato do horário escolhido. */
 async function horarioLivre(inicioIso, token) {
   const dia = inicioIso.slice(0, 10);
+  const seguinte = new Date(`${dia}T00:00:00Z`);
+  seguinte.setUTCDate(seguinte.getUTCDate() + 1);
   const url = `${API_BASE}/api/meetings/availability`
-    + `?startDate=${dia}&endDate=${dia}&collaboratorIds=${RESPONSAVEL}`;
+    + `?startDate=${dia}&endDate=${seguinte.toISOString().slice(0, 10)}`
+    + `&collaboratorIds=${RESPONSAVEL}`;
   const res = await fetch(url, { headers: { authorization: auth(token) } });
   if (!res.ok) throw new Error(`disponibilidade devolveu ${res.status}`);
   const dados = await res.json();
