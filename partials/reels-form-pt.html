@@ -10,40 +10,40 @@
             data-endpoint="/api/reels-lead" novalidate data-reveal>
         <p class="form__errors" data-errors hidden></p>
 
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Digite o seu nome.">
         <label class="field__label" for="nome">Seu nome</label>
         <input class="field__input" type="text" id="nome" name="nome" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Digite o nome da empresa.">
         <label class="field__label" for="empresa">Nome da empresa</label>
         <input class="field__input" type="text" id="empresa" name="empresa" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Digite o seu e-mail.">
         <label class="field__label" for="email">E-mail</label>
         <input class="field__input" type="email" id="email" name="email" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Digite um WhatsApp ou telefone.">
         <label class="field__label" for="telefone">WhatsApp ou telefone</label>
         <input class="field__input" type="tel" id="telefone" name="telefone" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Diga o que a sua empresa faz.">
         <label class="field__label" for="negocio">O que a sua empresa faz</label>
         <p class="form__hint" id="d-negocio">Clínica, escritório, restaurante, o que for</p>
         <input class="field__input" type="text" id="negocio" name="negocio" aria-describedby="d-negocio" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Diga em que região de Orlando você fica.">
         <label class="field__label" for="onde">Onde você fica em Orlando</label>
         <p class="form__hint" id="d-onde">Bairro ou região, para a gente dimensionar o deslocamento</p>
         <input class="field__input" type="text" id="onde" name="onde" aria-describedby="d-onde" required>
         <p class="field__error" data-error hidden></p>
       </div>
 
-      <fieldset class="field field__group" data-field>
+      <fieldset class="field field__group" data-field data-error-required="Escolha uma das três opções.">
         <legend class="field__label">Qual opção te interessa</legend>
         <p class="form__hint">Você não está se comprometendo com nada aqui</p>
         <div class="escolhas">
@@ -63,7 +63,7 @@
         <p class="field__error" data-error hidden></p>
       </fieldset>
 
-      <fieldset class="field agenda" data-field data-agenda>
+      <fieldset class="field agenda" data-field data-error-required="Escolha o dia e a hora." data-agenda>
         <legend class="field__label">Escolha o dia e a hora</legend>
         <p class="agenda__fuso" data-agenda-fuso></p>
         <p class="agenda__estado" data-agenda-estado></p>
@@ -79,7 +79,7 @@
         <p class="field__error" data-error hidden></p>
       </fieldset>
 
-      <div class="field field--check" data-field>
+      <div class="field field--check" data-field data-error-required="Marque a caixa para a gente poder marcar a conversa.">
         <label class="field__check">
           <input type="checkbox" id="consentimento" name="consentimento" value="sim" required>
           <span>Autorizo a Hubber a usar estes dados para marcar e realizar esta conversa. Nada de lista, nada de spam. <a href="/pt/privacidade/">Política de privacidade</a>.</span>

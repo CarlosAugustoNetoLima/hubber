@@ -775,7 +775,9 @@ html.reveal-ready [data-reveal].is-in {
 }
 
 .book__form .field__label { color: var(--c-ink); font-weight: var(--fw-bold); }
-.book__form .form__hint { color: color-mix(in oklch, var(--c-ink), transparent 35%); }
+/* Medido: a 35% de transparência a dica ficava em 3.96:1, abaixo do mínimo
+   de 4.5 para texto pequeno. */
+.book__form .form__hint { color: color-mix(in oklch, var(--c-ink), transparent 18%); }
 .book__form .field__error { color: var(--c-ink); font-weight: var(--fw-bold); }
 .book__form .form__errors { color: var(--c-ink); font-weight: var(--fw-bold); }
 
@@ -1089,7 +1091,7 @@ html.reveal-ready [data-reveal].is-in {
   font-size: var(--fs-label);
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--c-ink), transparent 25%);
+  color: color-mix(in oklch, var(--c-ink), transparent 12%);
 }
 .agenda__estado { margin: 0; font-size: var(--fs-small); color: var(--c-ink); }
 .agenda__estado:empty { display: none; }
@@ -1100,7 +1102,7 @@ html.reveal-ready [data-reveal].is-in {
   font-size: var(--fs-label);
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--c-ink), transparent 45%);
+  color: color-mix(in oklch, var(--c-ink), transparent 14%);
 }
 
 .agenda__dias { display: flex; flex-wrap: wrap; gap: var(--s8); }
@@ -1143,7 +1145,7 @@ html.reveal-ready [data-reveal].is-in {
   font-size: var(--fs-label);
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--c-ink), transparent 55%);
+  color: color-mix(in oklch, var(--c-ink), transparent 14%);
 }
 .agenda__turno-horas {
   display: grid;

@@ -131,15 +131,21 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
     }
   }
 
-  function mostrarErro(campo, texto) {
-    const alvo = campo.closest('[data-field]')?.querySelector('[data-error]');
+  /* A mensagem vem do próprio campo, em data-error-required, como no resto do
+     site. Antes ia um espaço em branco, e o campo exibia só a seta do ::before:
+     o aviso apontava para o problema sem dizer qual era. */
+  function mostrarErro(campo) {
+    const caixa = campo.closest('[data-field]');
+    const alvo = caixa?.querySelector('[data-error]');
     if (!alvo) return;
-    alvo.textContent = texto;
+    alvo.textContent = caixa.dataset.errorRequired || T.faltando;
     alvo.hidden = false;
+    caixa.classList.add('is-invalid');
   }
 
   function limparErros() {
     form.querySelectorAll('[data-error]').forEach((e) => { e.hidden = true; e.textContent = ''; });
+    form.querySelectorAll('[data-field]').forEach((c) => c.classList.remove('is-invalid'));
     if (resumoErros) { resumoErros.hidden = true; resumoErros.textContent = ''; }
   }
 
@@ -155,7 +161,7 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
       return !el.value.trim();
     });
     if (faltando.length) {
-      faltando.forEach((el) => mostrarErro(el, ' '));
+      faltando.forEach((el) => mostrarErro(el));
       if (resumoErros) { resumoErros.textContent = T.faltando; resumoErros.hidden = false; }
       faltando[0].focus();
       return;
@@ -200,6 +206,17 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
     resultado.querySelector('h3')?.focus({ preventScroll: true });
     const topo = resultado.getBoundingClientRect().top + window.scrollY - 96;
     window.scrollTo({ top: topo, behavior: 'smooth' });
+  }
+
+  /* Os CTAs dos planos já vinham marcados com data-plan; faltava a ligação.
+     Quem clica em "começar o plano mensal" e chega no formulário com a avulsa
+     marcada precisa desfazer uma escolha que ele já tinha feito. */
+  const DE_PARA = { once: 'avulsa', monthly: 'consistencia' };
+  for (const cta of root.querySelectorAll('[data-plan]')) {
+    cta.addEventListener('click', () => {
+      const alvo = form.querySelector(`input[name="plano"][value="${DE_PARA[cta.dataset.plan]}"]`);
+      if (alvo) alvo.checked = true;
+    });
   }
 
   carregarAgenda();

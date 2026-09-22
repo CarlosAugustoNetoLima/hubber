@@ -558,40 +558,40 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
             data-endpoint="/api/reels-lead" novalidate data-reveal>
         <p class="form__errors" data-errors hidden></p>
 
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Enter your name.">
         <label class="field__label" for="nome">Your name</label>
         <input class="field__input" type="text" id="nome" name="nome" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Enter your business name.">
         <label class="field__label" for="empresa">Business name</label>
         <input class="field__input" type="text" id="empresa" name="empresa" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Enter your email.">
         <label class="field__label" for="email">Email</label>
         <input class="field__input" type="email" id="email" name="email" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Enter a phone or WhatsApp number.">
         <label class="field__label" for="telefone">WhatsApp or phone</label>
         <input class="field__input" type="tel" id="telefone" name="telefone" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Tell us what your business does.">
         <label class="field__label" for="negocio">What your business does</label>
         <p class="form__hint" id="d-negocio">Dental clinic, law firm, restaurant, whatever it is</p>
         <input class="field__input" type="text" id="negocio" name="negocio" aria-describedby="d-negocio" required>
         <p class="field__error" data-error hidden></p>
       </div>
-      <div class="field" data-field>
+      <div class="field" data-field data-error-required="Tell us where you are in Orlando.">
         <label class="field__label" for="onde">Where you are in Orlando</label>
         <p class="form__hint" id="d-onde">Neighborhood or area, so we can plan the drive</p>
         <input class="field__input" type="text" id="onde" name="onde" aria-describedby="d-onde" required>
         <p class="field__error" data-error hidden></p>
       </div>
 
-      <fieldset class="field field__group" data-field>
+      <fieldset class="field field__group" data-field data-error-required="Pick one of the three options.">
         <legend class="field__label">Which option interests you</legend>
         <p class="form__hint">You are not committing to anything here</p>
         <div class="escolhas">
@@ -611,7 +611,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
         <p class="field__error" data-error hidden></p>
       </fieldset>
 
-      <fieldset class="field agenda" data-field data-agenda>
+      <fieldset class="field agenda" data-field data-error-required="Pick a day and a time." data-agenda>
         <legend class="field__label">Pick a day and time</legend>
         <p class="agenda__fuso" data-agenda-fuso></p>
         <p class="agenda__estado" data-agenda-estado></p>
@@ -627,7 +627,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
         <p class="field__error" data-error hidden></p>
       </fieldset>
 
-      <div class="field field--check" data-field>
+      <div class="field field--check" data-field data-error-required="Check the box so we can schedule the call.">
         <label class="field__check">
           <input type="checkbox" id="consentimento" name="consentimento" value="sim" required>
           <span>I authorize Hubber to use this information to schedule and hold this call. No lists, no spam. <a href="/privacy/">Privacy policy</a>.</span>
