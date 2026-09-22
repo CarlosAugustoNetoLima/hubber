@@ -110,14 +110,31 @@ export function diasUteis(agora = new Date()) {
   return dias;
 }
 
-/* O rótulo que vai para o card e para o convite. Sempre com a sigla do fuso,
-   porque quem preenche pode estar no Brasil e um horário sem fuso ao lado é
-   uma reunião perdida por uma hora de diferença.
+/* O horário por extenso, sempre com a sigla do fuso: quem preenche pode estar
+   no Brasil, e um horário sem fuso ao lado é uma reunião perdida por uma hora
+   de diferença.
 
-   Devolve null se o instante não for um horário válido da grade: fora do
+   Em duas línguas porque são dois leitores. O card e o convite ficam em
+   português, que é a língua do CRM e do time. Quem marcou lê no idioma em que
+   preencheu o formulário: "13/10/2026 às 16:30" numa página em inglês é uma
+   data que o leitor americano lê ao contrário. */
+export function escreverHorario(instante, idioma = 'pt') {
+  if (idioma === 'en') {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: FUSO, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+      hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
+    });
+    return `${fmt.format(instante)} (Orlando)`;
+  }
+  const p = partesEm(instante);
+  return `${doisDigitos(p.dia)}/${doisDigitos(p.mes)}/${p.ano} às `
+    + `${doisDigitos(p.hora)}:${doisDigitos(p.minuto)} ${siglaDoFuso(instante)} (Orlando)`;
+}
+
+/* Devolve null se o instante não for um horário válido da grade: fora do
    expediente, fim de semana, hoje ou passado. É a revalidação que impede
    alguém de mandar um horário montado à mão no lugar do que a página ofereceu. */
-export function rotuloDoHorario(iso, agora = new Date()) {
+export function rotuloDoHorario(iso, agora = new Date(), idioma = 'pt') {
   if (typeof iso !== 'string') return null;
   const instante = new Date(iso);
   if (Number.isNaN(instante.getTime())) return null;
@@ -126,9 +143,7 @@ export function rotuloDoHorario(iso, agora = new Date()) {
     grade(dia).some((s) => s.inicio.getTime() === instante.getTime()));
   if (!valido) return null;
 
-  const p = partesEm(instante);
-  return `${doisDigitos(p.dia)}/${doisDigitos(p.mes)}/${p.ano} às `
-    + `${doisDigitos(p.hora)}:${doisDigitos(p.minuto)} ${siglaDoFuso(instante)} (Orlando)`;
+  return escreverHorario(instante, idioma);
 }
 
 const sobrepoe = (a1, a2, b1, b2) => a1 < b2 && b1 < a2;

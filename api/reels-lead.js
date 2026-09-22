@@ -22,7 +22,7 @@
  */
 
 import { guardar, concluir, drenar, filaAtiva } from './_fila.js';
-import { montarAgenda, rotuloDoHorario } from './reels-agenda.js';
+import { montarAgenda, rotuloDoHorario, escreverHorario } from './reels-agenda.js';
 
 const API_BASE = 'https://api.jsynq.com';
 const PROJECT_ID  = process.env.JSYNQ_REELS_PROJECT_ID || '6aaac5d2f1edc4c698019729';
@@ -251,6 +251,14 @@ export default async function handler(req, res) {
   const rotulo = semHorario ? 'A marcar, enviado sem calendário' : rotuloDoHorario(body.inicio);
   if (!rotulo) return res.status(422).json({ ok: false, error: 'horario_invalido' });
 
+  /* Dois rótulos do mesmo horário. O de cima vai para o card e para o convite,
+     em português, que é a língua do CRM. Este aqui volta para a página, no
+     idioma em que a pessoa preencheu. */
+  const idioma = body.idioma === 'en' ? 'en' : 'pt';
+  const rotuloVisivel = semHorario
+    ? (idioma === 'en' ? 'To be scheduled, sent without the calendar' : rotulo)
+    : escreverHorario(new Date(body.inicio), idioma);
+
   const token = process.env.JSYNQ_API_TOKEN;
   if (!token) {
     console.error('[reels-lead] JSYNQ_API_TOKEN ausente.', resumo(body));
@@ -286,7 +294,7 @@ export default async function handler(req, res) {
         const r = await drenar('reels', (d) => entregarReelsLead(d, token), 2);
         if (r.entregues) console.log('[reels-lead] fila: reenviados', r.entregues);
       }
-      return res.status(200).json({ ok: true, agendada: rotulo, sala: marcada.sala });
+      return res.status(200).json({ ok: true, agendada: rotuloVisivel, sala: marcada.sala });
     }
   } catch (err) {
     console.error('[reels-lead] falha ao falar com o JSYNQ:', err?.message, resumo(dados));
@@ -296,7 +304,7 @@ export default async function handler(req, res) {
   // faria reenviar e marcar um segundo horário.
   if (naFila) {
     console.error('[reels-lead] card na fila para reenvio:', naFila, resumo(dados));
-    return res.status(200).json({ ok: true, pendente: true, agendada: rotulo, sala: marcada.sala });
+    return res.status(200).json({ ok: true, pendente: true, agendada: rotuloVisivel, sala: marcada.sala });
   }
   return res.status(502).json({ ok: false, error: 'upstream' });
 }

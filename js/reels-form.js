@@ -39,6 +39,7 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
 
   let dias = [];
   let diaAberto = null;
+  let agendaOk = false;
 
   const local = lang === 'pt' ? 'pt-BR' : 'en-US';
   function partes(iso) {
@@ -109,9 +110,10 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
     if (blocoDias) blocoDias.hidden = false;
   }
 
-  // Sem calendário a pessoa ainda envia: o lead entra sem horário e alguém
-  // marca à mão. Recusar quem chegou até aqui seria pior que agendar depois.
-  async function carregarAgenda() {
+  /* O aviso é escrito depois da lista chegar, não antes. Quem cai aqui vindo de
+     um horário que acabou de ser tomado precisa ler por que o horário sumiu, e
+     a mensagem de "carregando" apagava esse recado no meio do caminho. */
+  async function carregarAgenda(aviso = '') {
     estado.textContent = T.carregando;
     try {
       const res = await fetch('/api/reels-agenda');
@@ -120,11 +122,15 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
       if (!dados?.dias?.length) throw new Error('vazio');
       dias = dados.dias;
       if (dados.fuso?.sigla) rotuloFuso.textContent = `${T.fuso} (${dados.fuso.sigla})`;
-      estado.textContent = '';
+      estado.textContent = aviso;
       diaAberto = dias[0].data;
+      agendaOk = true;
       pintarDias();
       pintarHoras();
     } catch (_) {
+      // Sem calendário a pessoa ainda envia: o lead entra sem horário e alguém
+      // marca à mão. Recusar quem chegou até aqui seria pior que agendar depois.
+      agendaOk = false;
       estado.textContent = T.falhou;
       if (blocoDias) blocoDias.hidden = true;
       if (blocoHoras) blocoHoras.hidden = true;
@@ -160,10 +166,19 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
       if (el.type === 'radio') return !form.querySelector(`[name="${el.name}"]:checked`);
       return !el.value.trim();
     });
+    /* O horário não é `required` no HTML de propósito: sem JavaScript não há
+       calendário para escolher, e o servidor aceita o lead sem hora para não
+       perder quem chegou até o fim do formulário. Com o calendário carregado na
+       tela, ele passa a ser obrigatório: responder "conversa marcada" e mandar
+       olhar o e-mail sem ter marcado nada é prometer o que não vai acontecer. */
+    if (agendaOk && !campoInicio.value) faltando.push(campoInicio);
+
     if (faltando.length) {
       faltando.forEach((el) => mostrarErro(el));
       if (resumoErros) { resumoErros.textContent = T.faltando; resumoErros.hidden = false; }
-      faltando[0].focus();
+      // O campo do horário é oculto e não recebe foco. Quem age é a fila de dias.
+      const alvo = faltando[0] === campoInicio ? caixaDias.querySelector('.agenda__dia') : faltando[0];
+      (alvo || faltando[0]).focus();
       return;
     }
     // A guarda de três segundos é a mesma dos outros formulários do site.
@@ -183,9 +198,9 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
         body: JSON.stringify(dados),
       });
       if (res.status === 409) {
-        estado.textContent = T.ocupado;
         campoInicio.value = '';
-        await carregarAgenda();
+        await carregarAgenda(T.ocupado);
+        if (resumoErros) { resumoErros.textContent = T.ocupado; resumoErros.hidden = false; }
         return;
       }
       if (!res.ok) throw new Error(String(res.status));
