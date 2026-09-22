@@ -1209,3 +1209,15 @@ html.reveal-ready [data-reveal].is-in {
   color: #fff;
 }
 .caixa__fechar:hover { background-color: color-mix(in srgb, #fff 18%, transparent); border-color: #fff; }
+
+/* A seção é de duas colunas, título à esquerda e corpo à direita. A explicação
+   pertence à coluna do título: no corpo ela virava introdução do formulário,
+   longe da pergunta que responde. */
+.lp-sec__lead {
+  margin: 0;
+  max-width: 42ch;
+  font-size: var(--fs-body);
+  color: color-mix(in oklch, var(--c-ink), transparent 22%);
+}
+[data-surface="ink"] .lp-sec__lead { color: var(--fg-muted); }
+.lp-sec__lead--quando { font-size: var(--fs-small); }
