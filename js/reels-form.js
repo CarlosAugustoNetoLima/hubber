@@ -205,6 +205,7 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
       }
       if (!res.ok) throw new Error(String(res.status));
       const corpo = await res.json().catch(() => ({}));
+      marcarReserva(dados);
       mostrarSucesso(corpo.agendada || '');
     } catch (_) {
       if (resumoErros) { resumoErros.textContent = T.erro; resumoErros.hidden = false; }
@@ -212,6 +213,38 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
       if (btn) { btn.disabled = false; if (rotulo) btn.textContent = rotulo; }
     }
   });
+
+  /* A conversão só existe depois do servidor confirmar. O caminho do honeypot e
+     o da guarda de três segundos mostram a mesma tela de sucesso sem ter
+     enviado nada, e contar aquilo como reserva envenenaria a otimização da
+     campanha com o que os robôs fazem. */
+  function marcarReserva(dados) {
+    if (!window.pixel) return;
+
+    /* Correspondência avançada: é o que liga esta reserva à pessoa que viu o
+       anúncio. Vai embaralhado pelo próprio SDK, dentro do navegador. */
+    const nome = String(dados.nome || '').trim().split(/\s+/);
+    window.pixel.identificar({
+      em: String(dados.email || '').trim().toLowerCase(),
+      ph: String(dados.telefone || '').replace(/\D/g, ''),
+      fn: (nome[0] || '').toLowerCase(),
+      ln: nome.slice(1).join(' ').toLowerCase(),
+    });
+
+    // O plano vai pelo valor cru, não pelo texto traduzido: o relatório da
+    // campanha mistura as duas línguas e "avulsa" é a mesma coisa nas duas.
+    const conteudo = {
+      content_name: 'Reels Orlando, qualification call',
+      content_category: dados.plano || '',
+    };
+
+    /* Dois nomes para a mesma conversão. Quem compra mídia costuma otimizar
+       por Lead; Schedule é o que de fato aconteceu, que foi uma conversa
+       marcada. A contagem é idêntica nos dois, então a campanha escolhe um e
+       ignora o outro sem perder nada. */
+    window.pixel.evento('Schedule', conteudo);
+    window.pixel.evento('Lead', conteudo);
+  }
 
   function mostrarSucesso(quando) {
     if (!resultado) return;

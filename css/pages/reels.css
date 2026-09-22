@@ -1224,6 +1224,38 @@ html.reveal-ready [data-reveal].is-in {
 [data-surface="ink"] .lp-sec__lead { color: var(--fg-muted); }
 .lp-sec__lead--quando { font-size: var(--fs-small); }
 
+/* ---- Tarja de consentimento ---- */
+
+[data-lp="reels"] .consent {
+  border-radius: var(--lp-r-lg);
+  border-color: var(--lp-line-2);
+  background: rgba(12, 13, 16, 0.88);
+  backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: var(--lp-inner-top), var(--lp-shadow);
+}
+
+/* Recusar tem exatamente o peso de aceitar, aqui também. Destacar um dos dois
+   induz a escolha, e escolha induzida não é consentimento. */
+[data-lp="reels"] .consent__btn {
+  border-radius: var(--lp-r-pill);
+  background: var(--lp-raised);
+  border-color: var(--lp-line-2);
+}
+[data-lp="reels"] .consent__btn:hover {
+  background: var(--lp-raised-2);
+  border-color: var(--fg);
+}
+
+@media (max-width: 900px) {
+  /* A barra fixa de CTA mora no mesmo canto da tela. A tarja sobe o bastante
+     para as duas caberem, senão a pessoa escolhe entre ler e marcar. */
+  [data-lp="reels"] .consent { bottom: calc(var(--gutter) + 76px); }
+}
+
+@supports not (backdrop-filter: blur(4px)) {
+  [data-lp="reels"] .consent { background: rgba(12, 13, 16, 0.98); }
+}
+
 /* ---- Política de privacidade na identidade da LP ---- */
 
 /* A política herdava a cara do site da Hubber: magenta, canto vivo e o
@@ -1352,6 +1384,7 @@ html.reveal-ready [data-reveal].is-in {
   /* O link dentro do texto do consentimento tem a altura da linha. O padding
      vertical cresce a área de toque sem mexer no fluxo do parágrafo. */
   .book__form .field__check a,
+  .consent__texto a,
   .ftr a {
     display: inline-block;
     padding-block: var(--s12);

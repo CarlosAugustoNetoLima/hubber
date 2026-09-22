@@ -151,6 +151,120 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
 <link rel="stylesheet" href="/css/pages/reels.css">
+<!-- Onde a escolha sobre medição é guardada e aplicada -->
+<script>
+(function(){
+  var CHAVE = 'hubber:consentimento';
+  var VERSAO = 1;
+  var ouvintes = [];
+
+  function registro(){
+    try {
+      var bruto = window.localStorage.getItem(CHAVE);
+      if (!bruto) return null;
+      var d = JSON.parse(bruto);
+      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
+      // vale como se não houvesse escolha, e a tarja pergunta de novo.
+      return d && d.versao === VERSAO ? d : null;
+    } catch (e) { return null; }
+  }
+
+  function aceitou(){
+    var d = registro();
+    return !!d && d.estado === 'aceito';
+  }
+
+  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // no navegador sai também. O domínio do cookie depende de como o fbevents o
+  // gravou, então apaga nos escopos possíveis.
+  function apagarCookies(){
+    var host = location.hostname;
+    var raiz = host.split('.').slice(-2).join('.');
+    var escopos = ['', '; domain=' + host, '; domain=.' + host, '; domain=' + raiz, '; domain=.' + raiz];
+    ['_fbp', '_fbc'].forEach(function(nome){
+      escopos.forEach(function(escopo){
+        document.cookie = nome + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + escopo;
+      });
+    });
+  }
+
+  window.consentimento = {
+    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    registro: registro,
+    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
+    // hora, para não atrasar quem autorizou numa visita anterior.
+    aoAceitar: function(fn){
+      ouvintes.push(fn);
+      if (aceitou()) fn();
+    },
+    registrar: function(estado){
+      try {
+        window.localStorage.setItem(CHAVE, JSON.stringify({
+          estado: estado,
+          em: new Date().toISOString(),
+          versao: VERSAO
+        }));
+      } catch (e) {}
+      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
+      else apagarCookies();
+    }
+  };
+})();
+</script>
+
+<!-- Pixel da Meta. Só carrega com autorização; ver partial consentimento-api -->
+<script>
+(function(){
+  var ID = '1622410909278763';
+
+  /* A página fala com o pixel por aqui, nunca direto pelo fbq. Antes da
+     autorização o fbq não existe, e cada método vira um no-op silencioso: quem
+     dispara um evento não precisa saber se a pessoa autorizou ou não. */
+  function identificador(nome){
+    var sorteio = (window.crypto && window.crypto.randomUUID)
+      ? window.crypto.randomUUID()
+      : String(Date.now()) + Math.random().toString(36).slice(2);
+    return nome + '.' + sorteio;
+  }
+
+  window.pixel = {
+    id: ID,
+    // O eventID não serve para nada hoje. Serve no dia em que o mesmo evento
+    // também sair do servidor: é por ele que a Meta descarta a cópia.
+    evento: function(nome, dados){
+      if (typeof window.fbq !== 'function') return;
+      window.fbq('track', nome, dados || {}, { eventID: identificador(nome) });
+    },
+    /* Correspondência avançada. O SDK normaliza e embaralha no navegador antes
+       de mandar, então a Meta recebe o resumo, não o e-mail. Só depois de um
+       envio: é quando a pessoa entregou o dado sabendo para quê. */
+    identificar: function(dados){
+      if (typeof window.fbq !== 'function') return;
+      window.fbq('init', ID, dados);
+    }
+  };
+
+  if (!window.consentimento) return;
+  var carregado = false;
+
+  window.consentimento.aoAceitar(function(){
+    if (carregado) return;
+    carregado = true;
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', ID);
+    window.fbq('track', 'PageView');
+  });
+})();
+</script>
+<!-- Fim do pixel da Meta -->
+
 </head>
 <body>
 
@@ -714,6 +828,22 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     <p class="t-small ftr__cinnamon">A Cinnamon Group company</p>
   </div>
 </footer>
+
+
+<div class="consent" data-consent data-surface="ink" role="region" aria-label="Measurement cookies" hidden>
+  <div class="consent__caixa">
+    <p class="consent__texto">
+      This page can use the Meta pixel to measure which ad brought you here and to show
+      our ads to people who have been here. It writes two cookies in your browser. If you
+      decline, nothing is written and the page works the same.
+      <a href="/privacy/#cookies">What gets written</a>.
+    </p>
+    <div class="consent__acoes">
+      <button class="btn consent__btn" type="button" data-consent-aceitar>Allow</button>
+      <button class="btn consent__btn" type="button" data-consent-recusar>Decline</button>
+    </div>
+  </div>
+</div>
 
 
 <script type="module" src="/js/reels.js"></script>

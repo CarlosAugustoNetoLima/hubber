@@ -1,5 +1,6 @@
 import { initReelsForm } from './reels-form.js';
 import { initParede } from './reels-parede.js';
+import { initConsentimento } from './consentimento.js';
 
 const UTM_KEYS = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
@@ -175,6 +176,24 @@ function seletorDeIdioma() {
   });
 }
 
+/* Quem chegou até a seção da reserva é público de remarketing: leu a oferta e
+   não marcou. Dispara uma vez só, e só depois que o pixel existe, o que já
+   significa que a pessoa autorizou. */
+function viuAReserva() {
+  const secao = document.querySelector('#book');
+  if (!secao || !window.pixel) return;
+
+  const observador = new IntersectionObserver(([entrada], self) => {
+    if (!entrada.isIntersecting) return;
+    self.disconnect();
+    window.pixel.evento('ViewContent', {
+      content_name: 'Reels Orlando, book the call',
+      content_category: 'reels',
+    });
+  }, { threshold: 0.35 });
+  observador.observe(secao);
+}
+
 capturarOrigem();
 revelar();
 brilhoDeCard();
@@ -183,7 +202,9 @@ lateraisFixas();
 videosNaTela();
 ctaFixo();
 seletorDeIdioma();
+viuAReserva();
 
+initConsentimento();
 initParede();
 initReelsForm(document, lerOrigem);
 
