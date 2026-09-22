@@ -1224,6 +1224,110 @@ html.reveal-ready [data-reveal].is-in {
 [data-surface="ink"] .lp-sec__lead { color: var(--fg-muted); }
 .lp-sec__lead--quando { font-size: var(--fs-small); }
 
+/* ---- Política de privacidade na identidade da LP ---- */
+
+/* A política herdava a cara do site da Hubber: magenta, canto vivo e o
+   cabeçalho de outra marca. Quem sai do rodapé da LP e cai aqui precisa
+   continuar na mesma página, não aterrissar em outro site. O documento em si
+   não muda; muda a pele, que agora vem do mesmo lugar que o resto do reels. */
+
+[data-lp="reels"] .legal {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  /* O cabeçalho flutua: sem essa folga o título nasce debaixo dele. */
+  padding-block: calc(var(--lp-nav-top) + var(--lp-nav-h) + var(--s48)) var(--s80);
+}
+
+[data-lp="reels"] .legal__title {
+  text-transform: uppercase;
+  line-height: 1.02;
+}
+
+/* O índice vira o mesmo cartão das seções da LP: fundo levemente erguido,
+   canto arredondado e a luz de cima que separa o cartão do fundo. */
+[data-lp="reels"] .legal__toc {
+  padding: clamp(var(--s24), 2.4vw, var(--s32));
+  border-color: var(--lp-line);
+  border-radius: var(--lp-r-lg);
+  background: var(--lp-raised);
+  box-shadow: var(--lp-inner-top), var(--lp-shadow);
+}
+[data-lp="reels"] .legal__toc a { border-radius: var(--lp-r-sm); }
+
+/* O parágrafo de escopo é o que diz "esta política é desta página". Como
+   cartão de aviso ele para de ser lido como mais um parágrafo do texto. */
+[data-lp="reels"] .legal__escopo {
+  padding: var(--s16) var(--s24);
+  border: 1px solid var(--lp-line-accent);
+  border-radius: var(--lp-r-md);
+  background:
+    radial-gradient(320px 240px at 92% -12%, rgba(238, 155, 0, 0.13), transparent 70%),
+    var(--lp-raised);
+}
+
+[data-lp="reels"] .consent-controle {
+  border-radius: var(--lp-r-md);
+  border-color: var(--lp-line-2);
+  background: var(--lp-raised);
+}
+[data-lp="reels"] .consent__btn { border-radius: var(--lp-r-pill); }
+
+/* Cabeçalho do documento: a mesma pílula da LP, com a etiqueta do assunto no
+   lugar do menu. A marca e o botão levam de volta para a página. */
+[data-lp="reels"] .hdr--lp-legal .hdr__in { gap: var(--s16); }
+[data-lp="reels"] .hdr__kicker {
+  padding: 3px var(--s12);
+  border-color: var(--lp-line-accent);
+  border-radius: var(--lp-r-pill);
+  background: rgba(238, 155, 0, 0.08);
+  color: var(--accent-text);
+  white-space: nowrap;
+}
+[data-lp="reels"] .hdr__lang {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+[data-lp="reels"] .hdr__lang:hover { color: var(--fg); }
+
+/* Numa página sem a barra fixa de rodapé, o botão de voltar é a única saída
+   visível. A regra geral esconde botões do cabeçalho no mobile; aqui não. */
+[data-lp="reels"] .hdr--lp-legal .hdr__end .btn { display: inline-flex; }
+
+[data-lp="reels"] .ftr--legal { margin-top: 0; }
+
+/* Copyright e política andam juntos, de um lado; a assinatura do grupo do
+   outro. Antes o link ficava solto embaixo do rodapé, fora da coluna e
+   colado na borda da tela. */
+.ftr__legal {
+  display: flex;
+  align-items: center;
+  gap: var(--s8) var(--s16);
+  flex-wrap: wrap;
+}
+.ftr__legal a { color: var(--accent-text); }
+
+@media (max-width: 767px) {
+  /* A varredura de mobile zerou os alvos abaixo de 44px. O cabeçalho do
+     documento tem os dois únicos controles da página e não pode trazê-los
+     de volta. */
+  [data-lp="reels"] .hdr--lp-legal .hdr__end .btn,
+  [data-lp="reels"] .hdr__lang { min-height: 44px; }
+  [data-lp="reels"] .hdr__lang { display: inline-flex; align-items: center; }
+
+  /* O índice é a navegação da página. Com 24px a linha cumpre o mínimo da
+     norma e ainda assim escorrega do polegar. Cresce por padding, como o
+     rodapé: centralizar jogaria o número do item para o meio das linhas. */
+  [data-lp="reels"] .legal__toc a { padding-block: var(--s12); }
+}
+
+@media (max-width: 599px) {
+  /* A pílula não cabe com marca, etiqueta e botão. A etiqueta é a que o
+     título da página repete na linha seguinte. */
+  [data-lp="reels"] .hdr__kicker { display: none; }
+}
+
 /* ---- Mobile ---- */
 
 /* Quinze dias em quatro linhas empilhadas davam 901px de agenda numa tela de

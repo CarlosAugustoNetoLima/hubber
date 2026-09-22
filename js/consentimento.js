@@ -6,9 +6,35 @@
 // Guardar e aplicar a decisão é trabalho do script do partial meta-pixel, no
 // <head>: ele roda antes de tudo para não atrasar o PageView de quem já
 // autorizou. Aqui mora só a interface.
+/* A política do reels existe em inglês e em português, e as duas carregavam
+   este mesmo controle. O texto vinha fixo em português: quem lia a política em
+   inglês encontrava uma frase em outra língua no meio dela. */
+const TEXTO = {
+  pt: {
+    local: 'pt-BR',
+    em: (data) => ` em ${data}`,
+    aceito: (q) => `Você autorizou o pixel da Meta${q}.`,
+    recusado: (q) => `Você recusou o pixel da Meta${q}. Nada está sendo gravado no seu navegador.`,
+    nenhum: 'Você ainda não escolheu, e por isso o pixel não está carregando.',
+    retirar: 'Retirar a autorização',
+    autorizar: 'Autorizar',
+  },
+  en: {
+    local: 'en-US',
+    em: (data) => ` on ${data}`,
+    aceito: (q) => `You allowed the Meta pixel${q}.`,
+    recusado: (q) => `You declined the Meta pixel${q}. Nothing is being written to your browser.`,
+    nenhum: 'You have not chosen yet, which is why the pixel is not loading.',
+    retirar: 'Withdraw permission',
+    autorizar: 'Allow',
+  },
+};
+
 export function initConsentimento(root = document) {
   const api = window.consentimento;
   if (!api) return;
+
+  const T = document.documentElement.lang.startsWith('pt') ? TEXTO.pt : TEXTO.en;
 
   const tarja = root.querySelector('[data-consent]');
   const controle = root.querySelector('[data-consent-controle]');
@@ -26,21 +52,21 @@ export function initConsentimento(root = document) {
     const r = api.registro();
     if (!r?.em) return '';
     const d = new Date(r.em);
-    return Number.isNaN(d.getTime()) ? '' : ` em ${d.toLocaleDateString('pt-BR')}`;
+    return Number.isNaN(d.getTime()) ? '' : T.em(d.toLocaleDateString(T.local));
   }
 
   function pintarControle() {
     if (!controle || !resumo || !botao) return;
     const atual = estado();
     if (atual === 'aceito') {
-      resumo.textContent = `Você autorizou o pixel da Meta${quando()}.`;
-      botao.textContent = 'Retirar a autorização';
+      resumo.textContent = T.aceito(quando());
+      botao.textContent = T.retirar;
     } else if (atual === 'recusado') {
-      resumo.textContent = `Você recusou o pixel da Meta${quando()}. Nada está sendo gravado no seu navegador.`;
-      botao.textContent = 'Autorizar';
+      resumo.textContent = T.recusado(quando());
+      botao.textContent = T.autorizar;
     } else {
-      resumo.textContent = 'Você ainda não escolheu, e por isso o pixel não está carregando.';
-      botao.textContent = 'Autorizar';
+      resumo.textContent = T.nenhum;
+      botao.textContent = T.autorizar;
     }
     controle.hidden = false;
   }
