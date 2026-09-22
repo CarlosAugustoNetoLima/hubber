@@ -857,7 +857,7 @@ html.reveal-ready [data-reveal].is-in {
   border-color: var(--c-ink);
 }
 
-.wall__item { position: relative; margin: 0; }
+.wall__item { margin: 0; }
 .wall__play {
   position: absolute;
   inset: 0;
@@ -1059,3 +1059,153 @@ html.reveal-ready [data-reveal].is-in {
   .caixa { width: 94vw; }
   .caixa__fechar { top: -48px; }
 }
+
+/* A legenda fica fora do quadro do vídeo: dentro, ela brigaria com a barra de
+   progresso e com o botão de expandir, que já ocupam a base da peça. */
+.wall__quadro { position: relative; }
+.wall__legenda {
+  margin-top: var(--s12);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* ---- Apresentação do calendário ---- */
+
+.lp-prose--quando { color: color-mix(in oklch, var(--c-ink), transparent 30%); }
+
+.agenda {
+  display: grid;
+  gap: var(--s24);
+  padding: var(--s32);
+  background: color-mix(in oklch, var(--c-ink), transparent 88%);
+  border: 1px solid color-mix(in oklch, var(--c-ink), transparent 80%);
+  border-radius: var(--lp-r-lg, 20px);
+}
+.agenda__fuso {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--c-ink), transparent 25%);
+}
+.agenda__estado { margin: 0; font-size: var(--fs-small); color: var(--c-ink); }
+.agenda__estado:empty { display: none; }
+.agenda__bloco { display: grid; gap: var(--s12); }
+.agenda__bloco[hidden] { display: none; }
+.agenda__rotulo {
+  margin: 0;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--c-ink), transparent 45%);
+}
+
+.agenda__dias { display: flex; flex-wrap: wrap; gap: var(--s8); }
+/* O dia é uma coluna: sigla pequena, número grande, mês pequeno. O número é o
+   que a pessoa procura, então ele carrega o peso. */
+.agenda__dia {
+  display: grid;
+  gap: 2px;
+  place-items: center;
+  min-width: 68px;
+  min-height: auto;
+  padding: var(--s12) var(--s8);
+  background: color-mix(in oklch, var(--c-white), transparent 88%);
+  border: 1px solid color-mix(in oklch, var(--c-ink), transparent 82%);
+  border-radius: var(--lp-r-md, 14px);
+  color: var(--c-ink);
+  font: inherit;
+  cursor: pointer;
+  transition: background 160ms var(--lp-ease), border-color 160ms var(--lp-ease);
+}
+.agenda__dia-semana,
+.agenda__dia-mes {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.agenda__dia-numero { font-size: 1.35rem; font-weight: var(--fw-bold); line-height: 1.1; }
+.agenda__dia:hover { background: var(--c-ink); color: var(--c-white); border-color: var(--c-ink); }
+.agenda__dia[aria-pressed="true"] {
+  background: var(--c-ink);
+  color: var(--lp-accent, #EE9B00);
+  border-color: var(--c-ink);
+}
+
+.agenda__horas { display: grid; gap: var(--s16); }
+.agenda__turno { display: grid; gap: var(--s8); }
+.agenda__turno-nome {
+  margin: 0;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--c-ink), transparent 55%);
+}
+.agenda__turno-horas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: var(--s8);
+}
+.agenda__hora {
+  min-height: 44px;
+  padding: var(--s8);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--c-ink);
+  background: color-mix(in oklch, var(--c-white), transparent 88%);
+  border: 1px solid color-mix(in oklch, var(--c-ink), transparent 82%);
+  border-radius: var(--lp-r-sm, 8px);
+  cursor: pointer;
+  transition: background 160ms var(--lp-ease), border-color 160ms var(--lp-ease);
+}
+.agenda__hora:hover { background: var(--c-ink); color: var(--c-white); border-color: var(--c-ink); }
+.agenda__hora[aria-pressed="true"] {
+  background: var(--c-ink);
+  color: var(--lp-accent, #EE9B00);
+  border-color: var(--c-ink);
+}
+
+@media (max-width: 767px) {
+  .agenda { padding: var(--s16); }
+  .agenda__dia { min-width: 60px; }
+}
+
+/* ---- Fechar do modal ---- */
+/* Fixo no canto da janela, não preso ao vídeo: colado ao topo do quadro ele
+   saía da tela quando o reel ocupava a altura inteira. */
+.caixa__fechar {
+  position: fixed;
+  top: var(--s24);
+  right: var(--s24);
+  display: grid;
+  gap: 4px;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  background-color: color-mix(in srgb, #fff 10%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, #fff 28%, transparent);
+  border-radius: var(--lp-r-md, 14px);
+  background-image: none;
+  cursor: pointer;
+}
+.caixa__fechar-x {
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.caixa__fechar-txt {
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.caixa__fechar:hover { background-color: color-mix(in srgb, #fff 18%, transparent); border-color: #fff; }

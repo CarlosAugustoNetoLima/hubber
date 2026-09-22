@@ -78,6 +78,17 @@ export function initParede(root = document) {
     caixa.addEventListener('click', (e) => { if (e.target === caixa) fecharCaixa(); });
   }
 
+  /* Reel que saiu da tela para de tocar. Som vindo de um vídeo que a pessoa
+     não está mais vendo é ruído, e ainda gasta banda de quem rolou adiante.
+     O vídeo dentro do modal fica de fora: ali ele está no top layer e o
+     observador o veria como fora da tela, pausando no meio da exibição. */
+  const olho = new IntersectionObserver((entradas) => {
+    for (const e of entradas) {
+      if (e.isIntersecting || e.target.closest('.caixa')) continue;
+      e.target.pause();
+    }
+  }, { threshold: 0.35 });
+
   for (const item of itens) {
     const video = item.querySelector('[data-wall-video]');
     const botao = item.querySelector('[data-wall-play]');
@@ -88,7 +99,10 @@ export function initParede(root = document) {
     const expandir = item.querySelector('[data-wall-expandir]');
     if (!video || !botao) continue;
 
-    expandir?.addEventListener('click', () => abrir(video, item));
+    // Devolve para o quadro, não para o <figure>: a legenda também mora no
+    // figure, e o vídeo voltaria para cima dela.
+    const quadro = item.querySelector('.wall__quadro') || item;
+    expandir?.addEventListener('click', () => abrir(video, quadro));
 
     let arrastando = false;
 
@@ -111,6 +125,12 @@ export function initParede(root = document) {
       tocando = video;
     });
     video.addEventListener('pause', () => item.classList.remove('is-playing'));
+
+    /* O menu de contexto oferece "salvar vídeo como", que o controlslist não
+       alcança. Bloquear aqui fecha o caminho fácil. Não é proteção: quem abrir
+       a aba de rede acha o arquivo do mesmo jeito. */
+    video.addEventListener('contextmenu', (e) => e.preventDefault());
+    olho.observe(video);
 
     video.addEventListener('timeupdate', () => {
       if (!seek || arrastando || !video.duration) return;

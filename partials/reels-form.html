@@ -4,7 +4,8 @@
       <h2 class="lp-sec__title" id="book-title" data-reveal>Book a 30 minute call.</h2>
     </header>
     <div class="lp-sec__body">
-      <p class="lp-prose" data-reveal>Pick a time that works. You talk to Nicolas, who runs the shoots, and he tells you straight whether this fits your business.</p>
+      <p class="lp-prose" data-reveal>Thirty minutes with Nicolas, who runs the shoots. He listens to what your business needs on camera and tells you straight whether this fits. No deck, no pitch.</p>
+      <p class="lp-prose lp-prose--quando" data-reveal>Calls run Monday to Friday, 9am to 5pm Orlando time, starting the next business day. Pick the slot that suits you and the invitation lands in your inbox.</p>
 
       <form class="form book__form" data-reels-form method="post" action="/api/reels-lead"
             data-endpoint="/api/reels-lead" novalidate data-reveal>
@@ -65,10 +66,16 @@
 
       <fieldset class="field agenda" data-field data-agenda>
         <legend class="field__label">Pick a day and time</legend>
-        <p class="agenda__fuso" data-agenda-fuso>All times shown are Orlando time</p>
-        <p class="agenda__estado" data-agenda-estado>Send without picking a time and we will call you to schedule.</p>
-        <div class="agenda__dias" data-agenda-dias hidden></div>
-        <div class="agenda__horas" data-agenda-horas hidden></div>
+        <p class="agenda__fuso" data-agenda-fuso></p>
+        <p class="agenda__estado" data-agenda-estado></p>
+        <div class="agenda__bloco" hidden data-agenda-bloco-dias>
+          <p class="agenda__rotulo">Choose a day</p>
+          <div class="agenda__dias" data-agenda-dias></div>
+        </div>
+        <div class="agenda__bloco" hidden data-agenda-bloco-horas>
+          <p class="agenda__rotulo">Choose a time</p>
+          <div class="agenda__horas" data-agenda-horas></div>
+        </div>
         <input type="hidden" name="inicio" data-agenda-inicio>
         <p class="field__error" data-error hidden></p>
       </fieldset>

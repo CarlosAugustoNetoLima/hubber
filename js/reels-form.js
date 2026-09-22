@@ -2,13 +2,13 @@ const TEXTO = {
   en: { carregando: 'Loading available times',
         falhou: 'We could not load the calendar. Send the form anyway and we will get in touch to schedule.',
         fuso: 'All times shown are Orlando time',
-        escolha: 'Pick a day', ocupado: 'Someone just took that time. Pick another one.',
+        manha: 'Morning', tarde: 'Afternoon', ocupado: 'Someone just took that time. Pick another one.',
         erro: 'We could not send it. Try again in a moment.',
         faltando: 'Some fields are missing.', enviando: 'Booking...' },
   pt: { carregando: 'Carregando os horários livres',
         falhou: 'Não conseguimos carregar o calendário. Envie assim mesmo e a gente entra em contato para marcar.',
         fuso: 'Todos os horários são de Orlando',
-        escolha: 'Escolha um dia', ocupado: 'Alguém acabou de pegar esse horário. Escolha outro.',
+        manha: 'Manhã', tarde: 'Tarde', ocupado: 'Alguém acabou de pegar esse horário. Escolha outro.',
         erro: 'Não conseguimos enviar. Tente de novo em instantes.',
         faltando: 'Faltam campos para enviar.', enviando: 'Marcando...' },
 };
@@ -30,6 +30,8 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
   const rotuloFuso = agenda.querySelector('[data-agenda-fuso]');
   const caixaDias = agenda.querySelector('[data-agenda-dias]');
   const caixaHoras = agenda.querySelector('[data-agenda-horas]');
+  const blocoDias = agenda.querySelector('[data-agenda-bloco-dias]');
+  const blocoHoras = agenda.querySelector('[data-agenda-bloco-horas]');
   const campoInicio = agenda.querySelector('[data-agenda-inicio]');
   const resultado = root.querySelector('[data-reels-result]');
   const quandoOk = resultado?.querySelector('[data-reels-quando]');
@@ -38,39 +40,64 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
   let dias = [];
   let diaAberto = null;
 
-  const comoDia = (iso) => {
+  const local = lang === 'pt' ? 'pt-BR' : 'en-US';
+  function partes(iso) {
     const [a, m, d] = iso.split('-').map(Number);
-    return new Date(Date.UTC(a, m - 1, d)).toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US',
-      { timeZone: 'UTC', weekday: 'short', day: '2-digit', month: 'short' });
-  };
+    const data = new Date(Date.UTC(a, m - 1, d));
+    const fmt = (o) => data.toLocaleDateString(local, { timeZone: 'UTC', ...o }).replace('.', '');
+    return { semana: fmt({ weekday: 'short' }), numero: String(d), mes: fmt({ month: 'short' }) };
+  }
 
+  /* Manhã e tarde separadas. Dezesseis chips num bloco só viram parede; em dois
+     turnos a pessoa acha o dela antes de ler horário por horário. */
   function pintarHoras() {
     const dia = dias.find((d) => d.data === diaAberto);
     caixaHoras.innerHTML = '';
-    if (!dia) { caixaHoras.hidden = true; return; }
-    for (const h of dia.horarios) {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'agenda__hora';
-      b.textContent = h.hora;
-      b.setAttribute('aria-pressed', String(campoInicio.value === h.inicio));
-      b.addEventListener('click', () => {
-        campoInicio.value = h.inicio;
-        pintarHoras();
-      });
-      caixaHoras.appendChild(b);
+    if (!dia) { if (blocoHoras) blocoHoras.hidden = true; return; }
+
+    for (const [nome, lista] of [
+      [T.manha, dia.horarios.filter((h) => Number(h.hora.slice(0, 2)) < 12)],
+      [T.tarde, dia.horarios.filter((h) => Number(h.hora.slice(0, 2)) >= 12)],
+    ]) {
+      if (!lista.length) continue;
+      const grupo = document.createElement('div');
+      grupo.className = 'agenda__turno';
+      const titulo = document.createElement('p');
+      titulo.className = 'agenda__turno-nome';
+      titulo.textContent = nome;
+      const caixa = document.createElement('div');
+      caixa.className = 'agenda__turno-horas';
+      for (const h of lista) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'agenda__hora';
+        b.textContent = h.hora;
+        b.setAttribute('aria-pressed', String(campoInicio.value === h.inicio));
+        b.addEventListener('click', () => { campoInicio.value = h.inicio; pintarHoras(); });
+        caixa.appendChild(b);
+      }
+      grupo.append(titulo, caixa);
+      caixaHoras.appendChild(grupo);
     }
-    caixaHoras.hidden = false;
+    if (blocoHoras) blocoHoras.hidden = false;
   }
 
+  /* Dia em três linhas em vez de "Tue, Sep 22" numa linha só: o número grande é
+     o que a pessoa procura, e a fila fica varrível de relance. */
   function pintarDias() {
     caixaDias.innerHTML = '';
     for (const d of dias) {
+      const p = partes(d.data);
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'agenda__dia';
-      b.textContent = comoDia(d.data);
       b.setAttribute('aria-pressed', String(d.data === diaAberto));
+      for (const [classe, texto] of [['semana', p.semana], ['numero', p.numero], ['mes', p.mes]]) {
+        const linha = document.createElement('span');
+        linha.className = `agenda__dia-${classe}`;
+        linha.textContent = texto;
+        b.appendChild(linha);
+      }
       b.addEventListener('click', () => {
         diaAberto = d.data;
         campoInicio.value = '';
@@ -79,7 +106,7 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
       });
       caixaDias.appendChild(b);
     }
-    caixaDias.hidden = false;
+    if (blocoDias) blocoDias.hidden = false;
   }
 
   // Sem calendário a pessoa ainda envia: o lead entra sem horário e alguém
@@ -93,12 +120,14 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
       if (!dados?.dias?.length) throw new Error('vazio');
       dias = dados.dias;
       if (dados.fuso?.sigla) rotuloFuso.textContent = `${T.fuso} (${dados.fuso.sigla})`;
-      estado.textContent = T.escolha;
+      estado.textContent = '';
       diaAberto = dias[0].data;
       pintarDias();
       pintarHoras();
     } catch (_) {
       estado.textContent = T.falhou;
+      if (blocoDias) blocoDias.hidden = true;
+      if (blocoHoras) blocoHoras.hidden = true;
     }
   }
 

@@ -4,7 +4,8 @@
       <h2 class="lp-sec__title" id="book-title" data-reveal>Marque uma conversa de 30 minutos.</h2>
     </header>
     <div class="lp-sec__body">
-      <p class="lp-prose" data-reveal>Escolha um horário. Você fala com o Nicolas, que comanda as captações, e ele diz com franqueza se isso serve para o seu negócio.</p>
+      <p class="lp-prose" data-reveal>Trinta minutos com o Nicolas, que comanda as captações. Ele escuta o que o seu negócio precisa na câmera e diz com franqueza se isso serve. Sem apresentação, sem discurso de venda.</p>
+      <p class="lp-prose lp-prose--quando" data-reveal>As conversas acontecem de segunda a sexta, das 9h às 17h no horário de Orlando, a partir do próximo dia útil. Escolha o horário que te serve e o convite chega no seu e-mail.</p>
 
       <form class="form book__form" data-reels-form method="post" action="/api/reels-lead"
             data-endpoint="/api/reels-lead" novalidate data-reveal>
@@ -65,10 +66,16 @@
 
       <fieldset class="field agenda" data-field data-agenda>
         <legend class="field__label">Escolha o dia e a hora</legend>
-        <p class="agenda__fuso" data-agenda-fuso>Todos os horários são de Orlando</p>
-        <p class="agenda__estado" data-agenda-estado>Envie sem escolher horário e a gente liga para marcar.</p>
-        <div class="agenda__dias" data-agenda-dias hidden></div>
-        <div class="agenda__horas" data-agenda-horas hidden></div>
+        <p class="agenda__fuso" data-agenda-fuso></p>
+        <p class="agenda__estado" data-agenda-estado></p>
+        <div class="agenda__bloco" hidden data-agenda-bloco-dias>
+          <p class="agenda__rotulo">Escolha o dia</p>
+          <div class="agenda__dias" data-agenda-dias></div>
+        </div>
+        <div class="agenda__bloco" hidden data-agenda-bloco-horas>
+          <p class="agenda__rotulo">Escolha o horário</p>
+          <div class="agenda__horas" data-agenda-horas></div>
+        </div>
         <input type="hidden" name="inicio" data-agenda-inicio>
         <p class="field__error" data-error hidden></p>
       </fieldset>
