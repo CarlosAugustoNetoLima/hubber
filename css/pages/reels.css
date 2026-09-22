@@ -1223,3 +1223,43 @@ html.reveal-ready [data-reveal].is-in {
 }
 [data-surface="ink"] .lp-sec__lead { color: var(--fg-muted); }
 .lp-sec__lead--quando { font-size: var(--fs-small); }
+
+/* ---- Mobile ---- */
+
+/* Quinze dias em quatro linhas empilhadas davam 901px de agenda numa tela de
+   812: o formulário sumia e a pessoa rolava às cegas. Num trilho só, que
+   desliza na horizontal, a etapa inteira volta a caber na tela. O overflow
+   fica contido no trilho, então a página não ganha rolagem lateral. */
+@media (max-width: 767px) {
+  .agenda__dias {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    margin-inline: calc(-1 * var(--s16));
+    padding: 0 var(--s16) var(--s8);
+  }
+  .agenda__dia { flex: 0 0 auto; scroll-snap-align: start; }
+
+  /* Alvo de toque: 36px é confortável com mouse e escorregadio com o polegar. */
+  .wall__expandir { width: 44px; height: 44px; }
+  .wall__voltar { width: 40px; height: 40px; }
+
+  /* O link dentro do texto do consentimento tem a altura da linha. O padding
+     vertical cresce a área de toque sem mexer no fluxo do parágrafo. */
+  .book__form .field__check a,
+  .ftr a {
+    display: inline-block;
+    padding-block: var(--s12);
+  }
+}
+
+.lp-lang__btn { width: 44px; height: 44px; }
+.lp-lang__menu a { min-height: 44px; }
+.skip { min-height: 44px; display: inline-flex; align-items: center; }
+/* O alvo é o link, não o contêiner: o SVG tem 34px e o dedo precisa de 44. */
+[data-lp="reels"] .hdr__logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
