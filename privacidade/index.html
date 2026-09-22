@@ -27,67 +27,6 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
 <link rel="stylesheet" href="/css/pages/legal.css">
-<!-- Onde a escolha sobre medição é guardada e aplicada -->
-<script>
-(function(){
-  var CHAVE = 'hubber:consentimento';
-  var VERSAO = 1;
-  var ouvintes = [];
-
-  function registro(){
-    try {
-      var bruto = window.localStorage.getItem(CHAVE);
-      if (!bruto) return null;
-      var d = JSON.parse(bruto);
-      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
-      // vale como se não houvesse escolha, e a tarja pergunta de novo.
-      return d && d.versao === VERSAO ? d : null;
-    } catch (e) { return null; }
-  }
-
-  function aceitou(){
-    var d = registro();
-    return !!d && d.estado === 'aceito';
-  }
-
-  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
-  // no navegador sai também. O domínio do cookie depende de como o fbevents o
-  // gravou, então apaga nos escopos possíveis.
-  function apagarCookies(){
-    var host = location.hostname;
-    var raiz = host.split('.').slice(-2).join('.');
-    var escopos = ['', '; domain=' + host, '; domain=.' + host, '; domain=' + raiz, '; domain=.' + raiz];
-    ['_fbp', '_fbc'].forEach(function(nome){
-      escopos.forEach(function(escopo){
-        document.cookie = nome + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + escopo;
-      });
-    });
-  }
-
-  window.consentimento = {
-    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
-    registro: registro,
-    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
-    // hora, para não atrasar quem autorizou numa visita anterior.
-    aoAceitar: function(fn){
-      ouvintes.push(fn);
-      if (aceitou()) fn();
-    },
-    registrar: function(estado){
-      try {
-        window.localStorage.setItem(CHAVE, JSON.stringify({
-          estado: estado,
-          em: new Date().toISOString(),
-          versao: VERSAO
-        }));
-      } catch (e) {}
-      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
-      else apagarCookies();
-    }
-  };
-})();
-</script>
-
 </head>
 <body data-surface="ink">
 
@@ -133,6 +72,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     </nav>
 
     <div class="legal__body">
+      <p class="legal__escopo">Esta política vale para o <strong>site da Hubber</strong>. A Hubber Connect tem a sua, em <a href="/connect/privacidade/">hubbermarketing.com/connect/privacidade</a>, e a página de produção de vídeo em Orlando tem a dela, em <a href="https://reels.hubbermarketing.com/pt/privacidade/">reels.hubbermarketing.com</a>.</p>
+
 
       <h2 id="responsavel">1. Quem responde pelos seus dados</h2>
       <p>A Hubber, empresa do Grupo Cinnamon, é a controladora dos dados pessoais tratados neste site. Isso significa que é a Hubber quem decide o que coletar e para quê, e é dela que você pode cobrar.</p>
@@ -142,7 +83,6 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 
       <h3>O que você digita nos formulários</h3>
       <p>A gente só coleta o que você escreve. Não compramos listas e não buscamos dados seus em outros lugares.</p>
-      <p>No formulário da <strong>Hubber Connect</strong>, para criadores: nome, perfil no Instagram ou TikTok, nicho de conteúdo, faixa de seguidores, cidade de destino, datas da viagem, motivo da viagem, tipos de parceria que interessam, link do mídia kit, e-mail e WhatsApp.</p>
       <p>No formulário de <strong>diagnóstico</strong>, para empresas: nome, empresa, seu papel nela, site, setor, faixa de faturamento, tamanho do time, verba de marketing, e as respostas abertas sobre o momento do negócio, além de e-mail e telefone.</p>
 
       <h3>O que o servidor registra sozinho</h3>
@@ -156,46 +96,24 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           <dd>Base legal: o seu <strong>consentimento</strong>, dado na caixa que você marca antes de enviar o formulário. Sem ela, o formulário não envia.</dd>
         </div>
         <div>
-          <dt>Apresentar o seu perfil a uma empresa da rede, quando houver fit</dt>
-          <dd>Base legal: o mesmo consentimento. É a razão de existir da Hubber Connect, e está dito no formulário.</dd>
-        </div>
-        <div>
           <dt>Manter o site funcionando e seguro</dt>
           <dd>Base legal: <strong>legítimo interesse</strong>, para operar o serviço e conter abuso e fraude.</dd>
         </div>
       </dl>
-      <p>O que você escreve no formulário não vira publicidade: esses dados não são usados para anunciar nem para montar perfil de comportamento. A sua visita à página da Hubber Connect, essa sim, alimenta a medição dos nossos anúncios, e a seção 5 explica como.</p>
+      <p>O que você escreve no formulário não vira publicidade: esses dados não são usados para anunciar nem para montar perfil de comportamento.</p>
 
       <h2 id="compartilhamento">4. Com quem compartilhamos</h2>
       <p>A Hubber não vende dados pessoais. O compartilhamento se limita a estes casos:</p>
       <ul>
-        <li><strong>Empresas clientes da Hubber.</strong> Quando a sua viagem e o seu perfil combinam com o que uma marca da rede procura, apresentamos o seu perfil a ela. Isso só acontece com o consentimento que você deu ao enviar o formulário.</li>
         <li><strong>Ferramenta de CRM.</strong> As aplicações ficam guardadas no JSYNQ, o sistema onde a equipe acompanha cada contato.</li>
         <li><strong>Hospedagem.</strong> O site e o recebimento dos formulários rodam na Vercel, em servidores fora do Brasil. Ou seja, há transferência internacional de dados, feita com as garantias que a lei exige. Se o sistema de CRM estiver indisponível no momento do envio, a sua resposta fica guardada ali, em área privada, até ser entregue, para que nenhuma aplicação se perca.</li>
         <li><strong>Google Fonts.</strong> As fontes do site são carregadas dos servidores do Google. Nesse pedido o seu navegador entrega o endereço IP ao Google, como em qualquer site que use o serviço.</li>
-        <li><strong>Meta.</strong> Na página da Hubber Connect, o pixel de medição do Facebook e do Instagram entrega à Meta o seu endereço IP e a sua visita, em servidores nos Estados Unidos. É mais uma transferência internacional, e a seção 5 explica o que o pixel faz e como sair dele.</li>
         <li><strong>Autoridades.</strong> Quando houver ordem judicial ou obrigação legal.</li>
       </ul>
 
       <h2 id="cookies">5. Cookies e rastreamento</h2>
-      <p>Uma página deste site, a da <strong>Hubber Connect</strong>, pode usar o <strong>pixel da Meta</strong>, a ferramenta de medição do Facebook e do Instagram. Ele <strong>só carrega se você autorizar</strong>: na primeira visita aparece uma tarja perguntando, e enquanto você não responder, ou se você recusar, ele não carrega e nada é gravado no seu navegador.</p>
-      <p>Se você autorizar, ele grava dois cookies: o <strong>_fbp</strong>, um identificador do seu navegador, e o <strong>_fbc</strong>, que guarda o código do anúncio pelo qual você chegou, quando você chegou por um. Os dois duram até três meses. Nas demais páginas o pixel não carrega e nada é gravado.</p>
-      <p>Ele serve para duas coisas: medir quantas pessoas chegam até aqui por cada anúncio e mostrar os nossos anúncios de novo a quem já visitou o site. Nesse caminho, o seu endereço IP e a sua visita a essa página vão para a Meta.</p>
-      <p>Fora isso, o site não usa Google Analytics nem nenhuma outra ferramenta de medição de audiência.</p>
-            <p>A sua resposta fica guardada no seu próprio navegador, com a data, e não vai para os nossos servidores. Serve só para não perguntarmos de novo a cada visita.</p>
-
-      <div class="consent-controle" data-consent-controle hidden>
-  <p data-consent-resumo></p>
-  <button class="btn consent__btn" type="button" data-consent-trocar></button>
-</div>
-<!-- As páginas legais não carregam o main.js, que é pesado e cheio de coisa que
-     elas não usam. Só o módulo do consentimento entra aqui. -->
-<script type="module">
-import { initConsentimento } from '/js/consentimento.js';
-initConsentimento();
-</script>
-
-      <p>Você pode mudar de ideia quando quiser, no botão acima. Retirar a autorização apaga do seu navegador os cookies que o pixel tinha gravado. Se preferir, dá para bloquear cookies de terceiros no navegador, ou ajustar o que a Meta pode usar para anúncios nas preferências de anúncio da sua conta no Facebook ou no Instagram. O site continua funcionando igual nos dois casos.</p>
+      <p>Este site <strong>não usa cookies</strong> e não carrega pixel de rede social, Google Analytics nem qualquer outra ferramenta de medição de audiência. Nada é gravado no seu navegador, e é por isso que você não vê aqui aviso de cookies.</p>
+      <p>Duas páginas fora deste site usam medição, cada uma com a política dela e com tarja de consentimento própria: a <a href="/connect/privacidade/">Hubber Connect</a> e a <a href="https://reels.hubbermarketing.com/pt/privacidade/">página de vídeos em Orlando</a>.</p>
 
       <h2 id="prazo">6. Por quanto tempo guardamos</h2>
       <p>Guardamos a sua aplicação enquanto ela estiver em avaliação e, se virar parceria, enquanto durar a relação e pelo prazo que a lei exigir depois disso.</p>

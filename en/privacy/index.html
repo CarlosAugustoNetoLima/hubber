@@ -27,67 +27,6 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
 <link rel="stylesheet" href="/css/pages/legal.css">
-<!-- Onde a escolha sobre medição é guardada e aplicada -->
-<script>
-(function(){
-  var CHAVE = 'hubber:consentimento';
-  var VERSAO = 1;
-  var ouvintes = [];
-
-  function registro(){
-    try {
-      var bruto = window.localStorage.getItem(CHAVE);
-      if (!bruto) return null;
-      var d = JSON.parse(bruto);
-      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
-      // vale como se não houvesse escolha, e a tarja pergunta de novo.
-      return d && d.versao === VERSAO ? d : null;
-    } catch (e) { return null; }
-  }
-
-  function aceitou(){
-    var d = registro();
-    return !!d && d.estado === 'aceito';
-  }
-
-  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
-  // no navegador sai também. O domínio do cookie depende de como o fbevents o
-  // gravou, então apaga nos escopos possíveis.
-  function apagarCookies(){
-    var host = location.hostname;
-    var raiz = host.split('.').slice(-2).join('.');
-    var escopos = ['', '; domain=' + host, '; domain=.' + host, '; domain=' + raiz, '; domain=.' + raiz];
-    ['_fbp', '_fbc'].forEach(function(nome){
-      escopos.forEach(function(escopo){
-        document.cookie = nome + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + escopo;
-      });
-    });
-  }
-
-  window.consentimento = {
-    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
-    registro: registro,
-    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
-    // hora, para não atrasar quem autorizou numa visita anterior.
-    aoAceitar: function(fn){
-      ouvintes.push(fn);
-      if (aceitou()) fn();
-    },
-    registrar: function(estado){
-      try {
-        window.localStorage.setItem(CHAVE, JSON.stringify({
-          estado: estado,
-          em: new Date().toISOString(),
-          versao: VERSAO
-        }));
-      } catch (e) {}
-      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
-      else apagarCookies();
-    }
-  };
-})();
-</script>
-
 </head>
 <body data-surface="ink">
 
@@ -133,6 +72,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     </nav>
 
     <div class="legal__body">
+      <p class="legal__escopo">This policy covers the <strong>Hubber site</strong>. Hubber Connect has its own, at <a href="/connect/privacidade/">hubbermarketing.com/connect/privacidade</a>, and the Orlando video production page has its own, at <a href="https://reels.hubbermarketing.com/privacy/">reels.hubbermarketing.com</a>.</p>
+
 
       <h2 id="controller">1. Who is responsible for your data</h2>
       <p>Hubber, a Grupo Cinnamon company, is the controller of the personal data processed on this site. That means Hubber decides what to collect and why, and Hubber is who you can hold to it.</p>
@@ -142,7 +83,6 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 
       <h3>What you type into the forms</h3>
       <p>We only collect what you write. We do not buy lists and we do not look up your information elsewhere.</p>
-      <p>In the <strong>Hubber Connect</strong> form, for creators: name, Instagram or TikTok profile, content niche, follower range, destination city, travel dates, reason for the trip, the kinds of partnership that interest you, media kit link, email and WhatsApp.</p>
       <p>In the <strong>Growth Diagnostic</strong> form, for companies: name, company, your role in it, website, industry, revenue range, team size, marketing budget, and the open answers about where the business stands, plus email and phone.</p>
 
       <h3>What the server records on its own</h3>
@@ -156,46 +96,24 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           <dd>Legal basis: your <strong>consent</strong>, given in the box you check before sending the form. Without it, the form does not send.</dd>
         </div>
         <div>
-          <dt>To present your profile to a company in the network, when there is a fit</dt>
-          <dd>Legal basis: the same consent. It is the reason Hubber Connect exists, and it is stated in the form.</dd>
-        </div>
-        <div>
           <dt>To keep the site running and secure</dt>
           <dd>Legal basis: <strong>legitimate interest</strong>, to operate the service and contain abuse and fraud.</dd>
         </div>
       </dl>
-      <p>What you write in the form does not become advertising: that data is not used to advertise or to build behavioral profiles. Your visit to the Hubber Connect page does feed the measurement of our ads, and section 5 explains how.</p>
+      <p>What you write in the form does not become advertising: that data is not used to advertise or to build behavioral profiles.</p>
 
       <h2 id="sharing">4. Who we share it with</h2>
       <p>Hubber does not sell personal data. Sharing is limited to these cases:</p>
       <ul>
-        <li><strong>Hubber client companies.</strong> When your trip and your profile match what a brand in the network is looking for, we present your profile to them. This only happens with the consent you gave when sending the form.</li>
         <li><strong>CRM tool.</strong> Applications are stored in JSYNQ, the system where the team tracks each contact.</li>
         <li><strong>Hosting.</strong> The site and the form handling run on Vercel, on servers outside Brazil. That means there is an international transfer of data, carried out with the safeguards the law requires.</li>
         <li><strong>Google Fonts.</strong> The site's fonts are loaded from Google's servers. In that request your browser hands your IP address to Google, as on any site using the service.</li>
-        <li><strong>Meta.</strong> On the Hubber Connect page, the Facebook and Instagram measurement pixel hands Meta your IP address and your visit, on servers in the United States. That is one more international transfer, and section 5 explains what the pixel does and how to opt out.</li>
         <li><strong>Authorities.</strong> Where there is a court order or a legal obligation.</li>
       </ul>
 
       <h2 id="cookies">5. Cookies and tracking</h2>
-      <p>One page of this site, the <strong>Hubber Connect</strong> page, may use the <strong>Meta pixel</strong>, the measurement tool behind Facebook and Instagram. It <strong>only loads if you allow it</strong>: on your first visit a bar asks you, and while you have not answered, or if you decline, it does not load and nothing is written to your browser.</p>
-      <p>If you allow it, it writes two cookies: <strong>_fbp</strong>, an identifier for your browser, and <strong>_fbc</strong>, which stores the code of the ad you came through, when you came through one. Both last up to three months. On the other pages the pixel does not load and nothing is stored.</p>
-      <p>It does two things: it measures how many people reach us through each ad, and it lets us show our ads again to people who have already visited the site. Along the way, your IP address and your visit to that page go to Meta.</p>
-      <p>Beyond that, the site does not use Google Analytics or any other audience measurement tool.</p>
-            <p>Your answer is kept in your own browser, with the date, and never reaches our servers. It exists only so we do not ask again on every visit.</p>
-
-      <div class="consent-controle" data-consent-controle hidden>
-  <p data-consent-resumo></p>
-  <button class="btn consent__btn" type="button" data-consent-trocar></button>
-</div>
-<!-- As páginas legais não carregam o main.js, que é pesado e cheio de coisa que
-     elas não usam. Só o módulo do consentimento entra aqui. -->
-<script type="module">
-import { initConsentimento } from '/js/consentimento.js';
-initConsentimento();
-</script>
-
-      <p>You can change your mind at any time, using the button above. Withdrawing removes from your browser the cookies the pixel had written. If you prefer, you can block third party cookies in your browser, or adjust what Meta may use for advertising in the ad preferences of your Facebook or Instagram account. The site keeps working the same either way.</p>
+      <p>This site <strong>does not use cookies</strong> and loads no social network pixel, Google Analytics or any other audience measurement tool. Nothing is stored in your browser, which is why you do not see a cookie banner here.</p>
+      <p>Two pages outside this site do use measurement, each with its own policy and its own consent bar: <a href="/connect/privacidade/">Hubber Connect</a> and the <a href="https://reels.hubbermarketing.com/privacy/">Orlando video page</a>.</p>
 
       <h2 id="retention">6. How long we keep it</h2>
       <p>We keep your application while it is under review and, if it becomes a partnership, for as long as the relationship lasts and for the period the law requires afterwards.</p>

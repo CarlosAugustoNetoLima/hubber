@@ -1,0 +1,98 @@
+<section class="section" id="book" data-surface="accent" aria-labelledby="book-title">
+  <div class="wrap lp-sec">
+    <header class="lp-sec__head">
+      <h2 class="lp-sec__title" id="book-title" data-reveal>Book a 30 minute call.</h2>
+    </header>
+    <div class="lp-sec__body">
+      <p class="lp-prose" data-reveal>Pick a time that works. You talk to Nicolas, who runs the shoots, and he tells you straight whether this fits your business.</p>
+
+      <form class="form book__form" data-reels-form method="post" action="/api/reels-lead"
+            data-endpoint="/api/reels-lead" novalidate data-reveal>
+        <p class="form__errors" data-errors hidden></p>
+
+      <div class="field" data-field>
+        <label class="field__label" for="nome">Your name</label>
+        <input class="field__input" type="text" id="nome" name="nome" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="empresa">Business name</label>
+        <input class="field__input" type="text" id="empresa" name="empresa" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="email">Email</label>
+        <input class="field__input" type="email" id="email" name="email" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="telefone">WhatsApp or phone</label>
+        <input class="field__input" type="tel" id="telefone" name="telefone" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="negocio">What your business does</label>
+        <p class="form__hint" id="d-negocio">Dental clinic, law firm, restaurant, whatever it is</p>
+        <input class="field__input" type="text" id="negocio" name="negocio" aria-describedby="d-negocio" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="onde">Where you are in Orlando</label>
+        <p class="form__hint" id="d-onde">Neighborhood or area, so we can plan the drive</p>
+        <input class="field__input" type="text" id="onde" name="onde" aria-describedby="d-onde" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+
+      <fieldset class="field field__group" data-field>
+        <legend class="field__label">Which option interests you</legend>
+        <p class="form__hint">You are not committing to anything here</p>
+        <div class="escolhas">
+          <label class="escolha">
+            <input type="radio" name="plano" value="avulsa" checked required>
+            <span>One-time shoot, $1,500</span>
+          </label>
+          <label class="escolha">
+            <input type="radio" name="plano" value="consistencia" required>
+            <span>Consistency plan, $2,700 a month</span>
+          </label>
+          <label class="escolha">
+            <input type="radio" name="plano" value="indeciso" required>
+            <span>Not sure yet, I want to understand on the call</span>
+          </label>
+        </div>
+        <p class="field__error" data-error hidden></p>
+      </fieldset>
+
+      <fieldset class="field agenda" data-field data-agenda>
+        <legend class="field__label">Pick a day and time</legend>
+        <p class="agenda__fuso" data-agenda-fuso>All times shown are Orlando time</p>
+        <p class="agenda__estado" data-agenda-estado>Send without picking a time and we will call you to schedule.</p>
+        <div class="agenda__dias" data-agenda-dias hidden></div>
+        <div class="agenda__horas" data-agenda-horas hidden></div>
+        <input type="hidden" name="inicio" data-agenda-inicio>
+        <p class="field__error" data-error hidden></p>
+      </fieldset>
+
+      <div class="field field--check" data-field>
+        <label class="field__check">
+          <input type="checkbox" id="consentimento" name="consentimento" value="sim" required>
+          <span>I authorize Hubber to use this information to schedule and hold this call. No lists, no spam. <a href="/privacy/">Privacy policy</a>.</span>
+        </label>
+        <p class="field__error" data-error hidden></p>
+      </div>
+
+      <input class="hp" type="text" name="website_extra" tabindex="-1" autocomplete="off"
+             aria-hidden="true" data-honeypot>
+      <input type="hidden" name="idioma" value="en">
+
+        <button class="btn btn--primary" type="submit">Book the call</button>
+      </form>
+
+      <div class="book__ok" data-reels-result hidden>
+        <h3 tabindex="-1">You are booked.</h3>
+        <p data-reels-quando></p>
+        <p>Check your email for the invitation with the video link.</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -143,7 +143,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="/assets/fonts/946-latin-wide-3.DEV-PREVIEW.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/video/reels/behind-the-scenes.jpg" as="image" fetchpriority="high">
+<link rel="preload" href="/assets/video/reels/hero-mix.jpg" as="image" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,300..700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="/css/fonts.css">
 <link rel="stylesheet" href="/css/tokens.css">
@@ -232,11 +232,11 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 
 <section class="lp-hero" data-surface="ink" aria-labelledby="hero-title">
   <video class="lp-hero__glow" muted loop playsinline autoplay preload="auto" aria-hidden="true" data-autoplay>
-    <source src="/assets/video/reels/behind-the-scenes-glow.mp4" type="video/mp4">
+    <source src="/assets/video/reels/hero-mix-glow.mp4" type="video/mp4">
   </video>
   <div class="lp-hero__frame">
-    <video class="lp-hero__media" poster="/assets/video/reels/behind-the-scenes.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true" data-autoplay>
-      <source src="/assets/video/reels/behind-the-scenes.mp4" type="video/mp4">
+    <video class="lp-hero__media" poster="/assets/video/reels/hero-mix.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true" data-autoplay>
+      <source src="/assets/video/reels/hero-mix.mp4" type="video/mp4">
     </video>
     <div class="lp-hero__veil" aria-hidden="true"></div>
     <div class="lp-hero__in">
@@ -399,25 +399,219 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
   </div>
 </section>
 
+<section class="section" id="work" data-surface="ink" aria-labelledby="work-title">
+  <div class="wrap lp-sec">
+    <header class="lp-sec__head">
+      <h2 class="lp-sec__title" id="work-title" data-reveal>Work we have <em>already shot</em>.</h2>
+    </header>
+    <div class="lp-sec__body">
+      <div class="wall">
+        <figure class="wall__item" data-reveal>
+          <video class="wall__media" poster="/assets/video/reels/portfolio/casa-1.jpg"
+                 loop playsinline preload="none" data-wall-video>
+            <source src="/assets/video/reels/portfolio/casa-1.mp4" type="video/mp4">
+          </video>
+          <button class="wall__play" type="button" aria-label="Play reel 1" data-wall-play>
+            <span class="wall__icon" aria-hidden="true"></span>
+          </button>
+          <button class="wall__expandir" type="button" aria-label="Expand reel 1" data-wall-expandir></button>
+          <div class="wall__barra" hidden data-wall-barra>
+            <button class="wall__voltar" type="button" aria-label="Back 10 seconds" data-wall-voltar></button>
+            <input class="wall__seek" type="range" min="0" max="100" step="0.1" value="0"
+                   aria-label="Scrub reel 1" data-wall-seek>
+            <span class="wall__tempo" data-wall-tempo>0:00</span>
+          </div>
+        </figure>
+        <figure class="wall__item" data-reveal>
+          <video class="wall__media" poster="/assets/video/reels/portfolio/casa-2.jpg"
+                 loop playsinline preload="none" data-wall-video>
+            <source src="/assets/video/reels/portfolio/casa-2.mp4" type="video/mp4">
+          </video>
+          <button class="wall__play" type="button" aria-label="Play reel 2" data-wall-play>
+            <span class="wall__icon" aria-hidden="true"></span>
+          </button>
+          <button class="wall__expandir" type="button" aria-label="Expand reel 2" data-wall-expandir></button>
+          <div class="wall__barra" hidden data-wall-barra>
+            <button class="wall__voltar" type="button" aria-label="Back 10 seconds" data-wall-voltar></button>
+            <input class="wall__seek" type="range" min="0" max="100" step="0.1" value="0"
+                   aria-label="Scrub reel 2" data-wall-seek>
+            <span class="wall__tempo" data-wall-tempo>0:00</span>
+          </div>
+        </figure>
+        <figure class="wall__item" data-reveal>
+          <video class="wall__media" poster="/assets/video/reels/portfolio/consignacao.jpg"
+                 loop playsinline preload="none" data-wall-video>
+            <source src="/assets/video/reels/portfolio/consignacao.mp4" type="video/mp4">
+          </video>
+          <button class="wall__play" type="button" aria-label="Play reel 3" data-wall-play>
+            <span class="wall__icon" aria-hidden="true"></span>
+          </button>
+          <button class="wall__expandir" type="button" aria-label="Expand reel 3" data-wall-expandir></button>
+          <div class="wall__barra" hidden data-wall-barra>
+            <button class="wall__voltar" type="button" aria-label="Back 10 seconds" data-wall-voltar></button>
+            <input class="wall__seek" type="range" min="0" max="100" step="0.1" value="0"
+                   aria-label="Scrub reel 3" data-wall-seek>
+            <span class="wall__tempo" data-wall-tempo>0:00</span>
+          </div>
+        </figure>
+        <figure class="wall__item" data-reveal>
+          <video class="wall__media" poster="/assets/video/reels/portfolio/porsche.jpg"
+                 loop playsinline preload="none" data-wall-video>
+            <source src="/assets/video/reels/portfolio/porsche.mp4" type="video/mp4">
+          </video>
+          <button class="wall__play" type="button" aria-label="Play reel 4" data-wall-play>
+            <span class="wall__icon" aria-hidden="true"></span>
+          </button>
+          <button class="wall__expandir" type="button" aria-label="Expand reel 4" data-wall-expandir></button>
+          <div class="wall__barra" hidden data-wall-barra>
+            <button class="wall__voltar" type="button" aria-label="Back 10 seconds" data-wall-voltar></button>
+            <input class="wall__seek" type="range" min="0" max="100" step="0.1" value="0"
+                   aria-label="Scrub reel 4" data-wall-seek>
+            <span class="wall__tempo" data-wall-tempo>0:00</span>
+          </div>
+        </figure>
+        <figure class="wall__item" data-reveal>
+          <video class="wall__media" poster="/assets/video/reels/portfolio/video-8.jpg"
+                 loop playsinline preload="none" data-wall-video>
+            <source src="/assets/video/reels/portfolio/video-8.mp4" type="video/mp4">
+          </video>
+          <button class="wall__play" type="button" aria-label="Play reel 5" data-wall-play>
+            <span class="wall__icon" aria-hidden="true"></span>
+          </button>
+          <button class="wall__expandir" type="button" aria-label="Expand reel 5" data-wall-expandir></button>
+          <div class="wall__barra" hidden data-wall-barra>
+            <button class="wall__voltar" type="button" aria-label="Back 10 seconds" data-wall-voltar></button>
+            <input class="wall__seek" type="range" min="0" max="100" step="0.1" value="0"
+                   aria-label="Scrub reel 5" data-wall-seek>
+            <span class="wall__tempo" data-wall-tempo>0:00</span>
+          </div>
+        </figure>
+        <figure class="wall__item" data-reveal>
+          <video class="wall__media" poster="/assets/video/reels/portfolio/centurian.jpg"
+                 loop playsinline preload="none" data-wall-video>
+            <source src="/assets/video/reels/portfolio/centurian.mp4" type="video/mp4">
+          </video>
+          <button class="wall__play" type="button" aria-label="Play reel 6" data-wall-play>
+            <span class="wall__icon" aria-hidden="true"></span>
+          </button>
+          <button class="wall__expandir" type="button" aria-label="Expand reel 6" data-wall-expandir></button>
+          <div class="wall__barra" hidden data-wall-barra>
+            <button class="wall__voltar" type="button" aria-label="Back 10 seconds" data-wall-voltar></button>
+            <input class="wall__seek" type="range" min="0" max="100" step="0.1" value="0"
+                   aria-label="Scrub reel 6" data-wall-seek>
+            <span class="wall__tempo" data-wall-tempo>0:00</span>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <dialog class="caixa" aria-label="Reel, expanded" data-wall-caixa>
+    <div class="caixa__palco" data-wall-palco></div>
+    <button class="caixa__fechar" type="button" aria-label="Close" data-wall-fechar></button>
+  </dialog>
+</section>
+
+
 <section class="section" id="book" data-surface="accent" aria-labelledby="book-title">
   <div class="wrap lp-sec">
     <header class="lp-sec__head">
-      <h2 class="lp-sec__title" id="book-title" data-reveal>People can't remember a business they rarely see.</h2>
+      <h2 class="lp-sec__title" id="book-title" data-reveal>Book a 30 minute call.</h2>
     </header>
     <div class="lp-sec__body">
-      <div class="lp-prose">
-        <p data-reveal>Every month without consistent content is another month potential customers miss your services, expertise, and competitive advantages.</p>
-        <p data-reveal>Stop waiting until you have time to create content.</p>
+      <p class="lp-prose" data-reveal>Pick a time that works. You talk to Nicolas, who runs the shoots, and he tells you straight whether this fits your business.</p>
+
+      <form class="form book__form" data-reels-form method="post" action="/api/reels-lead"
+            data-endpoint="/api/reels-lead" novalidate data-reveal>
+        <p class="form__errors" data-errors hidden></p>
+
+      <div class="field" data-field>
+        <label class="field__label" for="nome">Your name</label>
+        <input class="field__input" type="text" id="nome" name="nome" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="empresa">Business name</label>
+        <input class="field__input" type="text" id="empresa" name="empresa" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="email">Email</label>
+        <input class="field__input" type="email" id="email" name="email" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="telefone">WhatsApp or phone</label>
+        <input class="field__input" type="tel" id="telefone" name="telefone" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="negocio">What your business does</label>
+        <p class="form__hint" id="d-negocio">Dental clinic, law firm, restaurant, whatever it is</p>
+        <input class="field__input" type="text" id="negocio" name="negocio" aria-describedby="d-negocio" required>
+        <p class="field__error" data-error hidden></p>
+      </div>
+      <div class="field" data-field>
+        <label class="field__label" for="onde">Where you are in Orlando</label>
+        <p class="form__hint" id="d-onde">Neighborhood or area, so we can plan the drive</p>
+        <input class="field__input" type="text" id="onde" name="onde" aria-describedby="d-onde" required>
+        <p class="field__error" data-error hidden></p>
       </div>
 
-      <div class="close__panel" data-reveal>
-        <h3 class="close__title">Get 12 professional Reels from one focused shoot.</h3>
-        <p>Strategy, scripting, filming, direction, and editing, all handled by Hubber.</p>
-        <a class="btn btn--primary" href="#book" data-magnetic>Check available dates</a>
+      <fieldset class="field field__group" data-field>
+        <legend class="field__label">Which option interests you</legend>
+        <p class="form__hint">You are not committing to anything here</p>
+        <div class="escolhas">
+          <label class="escolha">
+            <input type="radio" name="plano" value="avulsa" checked required>
+            <span>One-time shoot, $1,500</span>
+          </label>
+          <label class="escolha">
+            <input type="radio" name="plano" value="consistencia" required>
+            <span>Consistency plan, $2,700 a month</span>
+          </label>
+          <label class="escolha">
+            <input type="radio" name="plano" value="indeciso" required>
+            <span>Not sure yet, I want to understand on the call</span>
+          </label>
+        </div>
+        <p class="field__error" data-error hidden></p>
+      </fieldset>
+
+      <fieldset class="field agenda" data-field data-agenda>
+        <legend class="field__label">Pick a day and time</legend>
+        <p class="agenda__fuso" data-agenda-fuso>All times shown are Orlando time</p>
+        <p class="agenda__estado" data-agenda-estado>Send without picking a time and we will call you to schedule.</p>
+        <div class="agenda__dias" data-agenda-dias hidden></div>
+        <div class="agenda__horas" data-agenda-horas hidden></div>
+        <input type="hidden" name="inicio" data-agenda-inicio>
+        <p class="field__error" data-error hidden></p>
+      </fieldset>
+
+      <div class="field field--check" data-field>
+        <label class="field__check">
+          <input type="checkbox" id="consentimento" name="consentimento" value="sim" required>
+          <span>I authorize Hubber to use this information to schedule and hold this call. No lists, no spam. <a href="/privacy/">Privacy policy</a>.</span>
+        </label>
+        <p class="field__error" data-error hidden></p>
+      </div>
+
+      <input class="hp" type="text" name="website_extra" tabindex="-1" autocomplete="off"
+             aria-hidden="true" data-honeypot>
+      <input type="hidden" name="idioma" value="en">
+
+        <button class="btn btn--primary" type="submit">Book the call</button>
+      </form>
+
+      <div class="book__ok" data-reels-result hidden>
+        <h3 tabindex="-1">You are booked.</h3>
+        <p data-reels-quando></p>
+        <p>Check your email for the invitation with the video link.</p>
       </div>
     </div>
   </div>
 </section>
+
 
 </main>
 
@@ -477,6 +671,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     <p class="t-small t-muted">&copy; 2026 Hubber. All rights reserved.</p>
     <p class="t-small ftr__cinnamon">A Cinnamon Group company</p>
   </div>
+  <p class="t-small"><a href="/privacy/">Privacy policy</a></p>
 </footer>
 
 

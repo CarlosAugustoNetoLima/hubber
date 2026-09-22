@@ -19,6 +19,7 @@
  *   JSYNQ_CONNECT_BOARD_ID     quadro (idem)
  *   JSYNQ_CONNECT_COLUMN_ID    coluna de entrada (idem)
  *   JSYNQ_CONNECT_LABEL_ID     etiqueta que marca a origem do lead (idem)
+ *   JSYNQ_RESPONSAVEL_ID       quem recebe o card (idem)
  */
 
 import { guardar, concluir, drenar, filaAtiva } from './_fila.js';
@@ -29,6 +30,9 @@ const FORM_ID    = process.env.JSYNQ_CONNECT_FORM_ID    || '6aaaca2ef1edc4c69802
 const BOARD_ID   = process.env.JSYNQ_CONNECT_BOARD_ID   || '6aaac5d2f1edc4c69801972d';
 const COLUMN_ID  = process.env.JSYNQ_CONNECT_COLUMN_ID  || '6aaac5d2f1edc4c698019735';
 const LABEL_ID   = process.env.JSYNQ_CONNECT_LABEL_ID   || '6aaaca4ef1edc4c69802b021';
+/* Todo lead do site cai na mão do Nicolas. Sem responsável o card nasce órfão
+   e depende de alguém varrer a coluna para descobrir que chegou. */
+const RESPONSAVEL = process.env.JSYNQ_RESPONSAVEL_ID || '6ab13770effd9919b7232453';
 const FORM_NAME = 'Hubber Connect · Aplicação de criador';
 
 /* Todo lead do site vive no mesmo projeto do CRM. A etiqueta é o que separa as
@@ -153,12 +157,22 @@ function buildCard(body) {
   // card repetir "Contact name", "Email" e "Phone" duas vezes cada.
   if (!missing.length && !invalid.length) push(ORIGEM_FIELD, ORIGEM);
 
+  /* O JSYNQ promove a coluna do CRM só o que tem crmKey no formulário: nome,
+     e-mail e telefone. Todo o resto fica no detalhe do card, e quem abre a
+     visão de contatos não vê. A descrição repete tudo em texto, que aparece
+     em qualquer lugar onde o card apareça. */
+  const desc = customFields
+    .map((f) => `${f.fieldName}: ${Array.isArray(f.value) ? f.value.join(', ') : f.value}`)
+    .join('\n');
+
   const card = {
     title: contato.contactName || 'Aplicação sem nome',
     type: 'task',
     board: BOARD_ID,
     column: COLUMN_ID,
     labels: [LABEL_ID],
+    assignedUsers: [RESPONSAVEL],
+    desc,
     customFields,
   };
   return { card, missing, invalid };

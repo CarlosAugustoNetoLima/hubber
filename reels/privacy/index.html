@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){var h=document.documentElement;h.classList.add('has-js');
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');
+window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();
+</script>
+<title>Privacy policy | Hubber Reels Orlando</title>
+<meta name="description" content="What Hubber collects when you book a call on this page, why, who we share it with, and how to ask for access or deletion.">
+<link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
+<link rel="canonical" href="https://reels.hubbermarketing.com/privacy/">
+<meta name="robots" content="noindex, follow">
+<meta property="og:title" content="Privacy policy | Hubber Reels Orlando">
+<meta property="og:description" content="What Hubber collects when you book a call on this page, why, who we share it with, and how to ask for access or deletion.">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,300..700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/css/fonts.css">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/pages/legal.css">
+<link rel="stylesheet" href="/css/pages/reels.css">
+<!-- Onde a escolha sobre medição é guardada e aplicada -->
+<script>
+(function(){
+  var CHAVE = 'hubber:consentimento';
+  var VERSAO = 1;
+  var ouvintes = [];
+
+  function registro(){
+    try {
+      var bruto = window.localStorage.getItem(CHAVE);
+      if (!bruto) return null;
+      var d = JSON.parse(bruto);
+      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
+      // vale como se não houvesse escolha, e a tarja pergunta de novo.
+      return d && d.versao === VERSAO ? d : null;
+    } catch (e) { return null; }
+  }
+
+  function aceitou(){
+    var d = registro();
+    return !!d && d.estado === 'aceito';
+  }
+
+  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // no navegador sai também. O domínio do cookie depende de como o fbevents o
+  // gravou, então apaga nos escopos possíveis.
+  function apagarCookies(){
+    var host = location.hostname;
+    var raiz = host.split('.').slice(-2).join('.');
+    var escopos = ['', '; domain=' + host, '; domain=.' + host, '; domain=' + raiz, '; domain=.' + raiz];
+    ['_fbp', '_fbc'].forEach(function(nome){
+      escopos.forEach(function(escopo){
+        document.cookie = nome + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + escopo;
+      });
+    });
+  }
+
+  window.consentimento = {
+    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    registro: registro,
+    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
+    // hora, para não atrasar quem autorizou numa visita anterior.
+    aoAceitar: function(fn){
+      ouvintes.push(fn);
+      if (aceitou()) fn();
+    },
+    registrar: function(estado){
+      try {
+        window.localStorage.setItem(CHAVE, JSON.stringify({
+          estado: estado,
+          em: new Date().toISOString(),
+          versao: VERSAO
+        }));
+      } catch (e) {}
+      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
+      else apagarCookies();
+    }
+  };
+})();
+</script>
+
+</head>
+<body data-surface="ink">
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hdr hdr--legal" data-surface="ink">
+  <div class="wrap hdr__in">
+    <div class="hdr__brand">
+      <span class="hdr__logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="91.50 19.00 1737.00 274.49" role="img" aria-labelledby="hubber-logo-title-hdr"><title id="hubber-logo-title-hdr">Hubber</title><g><g><polygon points="905.02 88.73 885.18 88.73 885.18 204.53 727.58 204.53 717.36 194.31 717.36 88.73 697.52 88.73 697.52 202.53 718.63 223.63 905.02 223.63 905.02 88.73" fill="var(--logo-word, currentColor)" /><polygon points="1391.8 223.64 1599.67 223.64 1599.67 204.52 1411.65 204.52 1411.65 165.74 1584.92 165.74 1584.92 146.63 1411.65 146.63 1411.65 107.84 1599.67 107.84 1599.67 88.73 1391.8 88.73 1391.8 223.64" fill="var(--logo-word, currentColor)" /><path d="m1826.2,143.98v-34.02l-21.23-21.23h-186.64v134.9h19.84v-57.9h157.85l10.34,10.34v47.56h19.84v-55.77l-11.94-11.94,11.94-11.94Zm-188.03-36.15h157.85l10.34,10.34v17.58l-10.86,10.87h-157.34v-38.8Z" fill="var(--logo-word, currentColor)" /><path d="m1138.02,107.9l-17.11-17.11c-1.32-1.32-3.11-2.06-4.97-2.06h-183.71v134.9h183.71c1.87,0,3.66-.74,4.97-2.06l17.11-17.11c1.32-1.32,2.06-3.11,2.06-4.97v-38.01c0-1.87-.74-3.65-2.06-4.97l-9.88-9.88,9.88-9.88c1.32-1.32,2.06-3.11,2.06-4.97v-18.9c0-1.87-.74-3.66-2.06-4.97Zm-17.78,86.29l-10.34,10.34h-157.83v-48.62h157.32l10.85,10.85v27.42Zm-168.17-86.36h157.83l10.34,10.34v8.31l-10.85,10.85h-157.32v-29.51Z" fill="var(--logo-word, currentColor)" /><path d="m1367.81,107.9l-17.11-17.11c-1.32-1.32-3.11-2.06-4.97-2.06h-183.71v134.9h183.71c1.87,0,3.66-.74,4.97-2.06l17.11-17.11c1.32-1.32,2.06-3.11,2.06-4.97v-38.01c0-1.87-.74-3.65-2.06-4.97l-9.88-9.88,9.88-9.88c1.32-1.32,2.06-3.11,2.06-4.97v-18.9c0-1.87-.74-3.66-2.06-4.97Zm-17.78,86.29l-10.34,10.34h-157.83v-48.62h157.32l10.85,10.85v27.42Zm-168.17-86.36h157.83l10.34,10.34v8.31l-10.85,10.85h-157.32v-29.51Z" fill="var(--logo-word, currentColor)" /><polygon points="652.44 137.07 484.44 137.07 484.44 88.73 464.6 88.73 464.6 223.64 484.44 223.64 484.44 156.18 652.44 156.18 652.44 223.64 672.29 223.64 672.29 88.73 652.44 88.73 652.44 137.07" fill="var(--logo-word, currentColor)" /></g><g><path d="m300.84,200.39v90.68s83.17-29.45,83.17-29.45c7.88-2.79,13.15-10.25,13.15-18.61V69.36c0-8.36-5.27-15.81-13.15-18.61l-83.17-29.46v90.68s-33.68,33.68-33.68,33.68c-5.81,5.81-5.81,15.23,0,21.04l33.68,33.68Z" fill="var(--logo-mark, currentColor)" /><path d="m106.95,261.61l83.17,29.45v-90.68s33.68-33.68,33.68-33.68c5.81-5.81,5.81-15.23,0-21.04l-33.68-33.68V21.3s-83.17,29.46-83.17,29.46c-7.88,2.79-13.15,10.24-13.15,18.61v173.65c0,8.36,5.27,15.81,13.15,18.61Z" fill="var(--logo-mark, currentColor)" /></g></g></svg>
+      </span>
+      <span class="hdr__kicker t-label">Privacy · Reels Orlando</span>
+    </div>
+  </div>
+</header>
+
+
+<main id="main">
+
+  <section class="legal">
+  <div class="wrap legal__in">
+
+    <div class="legal__meta">
+      <p class="t-label t-accent">Privacy · Reels Orlando</p>
+      <h1 class="legal__title" id="titulo">What this page collects, why, and what you can ask us to give back.</h1>
+      <p class="t-lead t-muted">In effect since September 21, 2026.</p>
+    </div>
+
+    <nav class="legal__toc" aria-labelledby="indice">
+      <h2 id="indice">On this page</h2>
+      <ol>
+        <li><a href="#responsavel">Who is responsible for your data</a></li>
+        <li><a href="#dados">What this page collects</a></li>
+        <li><a href="#uso">What we use it for, and on what legal basis</a></li>
+        <li><a href="#compartilhamento">Who we share it with</a></li>
+        <li><a href="#cookies">Cookies and tracking</a></li>
+        <li><a href="#prazo">How long we keep it</a></li>
+        <li><a href="#direitos">Your rights</a></li>
+        <li><a href="#seguranca">Security</a></li>
+        <li><a href="#menores">Under 18s</a></li>
+        <li><a href="#mudancas">Changes to this policy</a></li>
+      </ol>
+    </nav>
+
+    <div class="legal__body">
+      <p class="legal__escopo">This policy covers <strong>this page</strong>, the Orlando video production one. The Hubber site has its own, at <a href="https://hubbermarketing.com/en/privacy/">hubbermarketing.com/en/privacy</a>, and Hubber Connect has its own, at <a href="https://hubbermarketing.com/connect/privacidade/">hubbermarketing.com/connect/privacidade</a>.</p>
+
+      <h2 id="responsavel">1. Who is responsible for your data</h2>
+      <p>Hubber, a Cinnamon Group company. For any request about your data, write to <a href="mailto:privacy@hubbermarketing.com">privacy@hubbermarketing.com</a>.</p>
+
+      <h2 id="dados">2. What this page collects</h2>
+      <p>What you type into the form to book the call: your name, business name, email, WhatsApp or phone, what your business does, where in Orlando you are, and which option interests you.</p>
+      <p>Along with it goes the <strong>time slot you picked</strong>, and which ad brought you here, when you arrive through one. That comes from the campaign parameters in the URL, not from anything we work out about you.</p>
+      <p>We never ask for an ID, a home address or payment details.</p>
+
+      <h2 id="uso">3. What we use it for, and on what legal basis</h2>
+      <p>Every use needs a legal basis. Ours are these:</p>
+      <dl class="legal__terms">
+        <div><dt>Booking and holding the call you scheduled</dt><dd>Legal basis: your <strong>consent</strong>, given in the box you check before sending. Without it, the form does not send. Your name and email go into the meeting invitation, and the booking appears on the calendar of the person who will talk to you.</dd></div>
+        <div><dt>Working out whether the service fits your business</dt><dd>Legal basis: the same consent. It is the reason the call exists.</dd></div>
+        <div><dt>Measuring which ad brought you here</dt><dd>Legal basis: your consent, given in the cookie bar. Without it nothing is measured. See section 5.</dd></div>
+        <div><dt>Keeping the page running and safe</dt><dd>Legal basis: <strong>legitimate interest</strong>, to operate the service and contain abuse and fraud.</dd></div>
+      </dl>
+
+      <h2 id="compartilhamento">4. Who we share it with</h2>
+      <p>Hubber does not sell personal data. Sharing is limited to these cases:</p>
+      <ul>
+        <li><strong>CRM and calendar tool.</strong> Your contact details and the booked call live in JSYNQ, the system where the team tracks each lead. The video call happens inside it.</li>
+        <li><strong>Hosting.</strong> The page and the form handling run on Vercel. If the CRM is unavailable when you send, your answer is held there, in a private area, until it is delivered.</li>
+        <li><strong>Meta.</strong> If you allow it in the cookie bar, the pixel hands Meta your IP address and your visit to this page. When you book the call, your <strong>email and phone are also sent to Meta in hashed form</strong>, which cannot be read back, only matched to recognize that the booking came from an ad. Without your permission in the bar, none of this happens.</li>
+        <li><strong>Google Fonts.</strong> The fonts are loaded from Google's servers. In that request your browser hands your IP address to Google, as on any site using the service.</li>
+        <li><strong>Authorities.</strong> Where there is a court order or a legal obligation.</li>
+      </ul>
+
+      <h2 id="cookies">5. Cookies and tracking</h2>
+      <p>This page may use the <strong>Meta pixel</strong>, the measurement tool behind Facebook and Instagram. It <strong>only loads if you allow it</strong>: on your first visit a bar asks you, and while you have not answered, or if you decline, it does not load and nothing is written to your browser.</p>
+      <p>If you allow it, it writes two cookies: <strong>_fbp</strong>, an identifier for your browser, and <strong>_fbc</strong>, which stores the code of the ad you came through. Both last up to three months.</p>
+      <p>Declining covers both sides: without your permission, neither your browser nor our server sends any event to Meta. You can still book the call exactly the same way.</p>
+      <p>Beyond that, the page does not use Google Analytics or any other audience measurement tool.</p>
+
+      <div class="consent-controle" data-consent-controle hidden>
+  <p data-consent-resumo></p>
+  <button class="btn consent__btn" type="button" data-consent-trocar></button>
+</div>
+<!-- As páginas legais não carregam o main.js, que é pesado e cheio de coisa que
+     elas não usam. Só o módulo do consentimento entra aqui. -->
+<script type="module">
+import { initConsentimento } from '/js/consentimento.js';
+initConsentimento();
+</script>
+
+
+      <p>You can change your mind at any time, using the button above. Withdrawing removes from your browser the cookies the pixel had written.</p>
+
+      <h2 id="prazo">6. How long we keep it</h2>
+      <p>We keep your details while the call is booked and, if you become a client, for as long as the relationship lasts and for the period the law requires afterwards. If the call does not happen or there is no fit, we keep the record until you ask us to delete it.</p>
+
+      <h2 id="direitos">7. Your rights</h2>
+      <p>At any time and at no cost, you can ask us to:</p>
+      <dl class="legal__terms">
+        <div><dt>Confirm and give access</dt><dd>Tell you whether we hold data about you and give you a copy.</dd></div>
+        <div><dt>Correct</dt><dd>Fix data that is incomplete, out of date or wrong.</dd></div>
+        <div><dt>Delete</dt><dd>Erase the data we hold on the basis of your consent.</dd></div>
+        <div><dt>Port</dt><dd>Give you your data in a format you can take elsewhere.</dd></div>
+        <div><dt>Withdraw consent</dt><dd>Take back the permission you gave, including cancelling the booked call.</dd></div>
+      </dl>
+      <p>To exercise any of these, write to <a href="mailto:privacy@hubbermarketing.com">privacy@hubbermarketing.com</a>. We answer within 15 days.</p>
+
+      <h2 id="seguranca">8. Security</h2>
+      <p>The page runs entirely over HTTPS. The tokens that reach our system and Meta live only on the server, never in your browser.</p>
+
+      <h2 id="menores">9. Under 18s</h2>
+      <p>This page is not aimed at people under 18 and we do not knowingly collect their data. If that happens, write to us and we will delete it.</p>
+
+      <h2 id="mudancas">10. Changes to this policy</h2>
+      <p>When something here changes, the date at the top changes with it. The version published on this page is the one that applies.</p>
+
+    </div>
+
+  </div>
+  </section>
+
+</main>
+
+<footer class="ftr ftr--legal" data-surface="ink">
+  <div class="wrap ftr__bottom">
+    <p class="t-small t-muted">© 2026 Hubber. Todos os direitos reservados.</p>
+    <p class="t-small ftr__cinnamon">Uma empresa do Grupo Cinnamon</p>
+  </div>
+</footer>
+
+
+</body>
+</html>

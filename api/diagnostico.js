@@ -21,7 +21,11 @@
  *   JSYNQ_DIAG_FORM_ID       formulário com a definição dos campos (idem)
  *   JSYNQ_DIAG_BOARD_ID      quadro (idem)
  *   JSYNQ_DIAG_COLUMN_ID     coluna de entrada, "Leads" (idem)
- *   JSYNQ_DIAG_LABEL_ID      etiqueta que marca a origem do lead (idem)
+ *   JSYNQ_LABEL_POCKET       etiqueta de cada rota (idem)
+ *   JSYNQ_LABEL_BUILD
+ *   JSYNQ_LABEL_AGENCIA
+ *   JSYNQ_LABEL_NUTRICAO
+ *   JSYNQ_RESPONSAVEL_ID     quem recebe o card (idem)
  *
  * Este projeto recebe todo lead que o site gera, de qualquer landing page. Não
  * criar projeto separado por LP: a origem se distingue pela etiqueta e pelo
@@ -40,7 +44,19 @@ const PROJECT_ID = process.env.JSYNQ_DIAG_PROJECT_ID || '6aaac5d2f1edc4c69801972
 const FORM_ID    = process.env.JSYNQ_DIAG_FORM_ID    || '6aaac60ff1edc4c69801a1a7';
 const BOARD_ID   = process.env.JSYNQ_DIAG_BOARD_ID   || '6aaac5d2f1edc4c69801972d';
 const COLUMN_ID  = process.env.JSYNQ_DIAG_COLUMN_ID  || '6aaac5d2f1edc4c698019735';
-const LABEL_ID   = process.env.JSYNQ_DIAG_LABEL_ID   || '6aaaca4af1edc4c69802af3f';
+/* A etiqueta do diagnóstico é a própria rota: o comercial abre o quadro e vê
+   Pocket, Build ou Agência sem precisar abrir card nenhum. Nutrição é quem
+   ainda não tem condição de contratar, e por isso precisa de etiqueta também:
+   sem ela não se distingue de lead que ninguém avaliou. */
+const LABEL_POR_ROTA = {
+  pocket:   process.env.JSYNQ_LABEL_POCKET   || '6ab19d73effd9919b73689bc',
+  build:    process.env.JSYNQ_LABEL_BUILD    || '6ab19d7deffd9919b7368ac0',
+  agencia:  process.env.JSYNQ_LABEL_AGENCIA  || '6ab19d86effd9919b7368bf3',
+  nutricao: process.env.JSYNQ_LABEL_NUTRICAO || '6ab19d8eeffd9919b7368d41',
+};
+/* Todo lead do site cai na mão do Nicolas. Sem responsável o card nasce órfão
+   e depende de alguém varrer a coluna para descobrir que chegou. */
+const RESPONSAVEL = process.env.JSYNQ_RESPONSAVEL_ID || '6ab13770effd9919b7232453';
 const FORM_NAME  = 'Hubber Site · Diagnóstico de crescimento';
 
 /* `id` é o campo no formulário do JSYNQ; `label` e `type` reproduzem como ele
@@ -159,12 +175,21 @@ function buildCard(body, rota) {
 
   // Empresa no título: o board é de empresas, não de pessoas. O nome de quem
   // respondeu entra pelos campos de contato, que o JSYNQ mostra no topo.
+  /* O JSYNQ promove a coluna do CRM só o que tem crmKey no formulário: empresa,
+     nome, e-mail e telefone. Todo o resto fica no detalhe do card. A descrição
+     repete tudo em texto, que aparece em qualquer lugar onde o card apareça. */
+  const desc = customFields
+    .map((f) => `${f.fieldName}: ${Array.isArray(f.value) ? f.value.join(', ') : f.value}`)
+    .join('\n');
+
   const card = {
     title: contato.company || contato.contactName || 'Diagnóstico sem empresa',
     type: 'task',
     board: BOARD_ID,
     column: COLUMN_ID,
-    labels: [LABEL_ID],
+    labels: [LABEL_POR_ROTA[rota.route] || LABEL_POR_ROTA.nutricao],
+    assignedUsers: [RESPONSAVEL],
+    desc,
     customFields,
   };
   return { card, missing, invalid };

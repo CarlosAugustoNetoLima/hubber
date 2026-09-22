@@ -14,6 +14,7 @@
 import { drenar, contarPendentes, filaAtiva } from './_fila.js';
 import { entregarLead } from './connect-lead.js';
 import { entregarDiagnostico } from './diagnostico.js';
+import { entregarReelsLead } from './reels-lead.js';
 
 export default async function handler(req, res) {
   const segredo = process.env.CRON_SECRET;
@@ -35,6 +36,7 @@ export default async function handler(req, res) {
   const filas = [
     ['connect', (d) => entregarLead(d, token)],
     ['diagnostico', (d) => entregarDiagnostico(d, token)],
+    ['reels', (d) => entregarReelsLead(d, token)],
   ];
 
   const saida = {};

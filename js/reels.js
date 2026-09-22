@@ -1,3 +1,6 @@
+import { initReelsForm } from './reels-form.js';
+import { initParede } from './reels-parede.js';
+
 const UTM_KEYS = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
   'fbclid', 'gclid'
@@ -180,5 +183,8 @@ lateraisFixas();
 videosNaTela();
 ctaFixo();
 seletorDeIdioma();
+
+initParede();
+initReelsForm(document, lerOrigem);
 
 export { capturarOrigem, lerOrigem };
