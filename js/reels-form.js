@@ -13,6 +13,20 @@ const TEXTO = {
         faltando: 'Faltam campos para enviar.', enviando: 'Marcando...' },
 };
 
+/* O telefone só casa com o cadastro da Meta se vier com o DDI, e o número
+   americano quase sempre chega digitado sem o +1. Dez dígitos no formato dos
+   EUA (código de área e prefixo nunca começam por 0 ou 1), ou onze começando
+   pelo 1, ganham o + na frente. O resto vai como a pessoa escreveu: com + ou
+   00 no começo, o próprio SDK reconhece o DDI. */
+function telefoneComDdi(bruto) {
+  const texto = String(bruto || '').trim();
+  if (/^(\+|00)/.test(texto)) return texto;
+  const digitos = texto.replace(/\D/g, '');
+  if (/^[2-9]\d{2}[2-9]\d{6}$/.test(digitos)) return `+1${digitos}`;
+  if (/^1[2-9]\d{2}[2-9]\d{6}$/.test(digitos)) return `+${digitos}`;
+  return texto;
+}
+
 /* `lerOrigem` chega por parâmetro em vez de import. O reels.js é quem chama
    este módulo, e importar de volta fecharia um ciclo: com await de topo de um
    lado e import estático do outro, os dois módulos ficam esperando um ao
@@ -226,7 +240,7 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
     const nome = String(dados.nome || '').trim().split(/\s+/);
     window.pixel.identificar({
       em: String(dados.email || '').trim().toLowerCase(),
-      ph: String(dados.telefone || '').replace(/\D/g, ''),
+      ph: telefoneComDdi(dados.telefone),
       fn: (nome[0] || '').toLowerCase(),
       ln: nome.slice(1).join(' ').toLowerCase(),
     });
