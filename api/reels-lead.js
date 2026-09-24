@@ -1,18 +1,10 @@
 /**
- * Recebe o formulário da LP de reels, marca a conversa na agenda do Nicolas e
- * cria o lead no CRM do JSYNQ.
+ * Recebe o formulário da LP de reels e cria o lead no CRM do JSYNQ.
  *
- * A ordem importa. A reunião vem primeiro, porque é o que a pessoa veio buscar
- * e é o único passo que não dá para refazer sem consequência: se o CRM cair, o
- * lead espera na fila e entra depois, mas um horário prometido e não marcado é
- * uma conversa que ninguém vai ter. Por isso o item da fila guarda a reunião já
- * criada: o reenvio recria o card, nunca o compromisso.
- *
- * O horário é revalidado aqui contra a agenda. A lista que o navegador recebeu
- * pode ter envelhecido entre carregar a página e enviar o formulário, e duas
- * pessoas podem escolher o mesmo horário no mesmo minuto.
- *
- * Tudo no fuso de Orlando. Ver api/reels-agenda.js, que devolve a grade.
+ * A página não marca horário. Quem envia pede a conversa, e a equipe combina o
+ * dia com a pessoa depois, pelo contato que ela deixou. O card nasce na coluna
+ * de entrada com o Nicolas como responsável, que é o sinal de que tem conversa
+ * para marcar.
  *
  * Variáveis de ambiente:
  *   JSYNQ_API_TOKEN       token de API do JSYNQ
@@ -22,7 +14,6 @@
  */
 
 import { guardar, concluir, drenar, filaAtiva } from './_fila.js';
-import { montarAgenda, rotuloDoHorario, escreverHorario } from './reels-agenda.js';
 import { origemDoLead } from './_origem.js';
 
 const API_BASE = 'https://api.jsynq.com';
@@ -58,8 +49,6 @@ const FIELDS = {
               options: { sim: 'Autorizo' } },
 };
 
-const AGENDADA_FIELD = { id: '6ab1b817effd9919b73c677f', label: 'Conversa agendada', type: 'text' };
-const SALA_FIELD     = { id: '6ab1b817effd9919b73c6780', label: 'Sala da conversa', type: 'text' };
 const IDIOMA_FIELD   = { id: '6ab1b817effd9919b73c6782', label: 'Idioma', type: 'text' };
 const ORIGEM_FIELD   = { id: '6ab1b817effd9919b73c6783', label: 'Origem', type: 'text' };
 const CAMPANHA_FIELD = { id: '6ab1b817effd9919b73c6784', label: 'Campanha', type: 'text' };
@@ -71,7 +60,7 @@ const MAX_BODY = 256 * 1024;
 function isEmail(v) { return /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v); }
 function isPhone(v) { return /^[0-9+()\s-]{8,40}$/.test(v); }
 
-function buildCard(body, reuniao) {
+function buildCard(body) {
   const customFields = [];
   const contato = {};
   const missing = [];
@@ -101,10 +90,6 @@ function buildCard(body, reuniao) {
   }
 
   if (!missing.length && !invalid.length) {
-    if (reuniao) {
-      push(AGENDADA_FIELD, reuniao.rotulo);
-      if (reuniao.sala) push(SALA_FIELD, reuniao.sala);
-    }
     const idioma = String(body.idioma || '').trim().slice(0, 20);
     if (idioma) push(IDIOMA_FIELD, idioma);
     push(ORIGEM_FIELD, ORIGEM);
@@ -158,61 +143,12 @@ async function criarCard(card, token) {
   return { ok: false, status: res.status, body: await res.text().catch(() => '') };
 }
 
-/* O horário ainda está livre? A lista que o navegador tem pode ter envelhecido,
-   e duas pessoas podem escolher o mesmo bloco no mesmo minuto.
-
-   A janela vai até o dia seguinte, e não até o mesmo dia: a disponibilidade do
-   JSYNQ responde 400 quando começo e fim são iguais, e o 400 virava erro aqui,
-   que virava 502 na cara de quem tentou marcar. O dia a mais não atrapalha,
-   porque a conferência é pelo instante exato do horário escolhido. */
-async function horarioLivre(inicioIso, token) {
-  const dia = inicioIso.slice(0, 10);
-  const seguinte = new Date(`${dia}T00:00:00Z`);
-  seguinte.setUTCDate(seguinte.getUTCDate() + 1);
-  const url = `${API_BASE}/api/meetings/availability`
-    + `?startDate=${dia}&endDate=${seguinte.toISOString().slice(0, 10)}`
-    + `&collaboratorIds=${RESPONSAVEL}`;
-  const res = await fetch(url, { headers: { authorization: auth(token) } });
-  if (!res.ok) throw new Error(`disponibilidade devolveu ${res.status}`);
-  const dados = await res.json();
-  const ocupados = dados?.busy || dados?.data?.busy || [];
-  return montarAgenda(ocupados).some((d) => d.horarios.some((h) => h.inicio === inicioIso));
-}
-
-async function marcarConversa(inicioIso, fimIso, body, token) {
-  const corpo = {
-    title: `Conversa · ${String(body.empresa || body.nome || 'lead').slice(0, 80)}`,
-    date: inicioIso.slice(0, 10),
-    startTime: inicioIso,
-    endTime: fimIso,
-    invitees: [RESPONSAVEL],
-    outsideInvitees: [String(body.email || '').trim()].filter(Boolean),
-    description: `Conversa de qualificação vinda da LP de reels.\n`
-      + `Empresa: ${body.empresa || ''}\nNegócio: ${body.negocio || ''}\n`
-      + `Onde: ${body.onde || ''}\nPlano de interesse: ${body.plano || ''}`,
-  };
-  const res = await fetch(`${API_BASE}/api/meetings`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', authorization: auth(token) },
-    body: JSON.stringify(corpo),
-  });
-  if (!res.ok) {
-    return { ok: false, status: res.status, body: (await res.text().catch(() => '')).slice(0, 300) };
-  }
-  const dados = await res.json().catch(() => null);
-  const m = dados?.scheduledMeeting || dados?.data?.scheduledMeeting || dados?.meeting || dados;
-  return { ok: true, id: m?._id || null, sala: m?.room || null };
-}
-
 function resumo(body) {
-  return `| ${body.empresa || '?'} · ${body.nome || '?'} · ${body.email || '?'}`
-    + ` · ${body.telefone || '?'} · ${body.inicio || '?'}`;
+  return `| ${body.empresa || '?'} · ${body.nome || '?'} · ${body.email || '?'} · ${body.telefone || '?'}`;
 }
 
-/* Só o card. A reunião já existe e vai no item da fila, para o reenvio não
-   marcar o mesmo horário duas vezes. */
 export async function entregarReelsLead(dados, token) {
-  const { card } = buildCard(dados, dados.reuniao || null);
+  const { card } = buildCard(dados);
   const out = await criarCard(card, token);
   if (!out.ok) {
     console.error('[reels-lead] JSYNQ recusou:', out.status, out.body?.slice(0, 500), resumo(dados));
@@ -237,25 +173,10 @@ export default async function handler(req, res) {
 
   if (body.website_extra) return res.status(200).json({ ok: true });
 
-  const { missing, invalid } = buildCard(body, null);
+  const { missing, invalid } = buildCard(body);
   if (missing.length || invalid.length) {
     return res.status(422).json({ ok: false, error: 'validation', missing, invalid });
   }
-
-  /* Sem JavaScript não há como consultar a agenda, e a página precisa funcionar
-     assim. Nesse caminho o lead entra sem horário e a conversa é marcada à mão:
-     é bem melhor que recusar quem chegou até o fim do formulário. */
-  const semHorario = !body.inicio;
-  const rotulo = semHorario ? 'A marcar, enviado sem calendário' : rotuloDoHorario(body.inicio);
-  if (!rotulo) return res.status(422).json({ ok: false, error: 'horario_invalido' });
-
-  /* Dois rótulos do mesmo horário. O de cima vai para o card e para o convite,
-     em português, que é a língua do CRM. Este aqui volta para a página, no
-     idioma em que a pessoa preencheu. */
-  const idioma = body.idioma === 'en' ? 'en' : 'pt';
-  const rotuloVisivel = semHorario
-    ? (idioma === 'en' ? 'To be scheduled, sent without the calendar' : rotulo)
-    : escreverHorario(new Date(body.inicio), idioma);
 
   const token = process.env.JSYNQ_API_TOKEN;
   if (!token) {
@@ -263,46 +184,28 @@ export default async function handler(req, res) {
     return res.status(503).json({ ok: false, error: 'not_configured' });
   }
 
-  let marcada = { ok: true, id: null, sala: null };
-  if (!semHorario) {
-    try {
-      if (!(await horarioLivre(body.inicio, token))) {
-        return res.status(409).json({ ok: false, error: 'horario_ocupado' });
-      }
-    } catch (err) {
-      console.error('[reels-lead] não consegui conferir a agenda:', err?.message, resumo(body));
-      return res.status(502).json({ ok: false, error: 'upstream' });
-    }
-
-    const fim = new Date(new Date(body.inicio).getTime() + 30 * 60000).toISOString();
-    marcada = await marcarConversa(body.inicio, fim, body, token);
-    if (!marcada.ok) {
-      console.error('[reels-lead] não consegui marcar:', marcada.status, marcada.body, resumo(body));
-      return res.status(502).json({ ok: false, error: 'agenda' });
-    }
-  }
-
-  const dados = { ...body, reuniao: { rotulo, sala: marcada.sala, id: marcada.id } };
-  const naFila = await guardar('reels', dados);
+  // Guardar vem antes de entregar. Se o JSYNQ estiver fora, o lead já está a
+  // salvo e entra na fila em vez de sumir.
+  const naFila = await guardar('reels', body);
 
   try {
-    if (await entregarReelsLead(dados, token)) {
+    if (await entregarReelsLead(body, token)) {
       await concluir(naFila);
       if (filaAtiva()) {
         const r = await drenar('reels', (d) => entregarReelsLead(d, token), 2);
         if (r.entregues) console.log('[reels-lead] fila: reenviados', r.entregues);
       }
-      return res.status(200).json({ ok: true, agendada: rotuloVisivel, sala: marcada.sala });
+      return res.status(200).json({ ok: true });
     }
   } catch (err) {
-    console.error('[reels-lead] falha ao falar com o JSYNQ:', err?.message, resumo(dados));
+    console.error('[reels-lead] falha ao falar com o JSYNQ:', err?.message, resumo(body));
   }
 
-  // A conversa está marcada e a pessoa recebeu o convite. Dizer que falhou a
-  // faria reenviar e marcar um segundo horário.
+  // O CRM não aceitou, mas o pedido está na fila e será entregue depois. Dizer
+  // que falhou faria a pessoa reenviar e criar card repetido.
   if (naFila) {
-    console.error('[reels-lead] card na fila para reenvio:', naFila, resumo(dados));
-    return res.status(200).json({ ok: true, pendente: true, agendada: rotuloVisivel, sala: marcada.sala });
+    console.error('[reels-lead] card na fila para reenvio:', naFila, resumo(body));
+    return res.status(200).json({ ok: true, pendente: true });
   }
   return res.status(502).json({ ok: false, error: 'upstream' });
 }

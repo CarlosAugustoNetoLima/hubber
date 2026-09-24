@@ -328,14 +328,14 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           <li role="none"><a role="menuitem" href="pt/" lang="pt-BR" hreflang="pt-BR">Português</a></li>
         </ul>
       </div>
-      <a class="btn btn--primary" href="#book">Check available dates</a>
+      <a class="btn btn--primary" href="#book">Book my content shoot</a>
     </div>
 
   </div>
 </header>
 
 <div class="sticky-cta" data-surface="ink">
-  <a class="btn btn--primary" href="#book">Check available dates</a>
+  <a class="btn btn--primary" href="#book">Book my content shoot</a>
 </div>
 
 
@@ -706,9 +706,9 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <section class="section" id="book" data-surface="accent" aria-labelledby="book-title">
   <div class="wrap lp-sec">
     <header class="lp-sec__head">
-      <h2 class="lp-sec__title" id="book-title" data-reveal>Book a 30 minute call.</h2>
+      <h2 class="lp-sec__title" id="book-title" data-reveal>Request a 30 minute call.</h2>
       <p class="lp-sec__lead" data-reveal>Thirty minutes with Nicolas, who runs the shoots. He listens to what your business needs on camera and tells you straight whether this fits. No deck, no pitch.</p>
-      <p class="lp-sec__lead lp-sec__lead--quando" data-reveal>Calls run Monday to Friday, 9am to 5pm Orlando time, starting the next business day. Pick the slot that suits you and the invitation lands in your inbox.</p>
+      <p class="lp-sec__lead lp-sec__lead--quando" data-reveal>Send the form and we will get in touch to set a time that works for you. Calls run Monday to Friday, 9am to 5pm Orlando time.</p>
     </header>
     <div class="lp-sec__body">
       <form class="form book__form" data-reels-form method="post" action="/api/reels-lead"
@@ -748,7 +748,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
         <p class="field__error" data-error hidden></p>
       </div>
 
-      <fieldset class="field field__group" data-field data-error-required="Pick one of the three options.">
+      <fieldset class="field field__group" data-field data-error-required="Pick one of the options.">
         <legend class="field__label">Which option interests you</legend>
         <p class="form__hint">You are not committing to anything here</p>
         <div class="escolhas">
@@ -764,22 +764,6 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
         <p class="field__error" data-error hidden></p>
       </fieldset>
 
-      <fieldset class="field agenda" data-field data-error-required="Pick a day and a time." data-agenda>
-        <legend class="field__label">Pick a day and time</legend>
-        <p class="agenda__fuso" data-agenda-fuso></p>
-        <p class="agenda__estado" data-agenda-estado></p>
-        <div class="agenda__bloco" hidden data-agenda-bloco-dias>
-          <p class="agenda__rotulo">Choose a day</p>
-          <div class="agenda__dias" data-agenda-dias></div>
-        </div>
-        <div class="agenda__bloco" hidden data-agenda-bloco-horas>
-          <p class="agenda__rotulo">Choose a time</p>
-          <div class="agenda__horas" data-agenda-horas></div>
-        </div>
-        <input type="hidden" name="inicio" data-agenda-inicio>
-        <p class="field__error" data-error hidden></p>
-      </fieldset>
-
       <div class="field field--check" data-field data-error-required="Check the box so we can schedule the call.">
         <label class="field__check">
           <input type="checkbox" id="consentimento" name="consentimento" value="sim" required>
@@ -792,13 +776,12 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
              aria-hidden="true" data-honeypot>
       <input type="hidden" name="idioma" value="en">
 
-        <button class="btn btn--primary" type="submit">Book the call</button>
+        <button class="btn btn--primary" type="submit">Request the call</button>
       </form>
 
       <div class="book__ok" data-reels-result hidden>
-        <h3 tabindex="-1">You are booked.</h3>
-        <p data-reels-quando></p>
-        <p>Check your email for the invitation with the video link.</p>
+        <h3 tabindex="-1">Got it.</h3>
+        <p>We will get in touch soon to set the time for your call.</p>
       </div>
     </div>
   </div>

@@ -709,35 +709,6 @@ html.reveal-ready [data-reveal].is-in {
 .field--check .field__check { display: flex; gap: var(--s12); align-items: flex-start; }
 .field--check span { font-size: var(--fs-small); }
 
-.agenda { border: 1px solid var(--rule); border-radius: var(--radius); padding: var(--s24); }
-.agenda__fuso {
-  margin: 0 0 var(--s4);
-  font-size: var(--fs-label);
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
-  color: var(--accent-text);
-}
-.agenda__estado { margin: 0 0 var(--s16); font-size: var(--fs-small); color: var(--fg-muted); }
-.agenda__dias, .agenda__horas { display: flex; flex-wrap: wrap; gap: var(--s8); }
-.agenda__horas { margin-top: var(--s16); }
-.agenda__dia, .agenda__hora {
-  padding: var(--s8) var(--s16);
-  min-height: 44px;
-  font: inherit;
-  font-size: var(--fs-small);
-  color: var(--fg);
-  background: transparent;
-  border: 1px solid var(--border-ui);
-  border-radius: var(--radius);
-  cursor: pointer;
-}
-.agenda__dia:hover, .agenda__hora:hover { border-color: var(--fg); }
-.agenda__dia[aria-pressed="true"], .agenda__hora[aria-pressed="true"] {
-  background: var(--accent);
-  color: var(--on-accent);
-  border-color: var(--accent);
-}
-
 .book__ok { max-width: 44rem; margin-top: var(--s48); }
 .book__ok h3 { margin: 0 0 var(--s12); }
 .book__ok p { margin: 0 0 var(--s8); color: var(--fg-muted); }
@@ -840,25 +811,6 @@ html.reveal-ready [data-reveal].is-in {
 /* O botão é item de grid e estica na largura toda: sem isto o rótulo encosta
    na esquerda em vez de ficar no meio da pílula. */
 .book__form [type="submit"] { justify-content: center; text-align: center; }
-
-.agenda {
-  background: color-mix(in oklch, var(--c-ink), transparent 72%);
-  backdrop-filter: blur(14px);
-  border-color: color-mix(in oklch, var(--c-ink), transparent 55%);
-}
-.agenda__fuso { color: var(--c-ink); }
-.agenda__estado { color: color-mix(in oklch, var(--c-white), transparent 15%); }
-.agenda__dia, .agenda__hora {
-  background: color-mix(in oklch, var(--c-ink), transparent 42%);
-  border-color: color-mix(in oklch, var(--c-ink), transparent 55%);
-  color: var(--c-white);
-}
-.agenda__dia:hover, .agenda__hora:hover { border-color: var(--c-ink); }
-.agenda__dia[aria-pressed="true"], .agenda__hora[aria-pressed="true"] {
-  background: var(--c-ink);
-  color: var(--c-white);
-  border-color: var(--c-ink);
-}
 
 .wall__item { margin: 0; }
 .wall__play {
@@ -1074,109 +1026,6 @@ html.reveal-ready [data-reveal].is-in {
   color: var(--fg-muted);
 }
 
-/* ---- Apresentação do calendário ---- */
-
-.lp-prose--quando { color: color-mix(in oklch, var(--c-ink), transparent 30%); }
-
-.agenda {
-  display: grid;
-  gap: var(--s24);
-  padding: var(--s32);
-  background: color-mix(in oklch, var(--c-ink), transparent 88%);
-  border: 1px solid color-mix(in oklch, var(--c-ink), transparent 80%);
-  border-radius: var(--lp-r-lg, 20px);
-}
-.agenda__fuso {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
-  color: color-mix(in oklch, var(--c-ink), transparent 12%);
-}
-.agenda__estado { margin: 0; font-size: var(--fs-small); color: var(--c-ink); }
-.agenda__estado:empty { display: none; }
-.agenda__bloco { display: grid; gap: var(--s12); }
-.agenda__bloco[hidden] { display: none; }
-.agenda__rotulo {
-  margin: 0;
-  font-size: var(--fs-label);
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
-  color: color-mix(in oklch, var(--c-ink), transparent 14%);
-}
-
-.agenda__dias { display: flex; flex-wrap: wrap; gap: var(--s8); }
-/* O dia é uma coluna: sigla pequena, número grande, mês pequeno. O número é o
-   que a pessoa procura, então ele carrega o peso. */
-.agenda__dia {
-  display: grid;
-  gap: 2px;
-  place-items: center;
-  min-width: 68px;
-  min-height: auto;
-  padding: var(--s12) var(--s8);
-  background: color-mix(in oklch, var(--c-white), transparent 88%);
-  border: 1px solid color-mix(in oklch, var(--c-ink), transparent 82%);
-  border-radius: var(--lp-r-md, 14px);
-  color: var(--c-ink);
-  font: inherit;
-  cursor: pointer;
-  transition: background 160ms var(--lp-ease), border-color 160ms var(--lp-ease);
-}
-.agenda__dia-semana,
-.agenda__dia-mes {
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-.agenda__dia-numero { font-size: 1.35rem; font-weight: var(--fw-bold); line-height: 1.1; }
-.agenda__dia:hover { background: var(--c-ink); color: var(--c-white); border-color: var(--c-ink); }
-.agenda__dia[aria-pressed="true"] {
-  background: var(--c-ink);
-  color: var(--lp-accent, #EE9B00);
-  border-color: var(--c-ink);
-}
-
-.agenda__horas { display: grid; gap: var(--s16); }
-.agenda__turno { display: grid; gap: var(--s8); }
-.agenda__turno-nome {
-  margin: 0;
-  font-size: var(--fs-label);
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
-  color: color-mix(in oklch, var(--c-ink), transparent 14%);
-}
-.agenda__turno-horas {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
-  gap: var(--s8);
-}
-.agenda__hora {
-  min-height: 44px;
-  padding: var(--s8);
-  font-family: var(--font-mono);
-  font-size: var(--fs-small);
-  color: var(--c-ink);
-  background: color-mix(in oklch, var(--c-white), transparent 88%);
-  border: 1px solid color-mix(in oklch, var(--c-ink), transparent 82%);
-  border-radius: var(--lp-r-sm, 8px);
-  cursor: pointer;
-  transition: background 160ms var(--lp-ease), border-color 160ms var(--lp-ease);
-}
-.agenda__hora:hover { background: var(--c-ink); color: var(--c-white); border-color: var(--c-ink); }
-.agenda__hora[aria-pressed="true"] {
-  background: var(--c-ink);
-  color: var(--lp-accent, #EE9B00);
-  border-color: var(--c-ink);
-}
-
-@media (max-width: 767px) {
-  .agenda { padding: var(--s16); }
-  .agenda__dia { min-width: 60px; }
-}
-
 /* ---- Fechar do modal ---- */
 /* Fixo no canto da janela, não preso ao vídeo: colado ao topo do quadro ele
    saía da tela quando o reel ocupava a altura inteira. */
@@ -1363,21 +1212,7 @@ html.reveal-ready [data-reveal].is-in {
 
 /* ---- Mobile ---- */
 
-/* Quinze dias em quatro linhas empilhadas davam 901px de agenda numa tela de
-   812: o formulário sumia e a pessoa rolava às cegas. Num trilho só, que
-   desliza na horizontal, a etapa inteira volta a caber na tela. O overflow
-   fica contido no trilho, então a página não ganha rolagem lateral. */
 @media (max-width: 767px) {
-  .agenda__dias {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    scrollbar-width: thin;
-    margin-inline: calc(-1 * var(--s16));
-    padding: 0 var(--s16) var(--s8);
-  }
-  .agenda__dia { flex: 0 0 auto; scroll-snap-align: start; }
-
   /* Alvo de toque: 36px é confortável com mouse e escorregadio com o polegar. */
   .wall__expandir { width: 44px; height: 44px; }
   .wall__voltar { width: 40px; height: 40px; }
