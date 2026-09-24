@@ -63,6 +63,7 @@ const IDIOMA_FIELD   = { id: '6ab1b817effd9919b73c6782', label: 'Idioma', type: 
 const ORIGEM_FIELD   = { id: '6ab1b817effd9919b73c6783', label: 'Origem', type: 'text' };
 const CAMPANHA_FIELD = { id: '6ab1b817effd9919b73c6784', label: 'Campanha', type: 'text' };
 const CRIATIVO_FIELD = { id: '6ab1b817effd9919b73c6785', label: 'Criativo', type: 'text' };
+const CLIQUE_FIELD   = { id: '6ab5689aae13e00a84feb075', label: 'Clique do anúncio (fbclid)', type: 'text' };
 
 const MAX_BODY = 256 * 1024;
 
@@ -116,6 +117,11 @@ function buildCard(body, reuniao) {
       .filter(Boolean).map((v) => String(v).slice(0, 100)).join(' · ');
     if (campanha) push(CAMPANHA_FIELD, campanha);
     if (criativo) push(CRIATIVO_FIELD, criativo);
+
+    // O clique vai inteiro, porque cortado ele não casa com nada na Meta. O
+    // formato é conferido para não gravar qualquer coisa que venha na URL.
+    const clique = typeof o.fbclid === 'string' ? o.fbclid.trim() : '';
+    if (/^[\w.-]{10,500}$/.test(clique)) push(CLIQUE_FIELD, clique);
   }
 
   const desc = customFields

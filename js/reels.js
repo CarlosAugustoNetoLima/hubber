@@ -20,9 +20,11 @@ function lerOrigem() {
 function capturarOrigem() {
   const params = new URLSearchParams(location.search);
   const vindos = {};
+  /* O fbclid novo da Meta passa fácil de 200 caracteres, com o sufixo _aem_.
+     Cortado, ele não casa com mais nada, então só ele ganha um teto maior. */
   for (const chave of UTM_KEYS) {
     const valor = params.get(chave);
-    if (valor) vindos[chave] = valor.slice(0, 200);
+    if (valor) vindos[chave] = valor.slice(0, chave === 'fbclid' ? 500 : 200);
   }
   if (!Object.keys(vindos).length) return lerOrigem();
 

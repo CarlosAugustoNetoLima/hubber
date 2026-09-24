@@ -201,6 +201,10 @@ export function initReelsForm(root = document, lerOrigem = () => ({})) {
     const dados = Object.fromEntries(new FormData(form).entries());
     delete dados.website_extra;
     dados.origem = lerOrigem();
+    /* O fbclid só serve para devolver à Meta o que a conversa virou. Quem
+       desativou a medição não entra nesse caminho, então o clique dele nem
+       chega ao CRM. As UTMs seguem: dizem de qual campanha a pessoa veio. */
+    if (window.consentimento && !window.consentimento.permitido()) delete dados.origem.fbclid;
 
     const btn = form.querySelector('[type="submit"]');
     const rotulo = btn?.textContent;
