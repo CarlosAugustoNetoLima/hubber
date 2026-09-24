@@ -23,6 +23,7 @@
 
 import { guardar, concluir, drenar, filaAtiva } from './_fila.js';
 import { montarAgenda, rotuloDoHorario, escreverHorario } from './reels-agenda.js';
+import { origemDoLead } from './_origem.js';
 
 const API_BASE = 'https://api.jsynq.com';
 const PROJECT_ID  = process.env.JSYNQ_REELS_PROJECT_ID || '6aaac5d2f1edc4c698019729';
@@ -108,20 +109,11 @@ function buildCard(body, reuniao) {
     if (idioma) push(IDIOMA_FIELD, idioma);
     push(ORIGEM_FIELD, ORIGEM);
 
-    // As UTMs em dois campos: a campanha de um lado, o criativo do outro. São
-    // nove peças rodando, e saber qual trouxe o lead é o dado da campanha.
-    const o = body.origem && typeof body.origem === 'object' ? body.origem : {};
-    const campanha = [o.utm_source, o.utm_medium, o.utm_campaign]
-      .filter(Boolean).map((v) => String(v).slice(0, 100)).join(' · ');
-    const criativo = [o.utm_content, o.utm_term]
-      .filter(Boolean).map((v) => String(v).slice(0, 100)).join(' · ');
+    // São nove peças rodando, e saber qual trouxe o lead é o dado da campanha.
+    const { campanha, criativo, clique } = origemDoLead(body);
     if (campanha) push(CAMPANHA_FIELD, campanha);
     if (criativo) push(CRIATIVO_FIELD, criativo);
-
-    // O clique vai inteiro, porque cortado ele não casa com nada na Meta. O
-    // formato é conferido para não gravar qualquer coisa que venha na URL.
-    const clique = typeof o.fbclid === 'string' ? o.fbclid.trim() : '';
-    if (/^[\w.-]{10,500}$/.test(clique)) push(CLIQUE_FIELD, clique);
+    if (clique) push(CLIQUE_FIELD, clique);
   }
 
   const desc = customFields

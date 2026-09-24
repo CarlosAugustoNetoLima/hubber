@@ -23,6 +23,7 @@
  */
 
 import { guardar, concluir, drenar, filaAtiva } from './_fila.js';
+import { origemDoLead } from './_origem.js';
 
 const API_BASE = 'https://api.jsynq.com';
 const PROJECT_ID = process.env.JSYNQ_CONNECT_PROJECT_ID || '6aaac5d2f1edc4c698019729';
@@ -39,6 +40,9 @@ const FORM_NAME = 'Hubber Connect · Aplicação de criador';
    origens no quadro: cada LP nova entra aqui com a sua, não com projeto novo. */
 const ORIGEM_FIELD = { id: '6aaaca2ef1edc4c69802a9f6', label: 'Origem', type: 'text' };
 const ORIGEM = 'Connect · LP de influencers';
+const CAMPANHA_FIELD = { id: '6ab56a9bae13e00a84ff6ae4', label: 'Campanha', type: 'text' };
+const CRIATIVO_FIELD = { id: '6ab56a9bae13e00a84ff6ae5', label: 'Criativo', type: 'text' };
+const CLIQUE_FIELD   = { id: '6ab56a9bae13e00a84ff6ae6', label: 'Clique do anúncio (fbclid)', type: 'text' };
 
 /* `label` e `type` reproduzem como o JSYNQ grava o campo no card; `crmKey`
    marca os três que o CRM trata como dados de contato. `options` é uma lista
@@ -155,7 +159,13 @@ function buildCard(body) {
   // Os dados de contato não vão no topo do card: o JSYNQ já os deduz pelo
   // crmKey que os campos têm no formulário. Mandar nos dois lugares fazia o
   // card repetir "Contact name", "Email" e "Phone" duas vezes cada.
-  if (!missing.length && !invalid.length) push(ORIGEM_FIELD, ORIGEM);
+  if (!missing.length && !invalid.length) {
+    push(ORIGEM_FIELD, ORIGEM);
+    const { campanha, criativo, clique } = origemDoLead(body);
+    if (campanha) push(CAMPANHA_FIELD, campanha);
+    if (criativo) push(CRIATIVO_FIELD, criativo);
+    if (clique) push(CLIQUE_FIELD, clique);
+  }
 
   /* O JSYNQ promove a coluna do CRM só o que tem crmKey no formulário: nome,
      e-mail e telefone. Todo o resto fica no detalhe do card, e quem abre a

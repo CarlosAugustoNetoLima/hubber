@@ -1,8 +1,12 @@
+import { capturarOrigem, origemParaEnvio } from './origem.js';
 
+const ORIGEM = 'hubber:connect:origem';
 
 export function initConnectForm(root = document) {
   const form = root.querySelector('[data-connect-form]');
   if (!form) return;
+
+  capturarOrigem(ORIGEM);
 
   const summary = form.querySelector('[data-errors]');
   const result = root.querySelector('[data-connect-result]');
@@ -139,6 +143,7 @@ export function initConnectForm(root = document) {
     const data = Object.fromEntries(fd.entries());
     if (hp?.name) delete data[hp.name];
     data.parceria = fd.getAll('parceria');
+    data.origem = origemParaEnvio(ORIGEM);
 
     // O FormData entrega um File, que não sobrevive ao JSON. Vai como base64.
     const arquivo = fileInput?.files && fileInput.files[0];

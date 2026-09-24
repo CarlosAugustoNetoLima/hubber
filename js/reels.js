@@ -1,39 +1,10 @@
 import { initReelsForm } from './reels-form.js';
 import { initParede } from './reels-parede.js';
 import { initConsentimento } from './consentimento.js';
+import { capturarOrigem, origemParaEnvio } from './origem.js';
 
-const UTM_KEYS = [
-  'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
-  'fbclid', 'gclid'
-];
-const STORE_KEY = 'hubber:reels:origin';
+const ORIGEM = 'hubber:reels:origin';
 const paradoQuieto = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-function lerOrigem() {
-  try {
-    return JSON.parse(sessionStorage.getItem(STORE_KEY) || '{}');
-  } catch {
-    return {};
-  }
-}
-
-function capturarOrigem() {
-  const params = new URLSearchParams(location.search);
-  const vindos = {};
-  /* O fbclid novo da Meta passa fácil de 200 caracteres, com o sufixo _aem_.
-     Cortado, ele não casa com mais nada, então só ele ganha um teto maior. */
-  for (const chave of UTM_KEYS) {
-    const valor = params.get(chave);
-    if (valor) vindos[chave] = valor.slice(0, chave === 'fbclid' ? 500 : 200);
-  }
-  if (!Object.keys(vindos).length) return lerOrigem();
-
-  const origem = { ...lerOrigem(), ...vindos, landing: location.pathname };
-  try {
-    sessionStorage.setItem(STORE_KEY, JSON.stringify(origem));
-  } catch {}
-  return origem;
-}
 
 function revelar() {
   const alvos = document.querySelectorAll('[data-reveal]');
@@ -196,7 +167,7 @@ function viuAReserva() {
   observador.observe(secao);
 }
 
-capturarOrigem();
+capturarOrigem(ORIGEM);
 revelar();
 brilhoDeCard();
 botaoMagnetico();
@@ -208,6 +179,4 @@ viuAReserva();
 
 initConsentimento();
 initParede();
-initReelsForm(document, lerOrigem);
-
-export { capturarOrigem, lerOrigem };
+initReelsForm(document, () => origemParaEnvio(ORIGEM));
