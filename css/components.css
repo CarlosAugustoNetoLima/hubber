@@ -984,8 +984,8 @@ html:not(.has-js) .step + .step { padding-top: var(--s48); border-top: 1px solid
 }
 
 /* Consentimento de cookies
-   A tarja é fixa no rodapé e não bloqueia a página: quem não escolhe nada
-   simplesmente não é medido, que já é o lado seguro. */
+   A tarja é fixa no rodapé e não bloqueia a página. É um aviso: a medição já
+   vale na chegada, e a tarja existe para dizer isso e oferecer a saída. */
 .consent {
   position: fixed;
   z-index: var(--z-overlay);
@@ -1008,12 +1008,17 @@ html:not(.has-js) .step + .step { padding-top: var(--s48); border-top: 1px solid
   color: var(--fg-muted);
 }
 .consent__texto a { color: var(--accent-text); }
-.consent__acoes { display: flex; gap: var(--s12); }
+.consent__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s12) var(--s24);
+}
 
-/* Recusar tem exatamente o peso visual de aceitar. Destacar um dos dois
-   induziria a escolha, e consentimento induzido não é consentimento. */
+/* O botão só fecha o aviso. A saída fica ao lado, como texto: visível e a um
+   clique, sem disputar com ele. */
 .consent__btn {
-  flex: 1 1 0;
+  min-width: 8rem;
   justify-content: center;
   background: transparent;
   color: var(--fg);
@@ -1021,9 +1026,27 @@ html:not(.has-js) .step + .step { padding-top: var(--s48); border-top: 1px solid
 }
 .consent__btn:hover { border-color: var(--fg); }
 
+/* Discreta, mas legível. O cinza de apoio já está no limite de contraste para
+   leitura sobre o fundo da tarja, então quem recua é o tamanho e o sublinhado,
+   que só aparece no hover e no foco. */
+.consent__sair {
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--fg-muted);
+  font: inherit;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+.consent__sair:hover,
+.consent__sair:focus-visible { text-decoration: underline; }
+
 @media (max-width: 767px) {
   .consent { padding: var(--s16); }
-  .consent__acoes { flex-direction: column; }
+  .consent__sair { width: 100%; }
 }
 
 /* O controle que mora na política, para mudar de ideia depois. */

@@ -154,18 +154,23 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       var bruto = window.localStorage.getItem(CHAVE);
       if (!bruto) return null;
       var d = JSON.parse(bruto);
-      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
-      // vale como se não houvesse escolha, e a tarja pergunta de novo.
-      return d && d.versao === VERSAO ? d : null;
+      if (!d) return null;
+      // Versão diferente quer dizer que as finalidades mudaram desde o aviso, e
+      // ele aparece de novo. Menos para quem desativou a medição: esse pedido
+      // vale até a própria pessoa desfazer, por mais que o aviso mude.
+      return d.versao === VERSAO || d.estado === 'recusado' ? d : null;
     } catch (e) { return null; }
   }
 
-  function aceitou(){
+  /* Aviso com saída: a medição vale para todo mundo que não pediu para sair.
+     Quem recusou quando a tarja ainda pedia autorização antes continua fora,
+     porque o registro é o mesmo. */
+  function permitido(){
     var d = registro();
-    return !!d && d.estado === 'aceito';
+    return !d || d.estado !== 'recusado';
   }
 
-  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // Desativar a medição não é só parar de mandar evento: o que já foi gravado
   // no navegador sai também. O domínio do cookie depende de como o fbevents o
   // gravou, então apaga nos escopos possíveis.
   function apagarCookies(){
@@ -180,13 +185,14 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
   }
 
   window.consentimento = {
-    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    // null = ainda não viu o aviso, o que não impede a medição.
     registro: registro,
-    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
-    // hora, para não atrasar quem autorizou numa visita anterior.
-    aoAceitar: function(fn){
+    permitido: permitido,
+    // Quem depende da medição se inscreve aqui. Se ela está valendo, roda na
+    // hora, para o PageView sair junto com a página.
+    aoPermitir: function(fn){
       ouvintes.push(fn);
-      if (aceitou()) fn();
+      if (permitido()) fn();
     },
     registrar: function(estado){
       try {
@@ -196,21 +202,21 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           versao: VERSAO
         }));
       } catch (e) {}
-      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
-      else apagarCookies();
+      if (estado === 'recusado') apagarCookies();
+      else ouvintes.forEach(function(fn){ fn(); });
     }
   };
 })();
 </script>
 
-<!-- Pixel da Meta. Só carrega com autorização; ver partial consentimento-api -->
+<!-- Pixel da Meta. Carrega para quem não desativou a medição; ver partial consentimento-api -->
 <script>
 (function(){
   var ID = '1622410909278763';
 
-  /* A página fala com o pixel por aqui, nunca direto pelo fbq. Antes da
-     autorização o fbq não existe, e cada método vira um no-op silencioso: quem
-     dispara um evento não precisa saber se a pessoa autorizou ou não. */
+  /* A página fala com o pixel por aqui, nunca direto pelo fbq. Para quem
+     desativou a medição o fbq não existe, e cada método vira um no-op
+     silencioso: quem dispara um evento não precisa saber da escolha. */
   function identificador(nome){
     var sorteio = (window.crypto && window.crypto.randomUUID)
       ? window.crypto.randomUUID()
@@ -220,8 +226,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 
   window.pixel = {
     id: ID,
-    // O eventID não serve para nada hoje. Serve no dia em que o mesmo evento
-    // também sair do servidor: é por ele que a Meta descarta a cópia.
+    // O gateway da Conversions API manda uma cópia de cada evento pelo
+    // servidor. É pelo eventID que a Meta reconhece a cópia e conta uma vez só.
     evento: function(nome, dados){
       if (typeof window.fbq !== 'function') return;
       window.fbq('track', nome, dados || {}, { eventID: identificador(nome) });
@@ -238,7 +244,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
   if (!window.consentimento) return;
   var carregado = false;
 
-  window.consentimento.aoAceitar(function(){
+  window.consentimento.aoPermitir(function(){
     if (carregado) return;
     carregado = true;
     !function(f,b,e,v,n,t,s)
@@ -866,14 +872,14 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 <div class="consent" data-consent data-surface="ink" role="region" aria-label="Measurement cookies" hidden>
   <div class="consent__caixa">
     <p class="consent__texto">
-      This page can use the Meta pixel to measure which ad brought you here and to show
-      our ads to people who have been here. It writes two cookies in your browser. If you
-      decline, nothing is written and the page works the same.
+      This page uses the Meta pixel to measure which ad brought you here and to show
+      our ads to people who have been here. It writes two cookies in your browser. If
+      you opt out, it stops, the cookies are removed and the page works the same.
       <a href="/privacy/#cookies">What gets written</a>.
     </p>
     <div class="consent__acoes">
-      <button class="btn consent__btn" type="button" data-consent-aceitar>Allow</button>
-      <button class="btn consent__btn" type="button" data-consent-recusar>Decline</button>
+      <button class="btn consent__btn" type="button" data-consent-ok>Got it</button>
+      <button class="consent__sair" type="button" data-consent-sair>Opt out</button>
     </div>
   </div>
 </div>

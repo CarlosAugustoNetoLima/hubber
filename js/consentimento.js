@@ -1,11 +1,11 @@
 // A escolha sobre o pixel da Meta. Duas interfaces para a mesma decisão: a
-// tarja que pergunta a quem ainda não escolheu, e o controle na política de
-// privacidade, que deixa mudar de ideia depois. Retirar precisa ser tão fácil
-// quanto dar, senão o consentimento não vale.
+// tarja que avisa quem chega pela primeira vez, e o controle na política de
+// privacidade, que deixa mudar de ideia depois. A medição já vale na chegada,
+// então sair precisa estar a um clique, na tarja e na política.
 //
-// Guardar e aplicar a decisão é trabalho do script do partial meta-pixel, no
-// <head>: ele roda antes de tudo para não atrasar o PageView de quem já
-// autorizou. Aqui mora só a interface.
+// Guardar e aplicar a decisão é trabalho do script do partial
+// consentimento-api, no <head>: ele roda antes de tudo para o PageView sair
+// junto com a página. Aqui mora só a interface.
 /* A política do reels existe em inglês e em português, e as duas carregavam
    este mesmo controle. O texto vinha fixo em português: quem lia a política em
    inglês encontrava uma frase em outra língua no meio dela. */
@@ -13,20 +13,18 @@ const TEXTO = {
   pt: {
     local: 'pt-BR',
     em: (data) => ` em ${data}`,
-    aceito: (q) => `Você autorizou o pixel da Meta${q}.`,
-    recusado: (q) => `Você recusou o pixel da Meta${q}. Nada está sendo gravado no seu navegador.`,
-    nenhum: 'Você ainda não escolheu, e por isso o pixel não está carregando.',
-    retirar: 'Retirar a autorização',
-    autorizar: 'Autorizar',
+    ligada: 'A medição pelo pixel da Meta está ligada para você.',
+    desligada: (q) => `Você desativou a medição${q}. Nada está sendo gravado no seu navegador.`,
+    desativar: 'Desativar a medição',
+    reativar: 'Reativar a medição',
   },
   en: {
     local: 'en-US',
     em: (data) => ` on ${data}`,
-    aceito: (q) => `You allowed the Meta pixel${q}.`,
-    recusado: (q) => `You declined the Meta pixel${q}. Nothing is being written to your browser.`,
-    nenhum: 'You have not chosen yet, which is why the pixel is not loading.',
-    retirar: 'Withdraw permission',
-    autorizar: 'Allow',
+    ligada: 'Measurement by the Meta pixel is on for you.',
+    desligada: (q) => `You opted out${q}. Nothing is being written to your browser.`,
+    desativar: 'Opt out',
+    reativar: 'Allow again',
   },
 };
 
@@ -43,11 +41,6 @@ export function initConsentimento(root = document) {
   const resumo = controle?.querySelector('[data-consent-resumo]');
   const botao = controle?.querySelector('[data-consent-trocar]');
 
-  function estado() {
-    const r = api.registro();
-    return r ? r.estado : null;
-  }
-
   function quando() {
     const r = api.registro();
     if (!r?.em) return '';
@@ -57,16 +50,12 @@ export function initConsentimento(root = document) {
 
   function pintarControle() {
     if (!controle || !resumo || !botao) return;
-    const atual = estado();
-    if (atual === 'aceito') {
-      resumo.textContent = T.aceito(quando());
-      botao.textContent = T.retirar;
-    } else if (atual === 'recusado') {
-      resumo.textContent = T.recusado(quando());
-      botao.textContent = T.autorizar;
+    if (api.permitido()) {
+      resumo.textContent = T.ligada;
+      botao.textContent = T.desativar;
     } else {
-      resumo.textContent = T.nenhum;
-      botao.textContent = T.autorizar;
+      resumo.textContent = T.desligada(quando());
+      botao.textContent = T.reativar;
     }
     controle.hidden = false;
   }
@@ -82,14 +71,16 @@ export function initConsentimento(root = document) {
     pintarControle();
   }
 
+  /* "ciente" é quem leu o aviso e seguiu. Não vira "aceito": ninguém autorizou
+     nada ao fechar um aviso, e o registro não deve dizer o contrário. */
   if (tarja) {
-    if (estado() === null) tarja.hidden = false;
-    tarja.querySelector('[data-consent-aceitar]')?.addEventListener('click', () => responder('aceito'));
-    tarja.querySelector('[data-consent-recusar]')?.addEventListener('click', () => responder('recusado'));
+    if (api.registro() === null) tarja.hidden = false;
+    tarja.querySelector('[data-consent-ok]')?.addEventListener('click', () => responder('ciente'));
+    tarja.querySelector('[data-consent-sair]')?.addEventListener('click', () => responder('recusado'));
   }
 
   if (controle && botao) {
-    botao.addEventListener('click', () => responder(estado() === 'aceito' ? 'recusado' : 'aceito'));
+    botao.addEventListener('click', () => responder(api.permitido() ? 'recusado' : 'aceito'));
     pintarControle();
   }
 }

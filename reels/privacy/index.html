@@ -40,18 +40,23 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       var bruto = window.localStorage.getItem(CHAVE);
       if (!bruto) return null;
       var d = JSON.parse(bruto);
-      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
-      // vale como se não houvesse escolha, e a tarja pergunta de novo.
-      return d && d.versao === VERSAO ? d : null;
+      if (!d) return null;
+      // Versão diferente quer dizer que as finalidades mudaram desde o aviso, e
+      // ele aparece de novo. Menos para quem desativou a medição: esse pedido
+      // vale até a própria pessoa desfazer, por mais que o aviso mude.
+      return d.versao === VERSAO || d.estado === 'recusado' ? d : null;
     } catch (e) { return null; }
   }
 
-  function aceitou(){
+  /* Aviso com saída: a medição vale para todo mundo que não pediu para sair.
+     Quem recusou quando a tarja ainda pedia autorização antes continua fora,
+     porque o registro é o mesmo. */
+  function permitido(){
     var d = registro();
-    return !!d && d.estado === 'aceito';
+    return !d || d.estado !== 'recusado';
   }
 
-  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // Desativar a medição não é só parar de mandar evento: o que já foi gravado
   // no navegador sai também. O domínio do cookie depende de como o fbevents o
   // gravou, então apaga nos escopos possíveis.
   function apagarCookies(){
@@ -66,13 +71,14 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
   }
 
   window.consentimento = {
-    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    // null = ainda não viu o aviso, o que não impede a medição.
     registro: registro,
-    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
-    // hora, para não atrasar quem autorizou numa visita anterior.
-    aoAceitar: function(fn){
+    permitido: permitido,
+    // Quem depende da medição se inscreve aqui. Se ela está valendo, roda na
+    // hora, para o PageView sair junto com a página.
+    aoPermitir: function(fn){
       ouvintes.push(fn);
-      if (aceitou()) fn();
+      if (permitido()) fn();
     },
     registrar: function(estado){
       try {
@@ -82,8 +88,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           versao: VERSAO
         }));
       } catch (e) {}
-      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
-      else apagarCookies();
+      if (estado === 'recusado') apagarCookies();
+      else ouvintes.forEach(function(fn){ fn(); });
     }
   };
 })();
@@ -163,7 +169,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     <div class="legal__meta">
       <p class="t-label t-accent">Privacy · Reels Orlando</p>
       <h1 class="legal__title" id="titulo">What this page collects, why, and what you can ask us to give back.</h1>
-      <p class="t-lead t-muted">In effect since September 22, 2026.</p>
+      <p class="t-lead t-muted">In effect since September 24, 2026.</p>
     </div>
 
     <nav class="legal__toc" aria-labelledby="indice">
@@ -198,7 +204,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       <dl class="legal__terms">
         <div><dt>Booking and holding the call you scheduled</dt><dd>Legal basis: your <strong>consent</strong>, given in the box you check before sending. Without it, the form does not send. Your name and email go into the meeting invitation, and the booking appears on the calendar of the person who will talk to you.</dd></div>
         <div><dt>Working out whether the service fits your business</dt><dd>Legal basis: the same consent. It is the reason the call exists.</dd></div>
-        <div><dt>Measuring which ad brought you here</dt><dd>Legal basis: your consent, given in the cookie bar. Without it nothing is measured. See section 5.</dd></div>
+        <div><dt>Measuring which ad brought you here</dt><dd>Legal basis: <strong>legitimate interest</strong>, to know which ads work and to show ours to people who have been here. You can opt out at any time, and from then on nothing is measured. See section 5.</dd></div>
         <div><dt>Keeping the page running and safe</dt><dd>Legal basis: <strong>legitimate interest</strong>, to operate the service and contain abuse and fraud.</dd></div>
       </dl>
 
@@ -207,15 +213,15 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       <ul>
         <li><strong>CRM and calendar tool.</strong> Your contact details and the booked call live in JSYNQ, the system where the team tracks each lead. The video call happens inside it.</li>
         <li><strong>Hosting.</strong> The page and the form handling run on Vercel. If the CRM is unavailable when you send, your answer is held there, in a private area, until it is delivered.</li>
-        <li><strong>Meta.</strong> If you allow it in the cookie bar, the pixel hands Meta your IP address and your visit to this page. When you book the call, your <strong>name, email and phone are also sent to Meta in hashed form</strong>, which cannot be read back, only matched to recognize that the booking came from an ad. The same events also pass through a measurement server operated for Hubber, which forwards them to Meta. Without your permission in the bar, none of this happens.</li>
+        <li><strong>Meta.</strong> The pixel hands Meta your IP address and your visit to this page. When you book the call, your <strong>name, email and phone are also sent to Meta in hashed form</strong>, which cannot be read back, only matched to recognize that the booking came from an ad. The same events also pass through a measurement server operated for Hubber, which forwards them to Meta. If you opt out, none of this happens.</li>
         <li><strong>Google Fonts.</strong> The fonts are loaded from Google's servers. In that request your browser hands your IP address to Google, as on any site using the service.</li>
         <li><strong>Authorities.</strong> Where there is a court order or a legal obligation.</li>
       </ul>
 
       <h2 id="cookies">5. Cookies and tracking</h2>
-      <p>This page may use the <strong>Meta pixel</strong>, the measurement tool behind Facebook and Instagram. It <strong>only loads if you allow it</strong>: on your first visit a bar asks you, and while you have not answered, or if you decline, it does not load and nothing is written to your browser.</p>
-      <p>If you allow it, it writes two cookies: <strong>_fbp</strong>, an identifier for your browser, and <strong>_fbc</strong>, which stores the code of the ad you came through. Both last up to three months.</p>
-      <p>Declining covers both sides: without your permission, neither your browser nor our server sends any event to Meta. You can still book the call exactly the same way.</p>
+      <p>This page uses the <strong>Meta pixel</strong>, the measurement tool behind Facebook and Instagram. It <strong>loads when you arrive</strong>, and on your first visit a bar at the bottom of the page tells you so and lets you opt out.</p>
+      <p>It writes two cookies: <strong>_fbp</strong>, an identifier for your browser, and <strong>_fbc</strong>, which stores the code of the ad you came through. Both last up to three months.</p>
+      <p>Opting out covers both sides: from then on, neither your browser nor our server sends any event to Meta, and the cookies the pixel had written are removed from your browser. You can still book the call exactly the same way.</p>
       <p>Beyond that, the page does not use Google Analytics or any other audience measurement tool.</p>
 
       <div class="consent-controle" data-consent-controle hidden>
@@ -230,7 +236,7 @@ initConsentimento();
 </script>
 
 
-      <p>You can change your mind at any time, using the button above. Withdrawing removes from your browser the cookies the pixel had written.</p>
+      <p>You can change your mind at any time, using the button above.</p>
 
       <h2 id="prazo">6. How long we keep it</h2>
       <p>We keep your details while the call is booked and, if you become a client, for as long as the relationship lasts and for the period the law requires afterwards. If the call does not happen or there is no fit, we keep the record until you ask us to delete it.</p>
@@ -243,6 +249,7 @@ initConsentimento();
         <div><dt>Delete</dt><dd>Erase the data we hold on the basis of your consent.</dd></div>
         <div><dt>Port</dt><dd>Give you your data in a format you can take elsewhere.</dd></div>
         <div><dt>Withdraw consent</dt><dd>Take back the permission you gave, including cancelling the booked call.</dd></div>
+        <div><dt>Opt out of measurement</dt><dd>Stop the ad measurement described in section 5, with the button in that section or by writing to us.</dd></div>
       </dl>
       <p>To exercise any of these, write to <a href="mailto:privacy@hubbermarketing.com">privacy@hubbermarketing.com</a>. We answer within 15 days.</p>
 

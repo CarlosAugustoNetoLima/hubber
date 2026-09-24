@@ -38,18 +38,23 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       var bruto = window.localStorage.getItem(CHAVE);
       if (!bruto) return null;
       var d = JSON.parse(bruto);
-      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
-      // vale como se não houvesse escolha, e a tarja pergunta de novo.
-      return d && d.versao === VERSAO ? d : null;
+      if (!d) return null;
+      // Versão diferente quer dizer que as finalidades mudaram desde o aviso, e
+      // ele aparece de novo. Menos para quem desativou a medição: esse pedido
+      // vale até a própria pessoa desfazer, por mais que o aviso mude.
+      return d.versao === VERSAO || d.estado === 'recusado' ? d : null;
     } catch (e) { return null; }
   }
 
-  function aceitou(){
+  /* Aviso com saída: a medição vale para todo mundo que não pediu para sair.
+     Quem recusou quando a tarja ainda pedia autorização antes continua fora,
+     porque o registro é o mesmo. */
+  function permitido(){
     var d = registro();
-    return !!d && d.estado === 'aceito';
+    return !d || d.estado !== 'recusado';
   }
 
-  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // Desativar a medição não é só parar de mandar evento: o que já foi gravado
   // no navegador sai também. O domínio do cookie depende de como o fbevents o
   // gravou, então apaga nos escopos possíveis.
   function apagarCookies(){
@@ -64,13 +69,14 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
   }
 
   window.consentimento = {
-    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    // null = ainda não viu o aviso, o que não impede a medição.
     registro: registro,
-    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
-    // hora, para não atrasar quem autorizou numa visita anterior.
-    aoAceitar: function(fn){
+    permitido: permitido,
+    // Quem depende da medição se inscreve aqui. Se ela está valendo, roda na
+    // hora, para o PageView sair junto com a página.
+    aoPermitir: function(fn){
       ouvintes.push(fn);
-      if (aceitou()) fn();
+      if (permitido()) fn();
     },
     registrar: function(estado){
       try {
@@ -80,8 +86,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           versao: VERSAO
         }));
       } catch (e) {}
-      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
-      else apagarCookies();
+      if (estado === 'recusado') apagarCookies();
+      else ouvintes.forEach(function(fn){ fn(); });
     }
   };
 })();
@@ -112,7 +118,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     <div class="legal__meta">
       <p class="t-label t-accent">Privacidade · Hubber Connect</p>
       <h1 class="legal__title" id="titulo">O que a Hubber Connect coleta, por quê, e o que você pode pedir de volta.</h1>
-      <p class="t-lead t-muted">Em vigor desde 22 de setembro de 2026.</p>
+      <p class="t-lead t-muted">Em vigor desde 24 de setembro de 2026.</p>
     </div>
 
     <nav class="legal__toc" aria-labelledby="indice">
@@ -147,7 +153,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       <dl class="legal__terms">
         <div><dt>Avaliar a sua aplicação e entrar em contato</dt><dd>Base legal: o seu <strong>consentimento</strong>, dado na caixa que você marca antes de enviar o formulário. Sem ela, o formulário não envia.</dd></div>
         <div><dt>Apresentar o seu perfil a uma empresa da rede, quando houver fit</dt><dd>Base legal: o mesmo consentimento. É a razão de existir da Hubber Connect, e está dito no formulário.</dd></div>
-        <div><dt>Medir de qual anúncio você chegou</dt><dd>Base legal: o seu consentimento, dado na tarja de cookies. Sem ele nada é medido. Ver a seção 5.</dd></div>
+        <div><dt>Medir de qual anúncio você chegou</dt><dd>Base legal: <strong>legítimo interesse</strong>, para saber quais anúncios funcionam e mostrar os nossos a quem já esteve aqui. Você pode desativar a medição quando quiser, e a partir daí nada é medido. Ver a seção 5.</dd></div>
         <div><dt>Manter a página funcionando e segura</dt><dd>Base legal: <strong>legítimo interesse</strong>, para operar o serviço e conter abuso e fraude.</dd></div>
       </dl>
       <p>O que você escreve no formulário não vira publicidade: esses dados não são usados para anunciar nem para montar perfil de comportamento.</p>
@@ -158,17 +164,18 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
         <li><strong>Empresas clientes da Hubber.</strong> Quando a sua viagem e o seu perfil combinam com o que uma marca da rede procura, apresentamos o seu perfil a ela. Isso só acontece com o consentimento que você deu ao enviar o formulário.</li>
         <li><strong>Ferramenta de CRM.</strong> As aplicações ficam guardadas no JSYNQ, o sistema onde a equipe acompanha cada contato.</li>
         <li><strong>Hospedagem.</strong> A página e o recebimento do formulário rodam na Vercel, em servidores fora do Brasil, o que é transferência internacional de dados. Se o CRM estiver indisponível no momento do envio, a sua aplicação fica guardada ali, em área privada, até ser entregue, para que nenhuma se perca.</li>
-        <li><strong>Meta.</strong> Se você autorizar na tarja de cookies, o pixel entrega à Meta o seu endereço IP e a sua visita a esta página, em servidores nos Estados Unidos. O mesmo evento passa também por um servidor de medição operado para a Hubber, que o repassa à Meta. Nada do que você escreve no formulário vai junto.</li>
+        <li><strong>Meta.</strong> O pixel entrega à Meta o seu endereço IP e a sua visita a esta página, em servidores nos Estados Unidos. O mesmo evento passa também por um servidor de medição operado para a Hubber, que o repassa à Meta. Nada do que você escreve no formulário vai junto. Se você desativar a medição, nada disso acontece.</li>
         <li><strong>Google Fonts.</strong> As fontes são carregadas dos servidores do Google. Nesse pedido o seu navegador entrega o endereço IP ao Google, como em qualquer site que use o serviço.</li>
         <li><strong>Autoridades.</strong> Quando houver ordem judicial ou obrigação legal.</li>
       </ul>
 
       <h2 id="cookies">5. Cookies e rastreamento</h2>
-      <p>Esta página pode usar o <strong>pixel da Meta</strong>, a ferramenta de medição do Facebook e do Instagram. Ele <strong>só carrega se você autorizar</strong>: na primeira visita aparece uma tarja perguntando, e enquanto você não responder, ou se você recusar, ele não carrega e nada é gravado no seu navegador.</p>
-      <p>Se você autorizar, ele grava dois cookies: o <strong>_fbp</strong>, um identificador do seu navegador, e o <strong>_fbc</strong>, que guarda o código do anúncio pelo qual você chegou, quando você chegou por um. Os dois duram até três meses.</p>
+      <p>Esta página usa o <strong>pixel da Meta</strong>, a ferramenta de medição do Facebook e do Instagram. Ele <strong>carrega quando você chega</strong>, e na primeira visita uma tarja no pé da página avisa isso e oferece a opção de desativar.</p>
+      <p>Ele grava dois cookies: o <strong>_fbp</strong>, um identificador do seu navegador, e o <strong>_fbc</strong>, que guarda o código do anúncio pelo qual você chegou, quando você chegou por um. Os dois duram até três meses.</p>
       <p>Ele serve para duas coisas: medir quantas pessoas chegam até aqui por cada anúncio e mostrar os nossos anúncios de novo a quem já esteve aqui. Nesse caminho, o seu endereço IP e a sua visita a esta página vão para a Meta.</p>
+      <p>Desativar vale para os dois lados: a partir daí, nem o navegador nem o nosso servidor mandam qualquer evento para a Meta, e os cookies que o pixel tinha gravado são apagados do seu navegador. A aplicação funciona do mesmo jeito.</p>
       <p>Fora isso, a página não usa Google Analytics nem nenhuma outra ferramenta de medição de audiência.</p>
-      <p>A sua resposta fica guardada no seu próprio navegador, com a data, e não vai para os nossos servidores. Serve só para não perguntarmos de novo a cada visita.</p>
+      <p>A sua escolha fica guardada no seu próprio navegador, com a data, e não vai para os nossos servidores. Serve para lembrar se você desativou a medição e para não mostrar o aviso a cada visita.</p>
 
       <div class="consent-controle" data-consent-controle hidden>
   <p data-consent-resumo></p>
@@ -182,7 +189,7 @@ initConsentimento();
 </script>
 
 
-      <p>Você pode mudar de ideia quando quiser, no botão acima. Retirar a autorização apaga do seu navegador os cookies que o pixel tinha gravado. Se preferir, dá para bloquear cookies de terceiros no navegador, ou ajustar o que a Meta pode usar para anúncios nas preferências de anúncio da sua conta no Facebook ou no Instagram. A página continua funcionando igual nos dois casos.</p>
+      <p>Você pode mudar de ideia quando quiser, no botão acima. Se preferir, dá para bloquear cookies de terceiros no navegador, ou ajustar o que a Meta pode usar para anúncios nas preferências de anúncio da sua conta no Facebook ou no Instagram. A página continua funcionando igual nos dois casos.</p>
 
       <h2 id="prazo">6. Por quanto tempo guardamos</h2>
       <p>Guardamos a sua aplicação enquanto ela estiver em avaliação e, se virar parceria, enquanto durar a relação e pelo prazo que a lei exigir depois disso.</p>
@@ -196,6 +203,7 @@ initConsentimento();
         <div><dt>Exclusão</dt><dd>Pedir que os dados tratados com base no seu consentimento sejam apagados.</dd></div>
         <div><dt>Portabilidade</dt><dd>Receber os seus dados num formato que dê para levar a outro lugar.</dd></div>
         <div><dt>Revogação do consentimento</dt><dd>Retirar a autorização que você deu. A partir daí paramos de usar os dados para aquilo, sem desfazer o que já foi feito de forma legítima.</dd></div>
+        <div><dt>Oposição</dt><dd>Pedir que a gente pare a medição de anúncios descrita na seção 5, pelo botão daquela seção ou escrevendo para a gente.</dd></div>
       </dl>
       <p>Para exercer qualquer um deles, escreva para <a href="mailto:privacidade@hubbermarketing.com">privacidade@hubbermarketing.com</a>. Respondemos em até 15 dias. Você também pode reclamar à Autoridade Nacional de Proteção de Dados.</p>
 

@@ -1,11 +1,11 @@
-<!-- Pixel da Meta. Só carrega com autorização; ver partial consentimento-api -->
+<!-- Pixel da Meta. Carrega para quem não desativou a medição; ver partial consentimento-api -->
 <script>
 (function(){
   var ID = '{{1}}';
 
-  /* A página fala com o pixel por aqui, nunca direto pelo fbq. Antes da
-     autorização o fbq não existe, e cada método vira um no-op silencioso: quem
-     dispara um evento não precisa saber se a pessoa autorizou ou não. */
+  /* A página fala com o pixel por aqui, nunca direto pelo fbq. Para quem
+     desativou a medição o fbq não existe, e cada método vira um no-op
+     silencioso: quem dispara um evento não precisa saber da escolha. */
   function identificador(nome){
     var sorteio = (window.crypto && window.crypto.randomUUID)
       ? window.crypto.randomUUID()
@@ -15,8 +15,8 @@
 
   window.pixel = {
     id: ID,
-    // O eventID não serve para nada hoje. Serve no dia em que o mesmo evento
-    // também sair do servidor: é por ele que a Meta descarta a cópia.
+    // O gateway da Conversions API manda uma cópia de cada evento pelo
+    // servidor. É pelo eventID que a Meta reconhece a cópia e conta uma vez só.
     evento: function(nome, dados){
       if (typeof window.fbq !== 'function') return;
       window.fbq('track', nome, dados || {}, { eventID: identificador(nome) });
@@ -33,7 +33,7 @@
   if (!window.consentimento) return;
   var carregado = false;
 
-  window.consentimento.aoAceitar(function(){
+  window.consentimento.aoPermitir(function(){
     if (carregado) return;
     carregado = true;
     !function(f,b,e,v,n,t,s)

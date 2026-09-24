@@ -177,8 +177,8 @@ function seletorDeIdioma() {
 }
 
 /* Quem chegou até a seção da reserva é público de remarketing: leu a oferta e
-   não marcou. Dispara uma vez só, e só depois que o pixel existe, o que já
-   significa que a pessoa autorizou. */
+   não marcou. Dispara uma vez só. Para quem desativou a medição o pixel não
+   existe, e o evento vira no-op. */
 function viuAReserva() {
   const secao = document.querySelector('#book');
   if (!secao || !window.pixel) return;

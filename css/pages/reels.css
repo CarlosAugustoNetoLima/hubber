@@ -1235,8 +1235,8 @@ html.reveal-ready [data-reveal].is-in {
   box-shadow: var(--lp-inner-top), var(--lp-shadow);
 }
 
-/* Recusar tem exatamente o peso de aceitar, aqui também. Destacar um dos dois
-   induz a escolha, e escolha induzida não é consentimento. */
+/* O botão que fecha o aviso ganha a pílula da LP. A saída continua como texto
+   discreto, do jeito que vem do componente. */
 [data-lp="reels"] .consent__btn {
   border-radius: var(--lp-r-pill);
   background: var(--lp-raised);

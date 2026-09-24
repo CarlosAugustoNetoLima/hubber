@@ -10,18 +10,23 @@
       var bruto = window.localStorage.getItem(CHAVE);
       if (!bruto) return null;
       var d = JSON.parse(bruto);
-      // Versão diferente quer dizer que as finalidades mudaram desde a escolha:
-      // vale como se não houvesse escolha, e a tarja pergunta de novo.
-      return d && d.versao === VERSAO ? d : null;
+      if (!d) return null;
+      // Versão diferente quer dizer que as finalidades mudaram desde o aviso, e
+      // ele aparece de novo. Menos para quem desativou a medição: esse pedido
+      // vale até a própria pessoa desfazer, por mais que o aviso mude.
+      return d.versao === VERSAO || d.estado === 'recusado' ? d : null;
     } catch (e) { return null; }
   }
 
-  function aceitou(){
+  /* Aviso com saída: a medição vale para todo mundo que não pediu para sair.
+     Quem recusou quando a tarja ainda pedia autorização antes continua fora,
+     porque o registro é o mesmo. */
+  function permitido(){
     var d = registro();
-    return !!d && d.estado === 'aceito';
+    return !d || d.estado !== 'recusado';
   }
 
-  // Retirar a autorização não é só parar de mandar evento: o que já foi gravado
+  // Desativar a medição não é só parar de mandar evento: o que já foi gravado
   // no navegador sai também. O domínio do cookie depende de como o fbevents o
   // gravou, então apaga nos escopos possíveis.
   function apagarCookies(){
@@ -36,13 +41,14 @@
   }
 
   window.consentimento = {
-    // null = ainda não escolheu, e é o mesmo que não ter autorizado.
+    // null = ainda não viu o aviso, o que não impede a medição.
     registro: registro,
-    // Quem depende da autorização se inscreve aqui. Se ela já existe, roda na
-    // hora, para não atrasar quem autorizou numa visita anterior.
-    aoAceitar: function(fn){
+    permitido: permitido,
+    // Quem depende da medição se inscreve aqui. Se ela está valendo, roda na
+    // hora, para o PageView sair junto com a página.
+    aoPermitir: function(fn){
       ouvintes.push(fn);
-      if (aceitou()) fn();
+      if (permitido()) fn();
     },
     registrar: function(estado){
       try {
@@ -52,8 +58,8 @@
           versao: VERSAO
         }));
       } catch (e) {}
-      if (estado === 'aceito') ouvintes.forEach(function(fn){ fn(); });
-      else apagarCookies();
+      if (estado === 'recusado') apagarCookies();
+      else ouvintes.forEach(function(fn){ fn(); });
     }
   };
 })();
