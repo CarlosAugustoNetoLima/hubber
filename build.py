@@ -47,6 +47,8 @@ SLUGS = {
     "privacidade": "privacy",
     "cases": "case-studies",
     "cases/florida-rental-car": "case-studies/florida-rental-car",
+    "cases/identidade-visual/cinnamon-studio": "case-studies/visual-identity/cinnamon-studio",
+    "cases/identidade-visual/romtech-infrastructure": "case-studies/visual-identity/romtech-infrastructure",
     "sobre": "about",
 }
 EN_PARA_PT = {en: pt for pt, en in SLUGS.items()}

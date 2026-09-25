@@ -222,3 +222,55 @@
   margin: auto 0 0;
   color: var(--fg-muted);
 }
+
+/* Identidade visual: grade de entrada em /cases/. Reaproveita .route, só
+   acrescenta a miniatura acima do texto; o link e o hover continuam os
+   mesmos do card de case. */
+.route--media { padding: 0; overflow: hidden; }
+.route--media .route__media { aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-raised); }
+.route--media .route__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.route--media .route__body { display: flex; flex-direction: column; gap: var(--s16); padding: var(--s32); }
+@media (max-width: 767px) { .route--media .route__body { padding: var(--s24); } }
+
+/* Cor de destaque do cliente aplicada dentro do padrão da Hubber: a section
+   define --brand-accent inline, e só os elementos marcados com .t-brand a
+   usam. Sem isso, cada marca herdaria a mesma cor de acento do site. */
+.t-brand { color: var(--brand-accent, var(--accent-text)); }
+
+.palette {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--s16);
+}
+.palette li { display: flex; flex-direction: column; gap: var(--s12); }
+.palette__swatch { aspect-ratio: 1; border: 1px solid var(--rule); }
+.palette__hex { font-family: var(--font-mono); font-size: var(--fs-small); color: var(--fg-muted); }
+
+.gallery {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--s24);
+}
+.gallery img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
+
+/* Vitrine do logotipo: uma variação por linha, em largura cheia, para o traço
+   dar pra examinar. Diferente de .gallery (que é pra mockup de aplicação),
+   aqui cada item é a prova em si, não uma miniatura dela. */
+.logoshow { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s48); }
+.logoshow img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
+.logoshow__caption { margin-top: var(--s12); color: var(--fg-muted); }
+
+/* Marca só o símbolo (sem o nome ao lado) é quadrada, não uma faixa larga
+   como as outras variações. Em tela grande, esticar até a borda do .wrap
+   amplia bem além da resolução de origem e granula. */
+.logoshow__item--icon { max-width: 30rem; margin-inline: auto; }
+
+/* Banda de imagem sangrada, fora do .wrap. Usada para a capa do projeto logo
+   abaixo do hero, antes de o conteúdo voltar para a coluna com margem. */
+.mediafull img { display: block; width: 100%; height: auto; max-height: 82vh; object-fit: cover; }
