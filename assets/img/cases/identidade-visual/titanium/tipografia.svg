@@ -1,0 +1,6 @@
+<svg viewBox="0 0 1692 624" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Design System EW01-700R">
+<mask id="m-titanium" maskUnits="userSpaceOnUse" x="0" y="0" width="1692" height="624">
+<image href="tipografia-mask.png" x="0" y="0" width="1692" height="624"/>
+</mask>
+<rect width="1692" height="624" fill="currentColor" mask="url(#m-titanium)"/>
+</svg>

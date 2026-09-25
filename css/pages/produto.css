@@ -272,5 +272,8 @@
 .logoshow__item--icon { max-width: 30rem; margin-inline: auto; }
 
 /* Banda de imagem sangrada, fora do .wrap. Usada para a capa do projeto logo
-   abaixo do hero, antes de o conteúdo voltar para a coluna com margem. */
-.mediafull img { display: block; width: 100%; height: auto; max-height: 82vh; object-fit: cover; }
+   abaixo do hero, antes de o conteúdo voltar para a coluna com margem.
+   object-fit: contain (não cover) porque a imagem costuma trazer o logotipo
+   perto da borda: cover cortaria por cima em tela larga e baixa, contain
+   nunca corta, só sobra tarja da cor do fundo dos lados quando precisa. */
+.mediafull img { display: block; width: 100%; height: auto; max-height: 82vh; object-fit: contain; }
