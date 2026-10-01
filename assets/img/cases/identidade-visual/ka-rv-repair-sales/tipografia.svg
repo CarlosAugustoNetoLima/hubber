@@ -1,0 +1,6 @@
+<svg viewBox="0 0 1392 422" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Allotrope Condensed Heavy">
+<mask id="m-ka-rv-repair-sales-tipo" maskUnits="userSpaceOnUse" x="0" y="0" width="1392" height="422">
+<image href="tipografia-mask.png" x="0" y="0" width="1392" height="422"/>
+</mask>
+<rect width="1392" height="422" fill="currentColor" mask="url(#m-ka-rv-repair-sales-tipo)"/>
+</svg>

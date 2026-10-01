@@ -50,6 +50,14 @@ SLUGS = {
     "cases/identidade-visual/cinnamon-studio": "case-studies/visual-identity/cinnamon-studio",
     "cases/identidade-visual/romtech-infrastructure": "case-studies/visual-identity/romtech-infrastructure",
     "cases/identidade-visual/titanium": "case-studies/visual-identity/titanium",
+    "cases/identidade-visual/driver-x": "case-studies/visual-identity/driver-x",
+    "cases/identidade-visual/skin-pro": "case-studies/visual-identity/skin-pro",
+    "cases/identidade-visual/master-vacation-homes": "case-studies/visual-identity/master-vacation-homes",
+    "cases/identidade-visual/cinnamon-finance": "case-studies/visual-identity/cinnamon-finance",
+    "cases/identidade-visual/infinity": "case-studies/visual-identity/infinity",
+    "cases/identidade-visual/usa-equity-summit": "case-studies/visual-identity/usa-equity-summit",
+    "cases/identidade-visual/ka-rv-repair-sales": "case-studies/visual-identity/ka-rv-repair-sales",
+    "cases/identidade-visual/sos-direito": "case-studies/visual-identity/sos-direito",
     "sobre": "about",
 }
 EN_PARA_PT = {en: pt for pt, en in SLUGS.items()}

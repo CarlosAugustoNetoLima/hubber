@@ -1,0 +1,6 @@
+<svg viewBox="0 0 1514 414" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cinzel e Montserrat">
+<mask id="m-usa-equity-summit-tipo" maskUnits="userSpaceOnUse" x="0" y="0" width="1514" height="414">
+<image href="tipografia-mask.png" x="0" y="0" width="1514" height="414"/>
+</mask>
+<rect width="1514" height="414" fill="currentColor" mask="url(#m-usa-equity-summit-tipo)"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg viewBox="0 0 1400 307" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Brand Concept">
+<mask id="m-driver-x-tipo" maskUnits="userSpaceOnUse" x="0" y="0" width="1400" height="307">
+<image href="tipografia-mask.png" x="0" y="0" width="1400" height="307"/>
+</mask>
+<rect width="1400" height="307" fill="currentColor" mask="url(#m-driver-x-tipo)"/>
+</svg>

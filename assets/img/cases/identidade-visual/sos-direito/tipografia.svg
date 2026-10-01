@@ -1,0 +1,6 @@
+<svg viewBox="0 0 898 466" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Roses Bolero">
+<mask id="m-sos-direito-tipo" maskUnits="userSpaceOnUse" x="0" y="0" width="898" height="466">
+<image href="tipografia-mask.png" x="0" y="0" width="898" height="466"/>
+</mask>
+<rect width="898" height="466" fill="currentColor" mask="url(#m-sos-direito-tipo)"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg viewBox="0 0 1944 728" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hecativas Regular">
+<mask id="m-infinity" maskUnits="userSpaceOnUse" x="0" y="0" width="1944" height="728">
+<image href="tipografia-mask.png" x="0" y="0" width="1944" height="728"/>
+</mask>
+<rect width="1944" height="728" fill="currentColor" mask="url(#m-infinity)"/>
+</svg>

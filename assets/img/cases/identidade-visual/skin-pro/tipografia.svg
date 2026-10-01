@@ -1,0 +1,6 @@
+<svg viewBox="0 0 890 154" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Panchang">
+<mask id="m-skin-pro-tipo" maskUnits="userSpaceOnUse" x="0" y="0" width="890" height="154">
+<image href="tipografia-mask.png" x="0" y="0" width="890" height="154"/>
+</mask>
+<rect width="890" height="154" fill="currentColor" mask="url(#m-skin-pro-tipo)"/>
+</svg>
