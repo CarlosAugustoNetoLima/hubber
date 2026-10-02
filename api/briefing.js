@@ -13,7 +13,10 @@
  * JSYNQ e uma linha em TIPOS abaixo.
  *
  * O card guarda os campos de contato e o destaque do tipo como campos do CRM, e
- * leva todas as respostas, na ordem do briefing, na descrição.
+ * leva as respostas na descrição, já formatadas: um resumo no topo, uma seção
+ * por etapa, pergunta em negrito e resposta embaixo. A descrição do JSYNQ é uma
+ * lista de blocos do editor (BlockNote) em JSON, por isso montamos blocos em
+ * vez de mandar texto corrido, que chegaria sem peso nenhum.
  *
  * Variáveis de ambiente:
  *   JSYNQ_API_TOKEN              token de API do JSYNQ
@@ -21,7 +24,8 @@
  */
 
 import { guardar, concluir, drenar, filaAtiva } from './_fila.js';
-import { BRIEFINGS, validar, montarTexto, CONSENTIMENTO } from '../js/briefing-perguntas.js';
+import { randomUUID } from 'node:crypto';
+import { BRIEFINGS, validar, todosCampos, visivel, formatar, CONSENTIMENTO } from '../js/briefing-perguntas.js';
 
 const API_BASE = 'https://api.jsynq.com';
 const PROJECT_ID  = process.env.JSYNQ_BRIEFING_PROJECT_ID || '6abf3ce857b946818a0ced8c';
@@ -70,7 +74,7 @@ const TIPOS = {
 
 const MAX_BODY = 256 * 1024;
 
-function montarCard(tipo, respostas) {
+function montarCard(tipo, respostas, recebidoEm) {
   const cfg = TIPOS[tipo];
   const customFields = [];
   const contato = {};
@@ -97,9 +101,90 @@ function montarCard(tipo, respostas) {
     column: COLUMN_ID,
     labels: [cfg.labelId],
     assignedUsers: [RESPONSAVEL],
-    desc: `${titulo}\n\n${montarTexto(tipo, respostas)}`,
+    desc: montarDescricao(tipo, respostas, recebidoEm),
     customFields,
   };
+}
+
+/* ---------------------------------------------------------- descrição do card */
+
+const PROPS = { backgroundColor: 'default', textColor: 'default', textAlignment: 'left' };
+const texto = (text, styles = {}) => ({ type: 'text', text, styles });
+const bloco = (type, content, props = {}) => ({
+  id: randomUUID(), type, props: { ...PROPS, ...props }, content, children: [],
+});
+
+/* Endereço escrito sem protocolo (empresa.com) também vira link nos campos que
+   são endereço. Fora disso, só vira link o que já começa com http. */
+function comLinks(valor, { url, ig } = {}) {
+  const v = String(valor);
+  if (ig && /^@?[\w.]{1,30}$/.test(v.trim())) {
+    const user = v.trim().replace(/^@/, '');
+    return [{ type: 'link', href: `https://instagram.com/${user}`, content: [texto(`@${user}`)] }];
+  }
+  if (url && /^[^\s/]+\.[a-z]{2,}(\/\S*)?$/i.test(v.trim())) {
+    return [{ type: 'link', href: `https://${v.trim()}`, content: [texto(v.trim())] }];
+  }
+  return v.split(/(https?:\/\/[^\s]+)/).filter(Boolean).map((parte) =>
+    /^https?:\/\//.test(parte)
+      ? { type: 'link', href: parte, content: [texto(parte)] }
+      : texto(parte));
+}
+
+/* Uma pergunta respondida: o enunciado em negrito e cinza, a resposta embaixo.
+   Lista de opções vira marcadores; texto longo vira um parágrafo por linha. */
+function blocosDaResposta(c, valor) {
+  const saida = [bloco('paragraph', [texto(c.label, { bold: true })], { textColor: 'gray' })];
+  if (Array.isArray(valor)) {
+    for (const item of valor) saida.push(bloco('bulletListItem', [texto(item)]));
+    return saida;
+  }
+  const linhas = String(formatar(c, valor)).split(/\n+/).map((l) => l.trim()).filter(Boolean);
+  for (const linha of linhas) saida.push(bloco('paragraph', comLinks(linha, c)));
+  return saida;
+}
+
+const NO_RESUMO = new Set(['empresa', 'responsavel', 'email', 'whatsapp', 'cidade']);
+
+const dataDoEnvio = (iso) => new Date(iso || Date.now())
+  .toLocaleDateString('pt-BR', { timeZone: 'America/New_York' });
+
+export function montarDescricao(tipo, respostas, recebidoEm) {
+  const b = BRIEFINGS[tipo];
+  const campos = todosCampos(b).filter((c) => visivel(c, respostas));
+  const respondidas = campos.filter((c) => {
+    const v = respostas[c.k];
+    return Array.isArray(v) ? v.length : String(v ?? '').trim();
+  });
+
+  const blocos = [
+    bloco('paragraph', [texto(`${b.titulo} · recebido em ${dataDoEnvio(recebidoEm)} por briefing.hubbermarketing.com · ${respondidas.length} de ${campos.length} perguntas respondidas`, { italic: true })], { textColor: 'gray' }),
+    bloco('heading', [texto('Resumo')], { level: 2 }),
+  ];
+
+  const resumo = [
+    ['Empresa', respostas.empresa],
+    ['Responsável', respostas.responsavel],
+    ['E-mail', respostas.email],
+    ['WhatsApp', respostas.whatsapp],
+    ['Cidade e região', respostas.cidade],
+  ];
+  const destaque = todosCampos(b).find((c) => c.k === b.destaque);
+  if (destaque && respostas[destaque.k]) resumo.push([b.rotuloDestaque, respostas[destaque.k]]);
+  for (const [rotulo, valor] of resumo) {
+    if (!valor) continue;
+    blocos.push(bloco('bulletListItem', [texto(`${rotulo}: `, { bold: true }), texto(String(valor))]));
+  }
+
+  b.passos.forEach((passo, i) => {
+    // O que já está no Resumo não se repete nas seções.
+    const itens = passo.campos.filter((c) => visivel(c, respostas) && respondidas.includes(c) && !NO_RESUMO.has(c.k) && c.k !== b.destaque);
+    if (!itens.length) return;
+    blocos.push(bloco('heading', [texto(`${String(i + 1).padStart(2, '0')} · ${passo.titulo}`)], { level: 2 }));
+    for (const c of itens) blocos.push(...blocosDaResposta(c, respostas[c.k]));
+  });
+
+  return JSON.stringify(blocos);
 }
 
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -132,9 +217,9 @@ const resumo = (d) => `| ${d?.tipo} · ${d?.respostas?.empresa || '?'} · ${d?.r
 /* Usada pelo cron e pelo próprio envio. `dados` é { tipo, respostas } já
    validado: o que está na fila nunca foi aceito sem passar por validar(). */
 export async function entregarBriefing(dados, token) {
-  const { tipo, respostas } = dados;
+  const { tipo, respostas, recebidoEm } = dados;
   if (!TIPOS[tipo]) return false;
-  const out = await criarCard(montarCard(tipo, respostas), token);
+  const out = await criarCard(montarCard(tipo, respostas, recebidoEm), token);
   if (!out.ok) {
     console.error('[briefing] JSYNQ recusou:', out.status, out.body?.slice(0, 500), resumo(dados));
     return false;
@@ -173,7 +258,7 @@ export default async function handler(req, res) {
   }
 
   const token = process.env.JSYNQ_API_TOKEN;
-  const dados = { tipo, respostas: limpo };
+  const dados = { tipo, respostas: limpo, recebidoEm: new Date().toISOString() };
   if (!token) {
     console.error('[briefing] JSYNQ_API_TOKEN ausente.', resumo(dados));
     return res.status(503).json({ ok: false, error: 'not_configured' });

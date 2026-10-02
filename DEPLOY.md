@@ -54,7 +54,12 @@ são os formulários em etapas. É página privada (`noindex`, `robots.txt` com
 - **Envio:** `POST /api/briefing` cria **um card por resposta** no projeto
   `Hubber · Briefings` (`6abf3ce857b946818a0ced8c`), coluna `Recebido`, com a
   Larissa como responsável. Contato e destaque do tipo viram campos do CRM e
-  todas as respostas, na ordem, vão na descrição. Passa pela mesma fila
+  a descrição leva as respostas formatadas: resumo no topo, uma seção por etapa,
+  pergunta em negrito cinza e resposta embaixo, opções em lista e links
+  clicáveis. A descrição do JSYNQ é uma lista de blocos BlockNote em JSON, por
+  isso `montarDescricao` em `api/briefing.js` monta blocos, não texto corrido
+  (texto corrido chega sem nenhum peso). Pergunta não respondida não aparece.
+  Passa pela mesma fila
   (`_fila.js`) e pelo cron (`drenar.js`) dos outros formulários.
 - **Projeto separado dos leads de propósito:** quem preenche já é cliente. O tipo
   se distingue por etiqueta (`Briefing · Marca`, `Briefing · Website`) e por

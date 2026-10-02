@@ -31,6 +31,7 @@ const MARCA = {
   duracao: 'cerca de 15 minutos',
   intro: 'Estas perguntas definem o que a Hubber vai construir com você: posicionamento, mensagem e comunicação da marca. Quanto mais específica a resposta, melhor o resultado.',
   destaque: 'objetivo',
+  rotuloDestaque: 'Objetivo principal',
   passos: [
     {
       titulo: 'Empresa e contato',
@@ -41,8 +42,8 @@ const MARCA = {
         { k: 'email', t: 'email', label: 'E-mail principal', req: true },
         { k: 'whatsapp', t: 'tel', label: 'WhatsApp', hint: 'Com DDD ou código do país.', req: true },
         { k: 'cidade', t: 'text', label: 'Cidade e região de atuação', req: true },
-        { k: 'instagram', t: 'text', label: 'Instagram da empresa', ph: '@usuario' },
-        { k: 'site', t: 'text', label: 'Site e outras redes', hint: 'Facebook, LinkedIn, TikTok, YouTube. Cole os links.' },
+        { k: 'instagram', t: 'text', ig: true, label: 'Instagram da empresa', ph: '@usuario' },
+        { k: 'site', t: 'text', url: true, label: 'Site e outras redes', hint: 'Facebook, LinkedIn, TikTok, YouTube. Cole os links.' },
         { k: 'cnpj', t: 'text', label: 'CNPJ ou EIN', grupo: 'Dados para cadastro (opcional)' },
         { k: 'endereco', t: 'text', label: 'Endereço completo', hint: 'Rua, número, bairro, cidade e estado.', grupo: 'Dados para cadastro (opcional)' },
         { k: 'horario', t: 'text', label: 'Dias e horários de funcionamento', grupo: 'Dados para cadastro (opcional)' },
@@ -75,7 +76,7 @@ const MARCA = {
         { k: 'referencias', t: 'textarea', label: 'Marcas que você admira, de qualquer setor', hint: 'Diga o que atrai em cada uma: o visual, o jeito de falar, a postura.' },
         { k: 'identidade', t: 'single', label: 'Como está a identidade visual hoje?', req: true,
           opts: ['Tenho logo e manual de marca', 'Tenho logo, mas sem manual', 'Tenho um logo antigo que quero refazer', 'Ainda não tenho identidade visual'] },
-        { k: 'arquivos', t: 'text', label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
+        { k: 'arquivos', t: 'text', url: true, label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
       ],
     },
     {
@@ -132,6 +133,7 @@ const SITE = {
   duracao: 'cerca de 15 minutos',
   intro: 'Estas perguntas definem o que o site precisa fazer, o que vai dentro dele e como será publicado. Quanto mais específica a resposta, menos idas e vindas até o site ir ao ar.',
   destaque: 'tipoprojeto',
+  rotuloDestaque: 'Tipo de projeto',
   passos: [
     {
       titulo: 'Empresa e contato',
@@ -142,8 +144,8 @@ const SITE = {
         { k: 'email', t: 'email', label: 'E-mail principal', req: true },
         { k: 'whatsapp', t: 'tel', label: 'WhatsApp', hint: 'Com DDD ou código do país.', req: true },
         { k: 'cidade', t: 'text', label: 'Cidade e região de atuação', req: true },
-        { k: 'instagram', t: 'text', label: 'Instagram da empresa', ph: '@usuario' },
-        { k: 'siteatual', t: 'text', label: 'Endereço do site atual, se houver', ph: 'https://' },
+        { k: 'instagram', t: 'text', ig: true, label: 'Instagram da empresa', ph: '@usuario' },
+        { k: 'siteatual', t: 'text', url: true, label: 'Endereço do site atual, se houver', ph: 'https://' },
       ],
     },
     {
@@ -191,7 +193,7 @@ const SITE = {
         { k: 'funcionalidades', t: 'multi', label: 'O que o site precisa ter além das páginas?',
           opts: ['Formulário de contato', 'Botão de WhatsApp', 'Agendamento online', 'Pagamento online', 'Chat', 'Blog', 'Área de login', 'Integração com CRM', 'Mapa e endereço', 'Calculadora ou simulador'] },
         { k: 'provas', t: 'textarea', label: 'Que provas o site pode mostrar?', hint: 'Cases, depoimentos, logos de clientes, prêmios e números. Só o que dá para comprovar.' },
-        { k: 'arquivos', t: 'text', label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
+        { k: 'arquivos', t: 'text', url: true, label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
       ],
     },
     {
@@ -212,7 +214,7 @@ const SITE = {
       porque: 'Evita surpresa na hora de publicar e de medir o resultado.',
       campos: [
         { k: 'dominio', t: 'single', label: 'A empresa já tem domínio?', req: true, opts: ['Sim, já tenho', 'Não, preciso registrar', 'Não sei'] },
-        { k: 'dominionome', t: 'text', label: 'Qual domínio?', ph: 'empresa.com', showIf: (a) => a.dominio === 'Sim, já tenho' },
+        { k: 'dominionome', t: 'text', url: true, label: 'Qual domínio?', ph: 'empresa.com', showIf: (a) => a.dominio === 'Sim, já tenho' },
         { k: 'plataforma', t: 'single', label: 'Onde o site atual está hospedado?',
           opts: ['WordPress', 'Wix', 'Shopify', 'Webflow', 'Código próprio ou outra plataforma', 'Não tenho site hoje', 'Não sei'] },
         { k: 'acesso', t: 'single', label: 'Você tem acesso ao painel do domínio e da hospedagem?', opts: ['Sim', 'Não', 'Não sei'] },
@@ -277,18 +279,4 @@ export function validar(tipo, bruto) {
     limpo[c.k] = v;
   }
   return { faltam, invalidos, limpo };
-}
-
-/** O texto completo das respostas, na ordem do formulário. Vai na descrição do card. */
-export function montarTexto(tipo, respostas) {
-  const b = BRIEFINGS[tipo];
-  const linhas = [];
-  for (const p of b.passos) {
-    linhas.push(p.titulo.toUpperCase(), '');
-    for (const c of p.campos) {
-      if (!visivel(c, respostas)) continue;
-      linhas.push(c.label, formatar(c, respostas[c.k]) || 'Não respondido', '');
-    }
-  }
-  return linhas.join('\n').trim();
 }
