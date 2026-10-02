@@ -33,6 +33,11 @@ const BRIEFING = {
 
 const SITES = [REELS, BRIEFING];
 
+/* Só o domínio principal redireciona o caminho antigo para o subdomínio. Em
+   preview (*.vercel.app) e em domínio ainda não apontado, a página precisa abrir
+   no próprio endereço, senão o redirecionamento leva a um host que não existe. */
+const PRINCIPAL = ['hubbermarketing.com', 'www.hubbermarketing.com'];
+
 export const config = {
   matcher: [
     '/',
@@ -69,6 +74,7 @@ export default function middleware(requisicao) {
   }
 
   // No domínio principal, o caminho do subdomínio vai para o endereço próprio.
+  if (!PRINCIPAL.includes(host)) return;
   for (const s of SITES) {
     if (url.pathname === s.prefixo || url.pathname.startsWith(`${s.prefixo}/`)) {
       const resto = url.pathname.slice(s.prefixo.length) || '/';
