@@ -56,6 +56,15 @@ body {
 .brandmark { display: inline-flex; align-items: center; gap: .75rem; font-weight: 700; font-stretch: 125%; font-variation-settings: "wdth" 125; font-size: 1.25rem; color: inherit; text-decoration: none; }
 .brandmark svg { width: 2rem; height: auto; display: block; }
 .brandmark:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+/* Volta para a escolha do briefing: o logo também leva lá, mas não parece clicável. */
+.rail-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1rem; }
+.rail-voltar {
+  display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; padding: .5rem .9rem;
+  border: 1px solid rgba(255,255,255,.6); color: #fff; text-decoration: none;
+  font-size: .9375rem; font-weight: 600; line-height: 1.2; white-space: nowrap;
+}
+.rail-voltar:hover { border-color: #fff; background: rgba(255,255,255,.14); }
+.rail-voltar:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .rail-title {
   margin: 0; font-weight: 700; font-stretch: 125%; font-variation-settings: "wdth" 125;
   font-size: clamp(2.4rem, 4.6vw, 4.75rem); line-height: .94; letter-spacing: -.005em;
@@ -194,6 +203,8 @@ dl { margin: 0; }
   .app { grid-template-columns: 1fr; }
   .rail { position: static; height: auto; gap: 1.5rem; background: linear-gradient(160deg, var(--blue) 0%, var(--magenta) 100%); }
   .rail-title { font-size: clamp(2.2rem, 11vw, 3.4rem); }
+  .rail-top { column-gap: .75rem; }
+  .rail-voltar { padding: .45rem .75rem; font-size: .875rem; }
   .steps { display: none; }
   .segbar { display: flex; }
   .pair { grid-template-columns: 1fr; gap: 0; }
