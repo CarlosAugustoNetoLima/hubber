@@ -10,7 +10,7 @@
  * multi (várias, com `max` opcional). `showIf` esconde o campo conforme as
  * respostas anteriores; campo escondido não é cobrado nem enviado.
  *
- * `compartilha` ('contato' ou 'negocio') marca a pergunta que é IDÊNTICA em mais
+ * `compartilha` ('contato', 'cadastro', 'negocio' ou 'marketing') marca a pergunta que é IDÊNTICA em mais
  * de um briefing. É o que a página oferece reaproveitar quando a pessoa faz um
  * segundo briefing na mesma sessão (ver js/briefing.js). Só vale marcar quando o
  * enunciado e as opções são os mesmos: chave igual não basta, porque `tom`,
@@ -27,6 +27,7 @@ const CANAIS = ['Instagram', 'Facebook', 'Google (busca e Maps)', 'WhatsApp', 'S
   'TikTok', 'YouTube', 'E-mail', 'Eventos e ações presenciais'];
 
 const inclui = (a, k, v) => Array.isArray(a[k]) && a[k].includes(v);
+const todosOsCampos = (b) => b.passos.flatMap((p) => p.campos);
 
 /* ---------------------------------------------------------------- MARCA */
 
@@ -50,10 +51,10 @@ const MARCA = {
         { k: 'cidade', t: 'text', compartilha: 'contato', label: 'Cidade e região de atuação', req: true },
         { k: 'instagram', t: 'text', compartilha: 'contato', ig: true, label: 'Instagram da empresa', ph: '@usuario' },
         { k: 'site', t: 'text', url: true, label: 'Site e outras redes', hint: 'Facebook, LinkedIn, TikTok, YouTube. Cole os links.' },
-        { k: 'cnpj', t: 'text', label: 'CNPJ ou EIN', grupo: 'Dados para cadastro (opcional)' },
-        { k: 'endereco', t: 'text', label: 'Endereço completo', hint: 'Rua, número, bairro, cidade e estado.', grupo: 'Dados para cadastro (opcional)' },
-        { k: 'horario', t: 'text', label: 'Dias e horários de funcionamento', grupo: 'Dados para cadastro (opcional)' },
-        { k: 'aniversario', t: 'date', label: 'Data de aniversário da empresa', grupo: 'Dados para cadastro (opcional)' },
+        { k: 'cnpj', t: 'text', compartilha: 'cadastro', label: 'CNPJ ou EIN', grupo: 'Dados para cadastro (opcional)' },
+        { k: 'endereco', t: 'text', compartilha: 'cadastro', label: 'Endereço completo', hint: 'Rua, número, bairro, cidade e estado.', grupo: 'Dados para cadastro (opcional)' },
+        { k: 'horario', t: 'text', compartilha: 'cadastro', label: 'Dias e horários de funcionamento', grupo: 'Dados para cadastro (opcional)' },
+        { k: 'aniversario', t: 'date', compartilha: 'cadastro', label: 'Data de aniversário da empresa', grupo: 'Dados para cadastro (opcional)' },
       ],
     },
     {
@@ -113,18 +114,18 @@ const MARCA = {
       campos: [
         { k: 'objetivo', t: 'single', label: 'Qual o principal objetivo agora?', req: true,
           opts: ['Gerar mais leads', 'Aumentar vendas', 'Fortalecer a marca', 'Construir posicionamento e autoridade', 'Lançar um produto', 'Levar tráfego para o site'] },
-        { k: 'meta', t: 'text', label: 'Existe uma meta clara?', ph: 'Ex.: 80 leads por mês ou 20% de crescimento em 12 meses' },
+        { k: 'meta', t: 'text', compartilha: 'marketing', label: 'Existe uma meta clara?', ph: 'Ex.: 80 leads por mês ou 20% de crescimento em 12 meses' },
         { k: 'mudanca', t: 'textarea', label: 'O que mais precisa mudar nos próximos 12 meses?', hint: 'Traga números, prazo e motivo.', req: true },
         { k: 'hoje', t: 'single', label: 'Quem cuida do marketing hoje?', req: true,
           opts: ['Uma agência', 'Freelancers', 'Uma pessoa da equipe', 'Um time interno', 'Ninguém, eu mesmo'] },
         { k: 'investiu', t: 'single', label: 'Já investiu em marketing digital?',
           opts: ['Sim, e deu resultado', 'Sim, mas sem o resultado esperado', 'Nunca investi'] },
         { k: 'canais', t: 'multi', label: 'Quais canais a empresa usa hoje?', opts: CANAIS },
-        { k: 'crm', t: 'single', label: 'Usa algum CRM?', hint: 'Plataforma para gestão de leads e atendimento.', opts: ['Sim', 'Não'] },
+        { k: 'crm', t: 'single', compartilha: 'marketing', label: 'Usa algum CRM?', hint: 'Plataforma para gestão de leads e atendimento.', opts: ['Sim', 'Não'] },
         { k: 'crmqual', t: 'text', label: 'Qual CRM?', showIf: (a) => a.crm === 'Sim' },
-        { k: 'zap', t: 'tel', label: 'WhatsApp que vai receber os contatos dos clientes' },
-        { k: 'gads', t: 'text', label: 'Investimento mensal previsto no Google Ads', par: 'inv' },
-        { k: 'mads', t: 'text', label: 'Investimento mensal previsto no Meta Ads', par: 'inv' },
+        { k: 'zap', t: 'tel', compartilha: 'marketing', label: 'WhatsApp que vai receber os contatos dos clientes' },
+        { k: 'gads', t: 'text', compartilha: 'marketing', label: 'Investimento mensal previsto no Google Ads', par: 'inv' },
+        { k: 'mads', t: 'text', compartilha: 'marketing', label: 'Investimento mensal previsto no Meta Ads', par: 'inv' },
       ],
     },
   ],
@@ -263,7 +264,168 @@ const SITE = {
   ],
 };
 
-export const BRIEFINGS = { marca: MARCA, site: SITE };
+
+/* ---------------------------------------------------------- ONBOARDING e DESIGNER */
+
+/* Pergunta que mais de um briefing repete sai da definição da marca, não de uma
+   cópia: assim o enunciado é idêntico por construção, que é a condição para a
+   resposta poder ser reaproveitada de um briefing para o outro. */
+const CAMPOS_DA_MARCA = Object.fromEntries(todosOsCampos(MARCA).map((c) => [c.k, c]));
+const igualMarca = (k, extra = {}) => {
+  if (!CAMPOS_DA_MARCA[k]) throw new Error(`Pergunta da marca inexistente: ${k}`);
+  return { ...CAMPOS_DA_MARCA[k], ...extra };
+};
+
+/* Briefing de onboarding (formulário do Google "Briefing de Onboarding"): o
+   começo de um projeto fechado. Só a identificação é obrigatória, como no
+   original só havia perguntas opcionais; sem ela o card não tem para quem ligar. */
+const ONBOARDING = {
+  slug: 'onboarding',
+  titulo: 'Briefing de onboarding',
+  resumo: 'Cadastro da empresa, o que será divulgado, público e metas.',
+  duracao: 'cerca de 10 minutos',
+  intro: 'Estas perguntas organizam o começo do projeto: o cadastro da empresa, o que vai ser divulgado, para quem e quais são as metas. Quanto mais específica a resposta, mais rápido a Hubber entra em ação.',
+  destaque: 'zap',
+  rotuloDestaque: 'WhatsApp dos leads',
+  passos: [
+    {
+      titulo: 'Empresa e contato',
+      porque: 'Para saber com quem a Hubber está falando e quem acompanha o projeto.',
+      campos: [
+        igualMarca('empresa'),
+        igualMarca('responsavel', { hint: 'Quem decide e acompanha o projeto pela empresa.' }),
+        igualMarca('email'),
+        igualMarca('whatsapp'),
+        { k: 'nascimento', t: 'diames', label: 'Data de nascimento do responsável', hint: 'Só o dia e o mês, sem o ano. Ex.: 14/03.', ph: 'dd/mm' },
+      ],
+    },
+    {
+      titulo: 'Dados cadastrais',
+      porque: 'Informações para o cadastro da empresa.',
+      campos: [
+        igualMarca('cnpj', { grupo: undefined }),
+        igualMarca('endereco', { grupo: undefined }),
+        igualMarca('horario', { grupo: undefined }),
+        igualMarca('aniversario', { grupo: undefined }),
+      ],
+    },
+    {
+      titulo: 'O negócio',
+      porque: 'O que a empresa faz e o que será divulgado neste projeto.',
+      campos: [
+        { k: 'descricao', t: 'textarea', label: 'Descreva brevemente o que a empresa faz.' },
+        { k: 'produtos', t: 'textarea', label: 'Quais produtos ou serviços deseja divulgar neste projeto?' },
+        { k: 'ticketmedio', t: 'text', label: 'Ticket médio do principal produto ou serviço', ph: 'Ex.: US$ 450 ou R$ 2.000' },
+      ],
+    },
+    {
+      titulo: 'O público',
+      porque: 'Para quem a comunicação será feita e o que incomoda essas pessoas hoje.',
+      campos: [
+        { k: 'publico', t: 'textarea', label: 'Quem é o público ideal?', hint: 'Idade, perfil, cargo, interesses, região, etc.' },
+        { k: 'dorpublico', t: 'textarea', label: 'Qual o principal problema ou dor que seu público enfrenta hoje?' },
+      ],
+    },
+    {
+      titulo: 'Marketing e metas',
+      porque: 'O histórico com marketing, o que se espera do tráfego pago e como os contatos vão chegar.',
+      campos: [
+        { k: 'jainvestiu', t: 'single', label: 'Já investiu em marketing digital antes?', opts: ['Sim', 'Não'] },
+        { k: 'objetivotrafego', t: 'multi', label: 'Qual o principal objetivo com tráfego pago?', hint: 'Marque quantos forem necessários.',
+          opts: ['Geração de leads', 'Vendas', 'Autoridade / posicionamento', 'Tráfego para site', 'Lançamento de produto', 'Outro'] },
+        { k: 'objetivooutro', t: 'text', label: 'Qual outro objetivo?', showIf: (a) => inclui(a, 'objetivotrafego', 'Outro') },
+        igualMarca('meta'),
+        { k: 'facebook', t: 'text', url: true, label: 'Facebook da empresa', ph: 'Link ou nome da página' },
+        igualMarca('instagram'),
+        igualMarca('zap'),
+        igualMarca('crm'),
+        igualMarca('gads'),
+        igualMarca('mads'),
+      ],
+    },
+  ],
+};
+
+/* Briefing do designer (formulário do Google "Briefing Identidade Visual"): o
+   que o designer precisa para criar o logotipo. As perguntas e os exemplos são
+   os do original; o exemplo que vinha entre parênteses virou dica. A etapa de
+   contato é nossa: o formulário do Google não pedia quem estava respondendo. */
+const DESIGNER = {
+  slug: 'designer',
+  titulo: 'Briefing do designer',
+  resumo: 'Nome, conceito e referências para criar o logotipo.',
+  duracao: 'cerca de 15 minutos',
+  intro: 'Estas perguntas orientam o designer na criação do logotipo e da identidade visual da marca. Quanto mais detalhes e exemplos, mais perto do que você imagina o resultado fica.',
+  destaque: 'nomemarca',
+  rotuloDestaque: 'Nome da marca',
+  passos: [
+    {
+      titulo: 'Empresa e contato',
+      porque: 'Para o designer saber com quem vai conversar durante a criação.',
+      campos: [
+        igualMarca('empresa'),
+        igualMarca('responsavel', { hint: 'Quem conversa com o designer e aprova cada etapa.' }),
+        igualMarca('email'),
+        igualMarca('whatsapp'),
+      ],
+    },
+    {
+      titulo: 'O nome e a empresa',
+      porque: 'O nome, a história e o que a empresa faz são a base do conceito do logotipo.',
+      campos: [
+        { k: 'nomemarca', t: 'text', label: 'Qual o nome que estará presente na marca?', req: true },
+        { k: 'historianome', t: 'textarea', label: 'Existe alguma história por trás desse nome?', req: true,
+          hint: 'Se houver alguma história, podemos tirar muitos insights para criar um processo extremamente conceitual.' },
+        { k: 'produtosdesc', t: 'textarea', label: 'Como você descreveria seus produtos e serviços?', req: true,
+          hint: 'Essa resposta vai ajudar a gente a compreender melhor o que você oferece para seus clientes.' },
+        { k: 'missao', t: 'textarea', label: 'Qual a missão, visão e valores da sua empresa?', req: true },
+        { k: 'futuro5', t: 'textarea', label: 'Como você vê sua empresa daqui a 5 anos?',
+          hint: 'Ex.: Apesar de sermos uma pizzaria, pretendemos agregar novos produtos ao longo dos anos, como hambúrguer e macarronada.' },
+      ],
+    },
+    {
+      titulo: 'Mercado e público',
+      porque: 'Para entender com quem a marca será comparada e para quem o logotipo precisa falar.',
+      campos: [
+        { k: 'concorrentesl', t: 'textarea', label: 'Quem são seus principais concorrentes?',
+          hint: 'Se eles têm site, cite os links das páginas para entendermos melhor o seu mercado.' },
+        { k: 'difconcorrentes', t: 'textarea', label: 'Quais os diferenciais de seus concorrentes e o que você faz para se diferenciar deles?' },
+        { k: 'publicoperfil', t: 'textarea', label: 'Qual o perfil de seu público-alvo e classe social?', req: true,
+          hint: 'Ex.: na maioria masculino, pois se trata de uma barbearia. Homens que gostam de se cuidar e não se preocupam em pagar a mais por isso. Classe social A e B.' },
+      ],
+    },
+    {
+      titulo: 'O logotipo',
+      porque: 'O que o logotipo deve transmitir e o que deve ficar de fora.',
+      campos: [
+        { k: 'sentimento', t: 'textarea', label: 'O que as pessoas devem sentir ao ver seu logotipo?', req: true,
+          hint: 'Ex.: Quero que minha empresa seja vista como um ambiente descontraído que proporciona diversão.' },
+        { k: 'slogan', t: 'textarea', label: 'Possui algum slogan? Deseja que o slogan faça parte da composição do logotipo?' },
+        { k: 'estilo', t: 'textarea', label: 'Tem em mente algum estilo ou algo que queira que esteja presente no logo?',
+          hint: 'Se sim, qual o motivo? Ex.: Um gorila, pois remete a força e resistência e também é o mascote da nossa academia.' },
+        { k: 'corevitar', t: 'textarea', label: 'Existe alguma cor que não gostaria que estivesse presente no logotipo?',
+          hint: 'Qual o motivo? Ex.: Roxo, porque meu principal concorrente já usa e eu gostaria de uma diferenciação maior.' },
+        { k: 'elementoevitar', t: 'textarea', label: 'Que tipo de elemento você não gostaria de estar presente no logotipo e por quê?',
+          hint: 'Ex.: Sou dentista e não quero dente, pois é muito usado e quero algo para me diferenciar.' },
+        { k: 'adjetivos', t: 'multi', label: 'Com quais adjetivos você descreveria sua empresa?', hint: 'Marque quantos combinarem.',
+          opts: ['Clássica', 'Moderna', 'Alegre', 'Séria/não divertida', 'Conservadora', 'Romântica', 'Beleza', 'Tecnológica', 'Delicada', 'Cuidado',
+                 'Divertida', 'Artesanal/manual', 'Nostálgica', 'Nerd', 'Aventureiro', 'Exclusivo/VIP', 'Rústico', 'Inocente', 'Radical'] },
+      ],
+    },
+    {
+      titulo: 'Referências e uso',
+      porque: 'Exemplos que agradam e os lugares onde o logotipo vai aparecer.',
+      campos: [
+        { k: 'referencias5', t: 'textarea', label: 'Cite pelo menos 5 exemplos de logotipos de outras empresas que mais lhe agradam.',
+          hint: 'Pode ser de qualquer mercado. Cite o que mais chamou a atenção em cada uma delas.' },
+        { k: 'usos', t: 'textarea', label: 'Onde usará seu logotipo?', hint: 'Ex.: na web, em impressões, aplicativo, etc.' },
+        { k: 'usoprincipal', t: 'textarea', label: 'E qual será o local principal onde o logotipo será usado?', hint: 'Ex.: Internet.' },
+      ],
+    },
+  ],
+};
+
+export const BRIEFINGS = { marca: MARCA, site: SITE, onboarding: ONBOARDING, designer: DESIGNER };
 
 export const CONSENTIMENTO = 'A empresa autoriza a Hubber a usar estas informações para desenvolver o projeto.';
 
@@ -271,6 +433,18 @@ const MAX_CURTO = 400;
 const MAX_LONGO = 4000;
 
 export const todosCampos = (b) => b.passos.flatMap((p) => p.campos);
+
+/* Dia e mês sem o ano (aniversário de pessoa): aceita 14/03, 14-3, 14.03 e devolve
+   '14/03', ou null quando não é uma data possível. Fevereiro aceita 29 porque,
+   sem o ano, não há como saber se é bissexto. */
+export function diaMesValido(v) {
+  const m = /^(\d{1,2})[/.\-\s](\d{1,2})$/.exec(String(v).trim());
+  if (!m) return null;
+  const dia = +m[1], mes = +m[2];
+  const dias = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (mes < 1 || mes > 12 || dia < 1 || dia > dias[mes - 1]) return null;
+  return `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}`;
+}
 export const visivel = (c, a) => !c.showIf || c.showIf(a);
 
 /* Formata um valor para leitura humana: lista vira "a, b", data vira dd/mm/aaaa. */
@@ -307,6 +481,7 @@ export function validar(tipo, bruto) {
       if (v && c.t === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { invalidos.push(c.k); continue; }
       if (v && c.t === 'tel' && !/^[0-9+()\s.-]{8,40}$/.test(v)) { invalidos.push(c.k); continue; }
       if (v && c.t === 'date' && !/^\d{4}-\d{2}-\d{2}$/.test(v)) { invalidos.push(c.k); continue; }
+      if (v && c.t === 'diames') { const n = diaMesValido(v); if (!n) { invalidos.push(c.k); continue; } v = n; }
       if (v.length > (c.t === 'textarea' ? MAX_LONGO : MAX_CURTO)) { invalidos.push(c.k); continue; }
     }
     if (vazio(v)) { if (c.req) faltam.push(c.k); continue; }

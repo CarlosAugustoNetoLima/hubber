@@ -8,9 +8,10 @@
  * então o que o navegador mandou além do que o formulário oferece é ignorado.
  *
  * Os briefings têm projeto próprio e não entram no de leads: quem preenche já é
- * cliente. O que distingue marca de website dentro do quadro é a etiqueta e o
- * formulário. Briefing novo = entrada em BRIEFINGS, etiqueta e formulário no
- * JSYNQ e uma linha em TIPOS abaixo.
+ * cliente. O que distingue um tipo do outro (marca, website, onboarding,
+ * designer) dentro do quadro é a etiqueta e o formulário. Briefing novo =
+ * entrada em BRIEFINGS, etiqueta e formulário no JSYNQ e uma linha em TIPOS
+ * abaixo.
  *
  * O card guarda os campos de contato e o destaque do tipo como campos do CRM, e
  * leva as respostas na descrição, já formatadas: um resumo no topo, uma seção
@@ -69,6 +70,36 @@ const TIPOS = {
     },
     consentimento: { id: '6abf3d6457b946818a0cf534', label: 'Autoriza a Hubber a usar os dados para desenvolver o projeto', type: 'select' },
     origemCampo:   { id: '6abf3d6457b946818a0cf535', label: 'Origem', type: 'text' },
+  },
+  onboarding: {
+    formId: '6ac014d5911fcfbe1c39403b',
+    formName: 'Hubber Briefing · Onboarding',
+    labelId: process.env.JSYNQ_BRIEFING_LABEL_ONBOARDING || '6ac014cf911fcfbe1c393f45',
+    origem: 'Briefing · Onboarding',
+    campos: {
+      empresa:     { id: '6ac014d5911fcfbe1c394041', label: 'Empresa', type: 'text', crmKey: 'company' },
+      responsavel: { id: '6ac014d5911fcfbe1c394042', label: 'Responsável', type: 'text', crmKey: 'contactName' },
+      email:       { id: '6ac014d5911fcfbe1c394043', label: 'E-mail', type: 'email', crmKey: 'email' },
+      whatsapp:    { id: '6ac014d5911fcfbe1c394044', label: 'WhatsApp', type: 'text', crmKey: 'phone' },
+      zap:         { id: '6ac014d5911fcfbe1c394045', label: 'WhatsApp dos leads', type: 'text' },
+    },
+    consentimento: { id: '6ac014d5911fcfbe1c394046', label: 'Autoriza a Hubber a usar os dados para desenvolver o projeto', type: 'select' },
+    origemCampo:   { id: '6ac014d5911fcfbe1c394047', label: 'Origem', type: 'text' },
+  },
+  designer: {
+    formId: '6ac014d7911fcfbe1c3940cd',
+    formName: 'Hubber Briefing · Designer',
+    labelId: process.env.JSYNQ_BRIEFING_LABEL_DESIGNER || '6ac014d2911fcfbe1c393fd0',
+    origem: 'Briefing · Designer',
+    campos: {
+      empresa:     { id: '6ac014d7911fcfbe1c3940cf', label: 'Empresa', type: 'text', crmKey: 'company' },
+      responsavel: { id: '6ac014d7911fcfbe1c3940d0', label: 'Responsável', type: 'text', crmKey: 'contactName' },
+      email:       { id: '6ac014d7911fcfbe1c3940d1', label: 'E-mail', type: 'email', crmKey: 'email' },
+      whatsapp:    { id: '6ac014d7911fcfbe1c3940d2', label: 'WhatsApp', type: 'text', crmKey: 'phone' },
+      nomemarca:   { id: '6ac014d7911fcfbe1c3940d3', label: 'Nome da marca', type: 'text' },
+    },
+    consentimento: { id: '6ac014d7911fcfbe1c3940d4', label: 'Autoriza a Hubber a usar os dados para desenvolver o projeto', type: 'select' },
+    origemCampo:   { id: '6ac014d7911fcfbe1c3940d5', label: 'Origem', type: 'text' },
   },
 };
 

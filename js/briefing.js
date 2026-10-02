@@ -15,7 +15,7 @@
  * e-mail: qualquer um digitaria o e-mail de outra pessoa e veria os dados dela.
  */
 
-import { BRIEFINGS, CONSENTIMENTO, validar, visivel, formatar, todosCampos } from './briefing-perguntas.js';
+import { BRIEFINGS, CONSENTIMENTO, validar, visivel, formatar, todosCampos, diaMesValido } from './briefing-perguntas.js';
 
 const TIPO = document.body.dataset.tipo;
 const B = BRIEFINGS[TIPO];
@@ -25,7 +25,7 @@ const STORE_KEY = `hubber-briefing-${TIPO}-v1`;
 const SESSAO_KEY = 'hubber-briefing-sessao-v1';
 const SESSAO_MIN = 15;
 const SESSAO_MS = SESSAO_MIN * 60 * 1000;
-const GRUPOS_REUSO = { contato: 'Contato', negocio: 'Sobre o negócio' };
+const GRUPOS_REUSO = { contato: 'Contato', cadastro: 'Dados de cadastro', negocio: 'Sobre o negócio', marketing: 'Marketing e metas' };
 
 // ---------- estado ----------
 const state = { a: {}, view: 0, max: 0 };
@@ -222,12 +222,12 @@ function desenharCampo(c) {
     const tag = c.t === 'textarea' ? 'textarea' : 'input';
     const ctl = h(tag, {
       class: 'in', id, name: c.k,
-      type: tag === 'input' ? (c.t === 'tel' ? 'tel' : c.t) : null,
+      type: tag === 'input' ? (c.t === 'tel' ? 'tel' : c.t === 'diames' ? 'text' : c.t) : null,
       rows: tag === 'textarea' ? 4 : null,
       placeholder: c.ph || null,
       autocomplete: c.t === 'email' ? 'email' : c.t === 'tel' ? 'tel' : 'off',
       inputmode: c.t === 'tel' ? 'tel' : null,
-      maxlength: c.t === 'textarea' ? 4000 : 400,
+      maxlength: c.t === 'textarea' ? 4000 : c.t === 'diames' ? 10 : 400,
       'aria-describedby': descreve,
     });
     ctl.value = String(val(c.k));
@@ -290,6 +290,8 @@ function conferirPasso(passo) {
       msg = 'Use um e-mail completo, como nome@empresa.com.';
     } else if (c.t === 'tel' && !vazio(c) && !/^[0-9+()\s.-]{8,40}$/.test(String(val(c.k)).trim())) {
       msg = 'Use só números, com DDD ou código do país.';
+    } else if (c.t === 'diames' && !vazio(c) && !diaMesValido(val(c.k))) {
+      msg = 'Use o dia e o mês, como 14/03.';
     }
     if (msg) { marcarErro(c, msg); if (!primeiro) primeiro = c; } else limparErro(c);
   }

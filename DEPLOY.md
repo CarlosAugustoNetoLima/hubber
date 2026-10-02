@@ -44,9 +44,21 @@ novo dentro do mesmo projeto**, nunca projeto novo. Hoje existem dois:
 
 ## Briefings (briefing.hubbermarketing.com)
 
-Subdomínio com os briefings de cliente: `/` escolhe o tipo, `/marca/` e `/site/`
-são os formulários em etapas. É página privada (`noindex`, `robots.txt` com
-`Disallow: /`).
+Subdomínio com os briefings de cliente: `/` escolhe o tipo e `/marca/`, `/site/`,
+`/onboarding/` e `/designer/` são os formulários em etapas. É página privada
+(`noindex`, `robots.txt` com `Disallow: /`).
+
+| Briefing | Origem das perguntas | Destaque no card |
+|---|---|---|
+| marca | artifact original da Hubber | Objetivo principal |
+| site | escrito para o projeto (sem pergunta de preço: o briefing é de contrato fechado) | Tipo de site |
+| onboarding | formulário do Google "Briefing de Onboarding" | WhatsApp dos leads |
+| designer | formulário do Google "Briefing Identidade Visual" | Nome da marca |
+
+No onboarding e no designer só a identificação é nossa (os formulários do Google
+não pediam quem respondia). As perguntas que o onboarding repete da marca saem de
+`igualMarca()` em `js/briefing-perguntas.js`: o enunciado é o da marca, não o do
+Google, para a resposta poder ser reaproveitada entre os dois.
 
 - **Perguntas:** `js/briefing-perguntas.js`, fonte única. A página desenha as
   etapas a partir dele e `api/briefing.js` valida com o mesmo módulo. Mexer na
@@ -62,8 +74,9 @@ são os formulários em etapas. É página privada (`noindex`, `robots.txt` com
   Passa pela mesma fila
   (`_fila.js`) e pelo cron (`drenar.js`) dos outros formulários.
 - **Projeto separado dos leads de propósito:** quem preenche já é cliente. O tipo
-  se distingue por etiqueta (`Briefing · Marca`, `Briefing · Website`) e por
-  formulário, dentro do mesmo quadro.
+  se distingue por etiqueta (`Briefing · Marca`, `Briefing · Website`,
+  `Briefing · Onboarding`, `Briefing · Designer`) e por formulário, dentro do
+  mesmo quadro.
 - **Reaproveitar dados entre briefings:** ao enviar um briefing, a página guarda
   em `sessionStorage` (só aquela aba, some ao fechá-la) as respostas das perguntas
   marcadas com `compartilha` em `js/briefing-perguntas.js`, por 15 minutos
@@ -73,7 +86,8 @@ são os formulários em etapas. É página privada (`noindex`, `robots.txt` com
   de propósito: qualquer um digitaria o e-mail de outro e veria os dados dele.
   Só vale marcar `compartilha` quando enunciado e opções são idênticos nos dois
   briefings (`tom`, `regiao`, `provas` e `objetivo` têm a mesma chave e perguntam
-  coisas diferentes). Rascunho existente tem prioridade sobre a oferta.
+  coisas diferentes); em dúvida, use `igualMarca()`. Rascunho existente tem
+  prioridade sobre a oferta. Data de nascimento (`diames`) nunca é compartilhada.
 - **Briefing novo:** entrada em `BRIEFINGS`, etiqueta e formulário no JSYNQ, uma
   linha em `TIPOS` no `api/briefing.js`, card no hub (`src/briefing/index.html`)
   e página em `src/briefing/<slug>/index.html`.
