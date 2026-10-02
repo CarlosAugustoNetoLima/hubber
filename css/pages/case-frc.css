@@ -1,0 +1,325 @@
+/* Case Florida Rental Car — logo do cliente, painel "Marketing OS" e resultado.
+   Usado só em /cases/florida-rental-car/ e /en/case-studies/florida-rental-car/.
+   Tudo em tokens da Hubber; sem JS, o painel aparece completo e estático. */
+
+/* ── Logo do cliente (hero) ─────────────────────────────────────────── */
+.case-logo {
+  display: block;
+  height: clamp(56px, 7vw, 88px);
+  width: auto;
+  margin: 0 0 var(--s32);
+}
+
+/* ── Painel ─────────────────────────────────────────────────────────── */
+.frc-os {
+  position: relative;
+  margin-top: var(--s48);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--c-ink-raised);
+  overflow: hidden;
+  isolation: isolate;
+}
+.frc-os::before {
+  content: "";
+  position: absolute;
+  inset: -40% -10% auto;
+  height: 80%;
+  background: radial-gradient(50% 60% at 50% 0%,
+    color-mix(in srgb, var(--c-blue) 22%, transparent),
+    color-mix(in srgb, var(--c-magenta) 8%, transparent) 45%,
+    transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.frc-os__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s16);
+  padding: var(--s16) var(--s24);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--fg-muted);
+}
+.frc-os__dots { display: flex; gap: 6px; }
+.frc-os__dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+.frc-os__dots i:first-child { background: var(--c-magenta); }
+.frc-os__dots i:nth-child(2) { background: var(--c-blue-bright); }
+.frc-os__path { color: var(--fg); }
+.frc-os__status {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 100px;
+  white-space: nowrap;
+}
+@media (max-width: 560px) { .frc-os__path { display: none; } }
+
+.frc-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2BD67B;
+  animation: frcPulse 2s infinite;
+}
+@keyframes frcPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(43, 214, 123, 0.55); }
+  70%  { box-shadow: 0 0 0 8px rgba(43, 214, 123, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(43, 214, 123, 0); }
+}
+
+.frc-os__body { position: relative; padding: var(--s24); }
+
+/* Trilhas de circuito ligando os módulos (desenhadas pelo JS) */
+.frc-os__net {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.frc-os__net .frc-trace { fill: none; stroke: rgba(255, 255, 255, 0.10); stroke-width: 1.5; }
+.frc-os__net .frc-flow {
+  fill: none;
+  stroke: url(#frcGrad);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 6 16;
+  animation: frcFlow 1.6s linear infinite;
+}
+.frc-os__net .frc-packet { fill: var(--c-magenta); filter: drop-shadow(0 0 6px var(--c-magenta)); opacity: 0; }
+.frc-os.is-drawn .frc-os__net .frc-packet { opacity: 1; }
+@keyframes frcFlow { to { stroke-dashoffset: -44; } }
+
+/* ── Módulos ────────────────────────────────────────────────────────── */
+.frc-grid {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s16);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 1020px) { .frc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .frc-grid { grid-template-columns: 1fr; } }
+
+.frc-mod {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s12);
+  min-height: 212px;
+  padding: var(--s24);
+  border-radius: 14px;
+  background: var(--c-ink);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.5s, filter 0.5s;
+}
+/* holofote que segue o cursor */
+.frc-mod::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(280px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--c-magenta) 22%, transparent),
+    color-mix(in srgb, var(--c-blue) 10%, transparent) 40%,
+    transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+/* borda em degradê da marca no hover */
+.frc-mod::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-brand);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+.frc-mod:hover,
+.frc-mod:focus-within { transform: translateY(-4px); }
+.frc-mod:hover::before,
+.frc-mod:hover::after,
+.frc-mod:focus-within::before,
+.frc-mod:focus-within::after { opacity: 1; }
+
+.frc-mod__top {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--fg-muted);
+}
+.frc-mod__state { display: inline-flex; align-items: center; gap: 6px; text-transform: uppercase; }
+.frc-mod__state .frc-dot { width: 6px; height: 6px; }
+
+.frc-mod__icon {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  color: var(--c-blue-bright);
+  transition: color 0.35s;
+}
+.frc-mod__icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.frc-mod:hover .frc-mod__icon,
+.frc-mod:focus-within .frc-mod__icon { color: var(--c-magenta); }
+
+.frc-mod__title {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.2;
+  color: var(--fg);
+}
+.frc-mod__desc {
+  position: relative;
+  margin: auto 0 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* Sequência de boot (só quando o JS arma o painel) */
+.frc-os.is-armed .frc-mod { opacity: 0.28; filter: saturate(0); }
+.frc-os.is-armed .frc-mod .frc-dot { background: #555; animation: none; }
+.frc-os.is-armed .frc-mod.is-booting .frc-dot { background: var(--c-amber); }
+.frc-os.is-armed .frc-mod.is-on { opacity: 1; filter: none; }
+.frc-os.is-armed .frc-mod.is-on .frc-dot { background: #2BD67B; animation: frcPulse 2s infinite; }
+
+/* Terminal */
+.frc-os__term {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--s24);
+  padding: var(--s16) var(--s24);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--fg);
+}
+.frc-os__term .frc-prompt { color: var(--c-magenta); margin-right: 8px; }
+.frc-caret {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: var(--fg);
+  animation: frcBlink 1s steps(1) infinite;
+}
+@keyframes frcBlink { 50% { opacity: 0; } }
+
+/* ── Resultado ──────────────────────────────────────────────────────── */
+.frc-result {
+  display: grid;
+  gap: var(--s48);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  margin-top: var(--s32);
+}
+@media (max-width: 900px) { .frc-result { grid-template-columns: 1fr; } }
+
+.frc-big {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 15vw, 11.5rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+.frc-big__cap {
+  margin: var(--s12) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  line-height: 1.15;
+  color: var(--fg);
+}
+
+.frc-bars { display: flex; flex-direction: column; gap: var(--s24); }
+.frc-bar__h {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s16);
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+.frc-bar__h b { color: var(--fg); font-weight: 500; }
+.frc-bar__track {
+  position: relative;
+  height: 14px;
+  border-radius: 100px;
+  background: var(--bg-raised);
+  overflow: hidden;
+}
+.frc-bar__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--to);
+  border-radius: inherit;
+  background: var(--gradient-brand);
+  transition: width 1.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.frc-bar__fill--flat { background: var(--c-border); }
+.frc-bars.is-armed .frc-bar__fill { width: 0; }
+.frc-bars.is-armed.is-in .frc-bar__fill { width: var(--to); }
+
+.frc-result__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s8) var(--s24);
+  margin-top: var(--s8);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frc-os__net .frc-flow,
+  .frc-dot,
+  .frc-caret { animation: none; }
+  .frc-mod,
+  .frc-bar__fill { transition: none; }
+}
