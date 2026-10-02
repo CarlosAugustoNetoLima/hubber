@@ -1,0 +1,412 @@
+{
+ "titanium": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "Titanium | Identidade visual Hubber",
+  "desc": "A identidade de marca da Titanium, dealership automotivo de alto padrão: conceito, paleta, tipografia e as aplicações que saíram do papel para a loja.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da Titanium.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Automotivo de luxo",
+  "lead": "A marca de um dealership automotivo de alto padrão, construída para ocupar dois espaços que o mercado costuma tratar como opostos: elegância silenciosa e esportividade agressiva. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a loja.",
+  "accent": "#da0000",
+  "con_h2": "Luxo absoluto e engenharia de alta performance, <mark class=\"hl\">no mesmo símbolo</mark>.",
+  "con_lead": "O mercado geralmente dita uma escolha entre elegância silenciosa e esportividade agressiva. A Titanium ocupa os dois espaços.",
+  "notes": [
+   [
+    "Um \"T\" preciso",
+    "Desenhado com traços de alto contraste, evocando a herança das serifas tradicionais sem abrir mão de uma borda afiada."
+   ],
+   [
+    "Terminais pontiagudos",
+    "Lembram a presa de uma cobra: sensação de movimento constante e precisão letal."
+   ],
+   [
+    "Vermelho Scuderia",
+    "Um gatilho estratégico sobre o preto e branco. A linguagem mundial do desejo automotivo."
+   ]
+  ],
+  "palette": [
+   "#da0000",
+   "#000000",
+   "#ffffff"
+  ],
+  "pal_h2": "Preto e branco absolutos, com <mark class=\"hl\">um gatilho de vermelho</mark>.",
+  "font": "Design System EW01-700R",
+  "type_leads": [
+   "Uma família geométrica de proporções amplas, inspirada na relação entre precisão técnica e estética de alta velocidade. O acabamento afiado conecta direto com a natureza predatória do símbolo."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "driver-x": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "Driver X | Identidade visual Hubber",
+  "desc": "A identidade de marca da Driver X, serviço de aluguel de carros com entrega onde o cliente estiver: conceito, paleta, tipografia e as aplicações que saíram do papel para a fachada, a papelaria e a sinalização.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da Driver X.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Aluguel de carros",
+  "lead": "A marca de um serviço de aluguel de carros pensado como concierge: o veículo certo, entregue onde o cliente precisa, no dia a dia ou em traslados de aeroporto. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a fachada, a papelaria e a sinalização.",
+  "accent": "#fe6a00",
+  "con_h2": "Conveniência, flexibilidade e ação, <mark class=\"hl\">num X construído</mark>.",
+  "con_lead": "A Driver X não é uma locadora parada. É um concierge premium que se move rápido: o carro certo chega exatamente onde o cliente precisa, seja um sedan prático ou um carro de luxo de alta performance.",
+  "notes": [
+   [
+    "Um \"X\" geométrico",
+    "Construído com cortes dinâmicos que representam o ponto de conexão entre a Driver X e o cliente: um checkpoint visual."
+   ],
+   [
+    "Laranja Mandarin",
+    "Em vez das metáforas comuns de carro, um gatilho estratégico: a energia da Flórida e a velocidade do serviço."
+   ],
+   [
+    "Entrega e retirada onde o cliente estiver",
+    "Reposição de veículo no local e drop-off no aeroporto, um serviço desenhado em torno da agenda do cliente, não da loja."
+   ]
+  ],
+  "palette": [
+   "#fe6a00",
+   "#0d0d0d",
+   "#ffffff"
+  ],
+  "pal_h2": "<mark class=\"hl\">Laranja Mandarin</mark> sobre carbono e branco.",
+  "font": "Brand Concept",
+  "type_leads": [
+   "Uma família geométrica de proporções largas, em caixa alta e com bastante espaçamento entre as letras. A mesma leitura aberta do logotipo, para títulos e sinalização."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "cinnamon-finance": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "Cinnamon Finance | Identidade visual Hubber",
+  "desc": "A identidade de marca da Cinnamon Finance, operação de câmbio entre Brasil e Estados Unidos: conceito, paleta, tipografia e as aplicações que saíram do papel para a papelaria e os objetos da marca.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da Cinnamon Finance.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Câmbio e finanças",
+  "lead": "A marca de uma operação de câmbio entre Brasil e Estados Unidos, construída para transmitir segurança antes da primeira conversa. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a papelaria e os objetos da marca.",
+  "accent": "#b8832a",
+  "con_h2": "Mover dinheiro entre dois países, <mark class=\"hl\">com segurança</mark>.",
+  "con_lead": "A Cinnamon Finance nasce para traduzir movimento em segurança: entre reais e dólares, entre decisões financeiras importantes e a confiança para executá-las com clareza.",
+  "notes": [
+   [
+    "Mais que câmbio",
+    "Uma operação de alto valor, precisa e discreta, para quem quer movimentar patrimônio com inteligência e não só converter moeda."
+   ],
+   [
+    "Navy sobre a base Cinnamon",
+    "O azul profundo traz estabilidade e sobriedade ao universo financeiro. O âmbar segue como assinatura da marca-mãe."
+   ],
+   [
+    "Finance em traço técnico",
+    "O subtítulo, com espaçamento preciso, reforça controle, método e solidez, sem competir com o wordmark da holding."
+   ]
+  ],
+  "palette": [
+   "#081e36",
+   "#ffffff",
+   "#000000",
+   "#ffffff",
+   "#b8832a"
+  ],
+  "pal_h2": "Navy profundo, branco limpo e <mark class=\"hl\">um âmbar de assinatura</mark>.",
+  "font": "Morgenta Regular",
+  "type_leads": [
+   "Escolhida para dar à marca uma camada mais técnica, precisa e institucional. Traços geométricos, cortes retos e desenho tecnológico reforçam uma operação construída com precisão, sem perder sofisticação."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "master-vacation-homes": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "Master Vacation Homes | Identidade visual Hubber",
+  "desc": "A identidade de marca da Master Vacation Homes, gestão de propriedades de alto padrão: conceito, paleta, tipografia e as aplicações que saíram do papel para a hospedagem.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da Master Vacation Homes.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Gestão de propriedades de alto padrão",
+  "lead": "A marca de uma empresa de gestão de propriedades de alto padrão, desenhada para unir a autoridade de uma serifa elegante à clareza de uma fonte moderna. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a hospedagem.",
+  "accent": "#7a7a7a",
+  "con_h2": "<mark class=\"hl\">Autoridade de marca</mark>, do ícone digital à sinalização física.",
+  "con_lead": "Uma marca forte não é apenas um logotipo: é uma experiência consistente. O ecossistema da Master Vacation Homes comunica autoridade na gestão e excelência na hospitalidade.",
+  "notes": [
+   [
+    "Um teto, uma janela",
+    "Um símbolo enxuto, que reduz a ideia de casa ao essencial e se mantém legível em qualquer tamanho."
+   ],
+   [
+    "Uma conexão real",
+    "O sistema foi pensado para ligar o proprietário, a propriedade e o hóspede, nos pontos de contato digitais e nos físicos."
+   ],
+   [
+    "Preto e branco, sem ruído",
+    "Uma base monocromática que mantém a marca nítida e profissional em todas as escalas, de um ícone pequeno a uma van."
+   ]
+  ],
+  "palette": [
+   "#000000",
+   "#ffffff",
+   "#f0f0f0"
+  ],
+  "pal_h2": "Preto, branco e <mark class=\"hl\">um cinza claro de apoio</mark>.",
+  "font": "Opulent",
+  "type_leads": [
+   "A Opulent é a voz da marca: suas serifas elegantes carregam a tradição, a autoridade e os valores atemporais de confiança. A Montserrat entra como a ponte para o futuro, com a performance técnica que as plataformas digitais e as aplicações físicas pedem."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "cinnamon-studio": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "Cinnamon Studio | Identidade visual Hubber",
+  "desc": "A identidade de marca da Cinnamon Studio, empreendimento de studios em Palmas/TO: conceito, paleta, tipografia e as aplicações que saíram do papel para a rua.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da Cinnamon Studio.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Real estate · Palmas/TO",
+  "lead": "A marca de um empreendimento de studios em Palmas, construída para carregar sofisticação sem depender de excesso. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a rua.",
+  "accent": "#b7a48e",
+  "con_h2": "O nome em protagonismo, <mark class=\"hl\">o resto em silêncio</mark>.",
+  "con_lead": "A identidade foi construída para refletir a proposta do empreendimento: uma experiência contemporânea, prática e sofisticada.",
+  "notes": [
+   [
+    "CINNAMON, em destaque",
+    "O nome assume o protagonismo da assinatura e vira o principal elemento de reconhecimento da marca."
+   ],
+   [
+    "O \"A\" aberto",
+    "Um detalhe de desenho que acrescenta personalidade sem quebrar a limpeza do conjunto."
+   ],
+   [
+    "STUDIO, em silêncio",
+    "Aparece reduzido e no singular, reforçando exclusividade em vez de categoria imobiliária."
+   ]
+  ],
+  "palette": [
+   "#f3eee5",
+   "#22231f",
+   "#b7a48e",
+   "#a75a3d",
+   "#6f8f97",
+   "#59604b"
+  ],
+  "pal_h2": "Neutra na base, <mark class=\"hl\">quente no detalhe</mark>.",
+  "font": "Aeonis LT Pro.",
+  "type_leads": [
+   "Escolhida para traduzir precisão arquitetônica, sofisticação e leveza. Proporções amplas, traços finos e espaçamento generoso, para uma presença limpa que não recorre a excessos."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "infinity": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "Infinity | Identidade visual Hubber",
+  "desc": "A identidade de marca da Infinity, sistema de tratamento de água: conceito, paleta, tipografia e as aplicações que saíram do papel para os equipamentos.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da Infinity.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Tratamento de água",
+  "lead": "A marca de um sistema de tratamento de água que transforma fluxo em permanência: o símbolo do infinito é desenhado com canais contínuos que se cruzam. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para os equipamentos.",
+  "accent": "#027ae8",
+  "con_h2": "Fluxo que <mark class=\"hl\">vira permanência</mark>.",
+  "con_lead": "A Infinity trata a água em ciclo: ela entra no sistema, passa por um processo preciso e volta segura para o consumo, pronta para continuar operando.",
+  "notes": [
+   [
+    "Canais que se cruzam",
+    "As linhas formam o símbolo do infinito e representam o fluxo da água, as etapas do tratamento e o ciclo de recuperação do elemento filtrante."
+   ],
+   [
+    "Ponteiras de engenharia",
+    "Reforçam a leitura de tubulação e de projeto técnico."
+   ],
+   [
+    "Navy, azul e ciano",
+    "Confiança e robustez técnica de um lado, água tratada e tecnologia do outro. Uma linguagem que funciona de uma residência a hospitais, escolas, hotéis e grandes instalações."
+   ]
+  ],
+  "palette": [
+   "#027ae8",
+   "#15233e",
+   "#ffffff"
+  ],
+  "pal_h2": "Navy, azul e branco, com <mark class=\"hl\">um gradiente que acompanha a água</mark>.",
+  "font": "Hecativas Regular",
+  "type_leads": [
+   "A Hecativas Regular traduz o equilíbrio entre tecnologia, pureza e confiança. O desenho geométrico transmite precisão e controle, e as formas abertas e arredondadas criam uma sensação de fluidez, ligada ao percurso da água dentro do sistema."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "ka-rv-repair-sales": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "KA RV Repair &amp; Sales | Identidade visual Hubber",
+  "desc": "A identidade de marca da KA RV Repair &amp; Sales, centro familiar de reparo e venda de RVs: conceito, paleta, tipografia e as aplicações que saíram do papel para a oficina e a loja.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da KA RV Repair &amp; Sales.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Reparo e venda de RVs",
+  "lead": "A marca de um centro familiar de reparo, colisão e venda de RVs, construída sobre valores de família e símbolos que carregam significado. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a oficina e a loja.",
+  "accent": "#1f8fc0",
+  "con_h2": "Dois ursos, um pássaro e <mark class=\"hl\">a estrada que a família quer manter aberta</mark>.",
+  "con_lead": "A KA RV é uma empresa familiar de reparo, colisão e venda de RVs. A identidade parte de valores de família e de símbolos com significado, para que cada serviço e cada RV vendido carregue esse compromisso.",
+  "notes": [
+   [
+    "Dois ursos",
+    "Representam os filhos dos fundadores: a lembrança de que a KA RV é mais do que um negócio, é uma empresa de família."
+   ],
+   [
+    "Pássaro em voo",
+    "Liberdade e espírito de estrada, com a empolgação de explorar novos horizontes com confiança."
+   ],
+   [
+    "Círculo externo",
+    "Transmite união, proteção e completude: os valores que sustentam a relação com o cliente."
+   ]
+  ],
+  "palette": [
+   "#8dd8f8",
+   "#121b23",
+   "#ffffff"
+  ],
+  "pal_h2": "Azul marinho profundo, <mark class=\"hl\">azul céu</mark> e branco.",
+  "font": "Allotrope Condensed Heavy",
+  "type_leads": [
+   "Allotrope Condensed Heavy é a fonte principal: compacta e pesada, para títulos e aplicações em que a marca precisa de presença, com a solidez e a precisão técnica dos serviços. A secundária, Room Black, traz equilíbrio e leitura nos textos descritivos e nas interfaces digitais."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "sos-direito": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "SOS Direito | Identidade visual Hubber",
+  "desc": "A identidade de marca da SOS Direito, escritório de imigração estratégica: conceito, paleta, tipografia e as aplicações que saíram do papel para o escritório.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da SOS Direito.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Imigração estratégica",
+  "lead": "A marca de um escritório de imigração para os Estados Unidos, desenhada para transformar um processo complexo em uma trajetória conduzida com clareza, estratégia e segurança. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para o escritório.",
+  "accent": "#570615",
+  "con_h2": "O próprio nome <mark class=\"hl\">vira símbolo</mark>.",
+  "con_lead": "Imigração é um processo complexo. A identidade da SOS Direito o transforma em uma trajetória conduzida com clareza, estratégia e segurança.",
+  "notes": [
+   [
+    "Dois \"S\" em volta do \"O\"",
+    "Uma assinatura equilibrada e memorável, cujas formas sugerem movimento, conexão e continuidade entre origem e destino."
+   ],
+   [
+    "Alto contraste, sem rigidez",
+    "A tipografia transmite sofisticação e personalidade, enquanto \"Direito\" preserva a seriedade institucional."
+   ],
+   [
+    "Um descritor que explica",
+    "\"Imigração Estratégica\" esclarece a especialidade e apresenta a imigração como um projeto que exige planejamento."
+   ]
+  ],
+  "palette": [
+   "#570615",
+   "#f4eee7",
+   "#1d2e40"
+  ],
+  "pal_h2": "<mark class=\"hl\">Vinho</mark>, marfim e azul-tinta.",
+  "font": "Roses Bolero",
+  "type_leads": [
+   "A Roses Bolero traduz a combinação de sofisticação, autoridade e movimento da marca. Seus traços de alto contraste e curvas expressivas afastam a SOS Direito dos códigos previsíveis da advocacia."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "skin-pro": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "Skin Pro | Identidade visual Hubber",
+  "desc": "A identidade de marca da Skin Pro, distribuidora de injetáveis dermatológicos: conceito, paleta, tipografia e as aplicações que saíram do papel para a embalagem e o e-commerce.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da Skin Pro.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Distribuidora de injetáveis",
+  "lead": "A marca de uma distribuidora de injetáveis dermatológicos, nascida de décadas de experiência corporativa na indústria farmacêutica. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a embalagem e o e-commerce.",
+  "accent": "#8f918c",
+  "con_h2": "Delicadeza clínica e rigor farmacêutico, <mark class=\"hl\">no mesmo logotipo</mark>.",
+  "con_lead": "A Skin Pro é a ponte para a nova geração de injetores que exige rigor clínico e eficiência logística. A marca precisava soar tecnológica sem perder a pele como referência.",
+  "notes": [
+   [
+    "SKIN em Light",
+    "Peso fino que representa a delicadeza e a textura do tecido saudável, o resultado que o paciente deseja."
+   ],
+   [
+    "PRO em Bold",
+    "Peso forte que traz segurança visual e a autoridade farmacêutica que o médico exige."
+   ],
+   [
+    "Um retângulo retirado do P",
+    "Extração geométrica no P que simboliza os laboratórios de alta performance e a precisão cirúrgica."
+   ]
+  ],
+  "palette": [
+   "#20221f",
+   "#cdcdca",
+   "#ffffff"
+  ],
+  "pal_h2": "Uma paleta industrial, <mark class=\"hl\">sem o azul médico de sempre</mark>.",
+  "font": "Panchang",
+  "type_leads": [
+   "Uma Neo-Grotesca expandida que equilibra dois mundos: SKIN em Light, com a finesse do tecido saudável, e PRO em Bold, com a base de segurança e autoridade. Para o ambiente digital, a Montserrat entra como secundária: geométrica, legível em sites e aplicativos."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "romtech-infrastructure": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "Romtech Infrastructure | Identidade visual Hubber",
+  "desc": "A identidade de marca da Romtech Infrastructure, empresa de engenharia e infraestrutura na Flórida: conceito, paleta, tipografia e as aplicações que saíram do papel para o canteiro de obras.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca da Romtech Infrastructure.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Infraestrutura · Flórida",
+  "lead": "A marca de uma empresa de engenharia e infraestrutura com mais de 20 anos de experiência na Flórida, construída para comunicar autoridade imediata. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para o canteiro de obras.",
+  "accent": "#ff2c09",
+  "con_h2": "Um símbolo que <mark class=\"hl\">funde a inicial com a estrada</mark>.",
+  "con_lead": "O símbolo funde a inicial da marca com o dinamismo estrutural das rodovias. Representa uma base sólida, construída sobre 20 anos de experiência, projetada para o futuro da infraestrutura americana.",
+  "notes": [
+   [
+    "Solidez",
+    "Formas largas e geométricas comunicam peso visual e autoridade imediata."
+   ],
+   [
+    "Precisão",
+    "Cada corte do símbolo é técnico, sem sobra, como o trabalho de engenharia que a marca representa."
+   ],
+   [
+    "Conectividade",
+    "A leitura do símbolo remete a viadutos e cruzamentos: a malha que a empresa constrói."
+   ]
+  ],
+  "palette": [
+   "#f0f0f0",
+   "#26272a",
+   "#ff2c09"
+  ],
+  "pal_h2": "Neutra e <mark class=\"hl\">um vermelho que não passa despercebido</mark>.",
+  "font": "QB One Medium Expanded",
+  "type_leads": [],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ },
+ "usa-equity-summit": {
+  "head": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<script>\n(function(){var h=document.documentElement;h.classList.add('has-js');\nif(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){h.classList.add('has-motion');\nwindow.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classList.remove('has-motion');}},1500);}})();\n</script>\n",
+  "title": "USA Equity Summit | Identidade visual Hubber",
+  "desc": "A identidade de marca do USA Equity Summit, evento de investimentos nos EUA: conceito, paleta, tipografia e as aplicações que saíram do papel para o evento.",
+  "ogd": "Conceito, paleta, tipografia e aplicações da identidade de marca do USA Equity Summit.",
+  "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Evento de investimentos nos EUA",
+  "lead": "A marca de um summit de investimentos nos EUA, construída para transmitir tradição e seriedade institucional. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para o evento.",
+  "accent": "#bf9e5f",
+  "con_h2": "Um símbolo que junta <mark class=\"hl\">proteção, alcance global e crescimento</mark>.",
+  "con_lead": "O símbolo é uma composição geométrica de três elementos: escudo, globo e gráfico ascendente. Uma heráldica moderna para um evento sobre o mercado americano.",
+  "notes": [
+   [
+    "O escudo",
+    "Representa proteção, blindagem patrimonial e a segurança de 25 anos de experiência no mercado americano."
+   ],
+   [
+    "O globo e a rede",
+    "Simboliza a internacionalização e o acesso ao ecossistema exclusivo: advogados, contadores e players do mercado."
+   ],
+   [
+    "O gráfico ascendente",
+    "A seta e as barras representam o equity e a performance real de ativos tangíveis nos EUA."
+   ]
+  ],
+  "palette": [
+   "#bf9e5f",
+   "#141e30",
+   "#f0f0f0"
+  ],
+  "pal_h2": "Azul-marinho e <mark class=\"hl\">dourado</mark>, sobre um branco quebrado.",
+  "font": "Cinzel e Montserrat",
+  "type_leads": [
+   "Cinzel é a fonte primária, inspirada em inscrições clássicas, e comunica tradição e seriedade institucional. Montserrat é a secundária: moderna e limpa, garante legibilidade técnica em dados financeiros e cronogramas."
+  ],
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
+ }
+}

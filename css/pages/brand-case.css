@@ -462,3 +462,30 @@
   .bc-rail { height: 62vw; }
   .bc-hero__services { max-width: 62%; }
 }
+
+/* ── Template v2: peças para as marcas sem logo vetorizado ─────────── */
+.bc-hero__logo--img {
+  width: auto;
+  height: clamp(56px, 7.5vw, 112px);
+  max-width: min(100%, 460px);
+  object-fit: contain;
+  object-position: left center;
+}
+/* Slide de versões do logotipo (PDF original), em tela larga */
+.bc-logoslide { margin: 0; overflow: hidden; background: #000; }
+.bc-logoslide img { display: block; width: 100%; height: auto; }
+/* Três versões lado a lado (páginas do PDF ou JPGs antigos) */
+.bc-logotiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--bc-pad);
+}
+.bc-logotiles figure { margin: 0; overflow: hidden; aspect-ratio: 16 / 9; background: #111; position: relative; }
+.bc-logotiles img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.bc-logotiles figure:hover img { transform: scale(1.04); }
+.bc-logotiles__jpg img { object-fit: contain; }
+.bc-logotiles figcaption { position: absolute; left: 12px; bottom: 10px; color: #fff; mix-blend-mode: difference; }
+@media (max-width: 760px) { .bc-logotiles { grid-template-columns: 1fr; } }
+/* Tipografia em superfície escura */
+.bc-sec--ink .bc-type p { opacity: 0.72; }
+.bc-swatch__name--hex { font-family: var(--font-mono); letter-spacing: 0.04em; font-size: clamp(20px, 2vw, 32px); }
