@@ -5,8 +5,13 @@
 /* ── Logo do cliente (hero) ─────────────────────────────────────────── */
 .case-logo {
   display: block;
-  height: clamp(56px, 7vw, 88px);
+  /* o hero é flex em coluna: sem isso o item estica na largura e o logo deforma */
+  align-self: flex-start;
+  flex: none;
+  height: clamp(96px, 10vw, 148px);
   width: auto;
+  max-width: 100%;
+  object-fit: contain;
   margin: 0 0 var(--s32);
 }
 
