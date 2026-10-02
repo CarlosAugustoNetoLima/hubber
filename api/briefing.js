@@ -207,11 +207,14 @@ export function montarDescricao(tipo, respostas, recebidoEm) {
     blocos.push(bloco('bulletListItem', [texto(`${rotulo}: `, { bold: true }), texto(String(valor))]));
   }
 
-  b.passos.forEach((passo, i) => {
+  // Numera só as seções que aparecem: etapa só de contato não gera seção e não deixa buraco na contagem.
+  let secao = 0;
+  b.passos.forEach((passo) => {
     // O que já está no Resumo não se repete nas seções.
     const itens = passo.campos.filter((c) => visivel(c, respostas) && respondidas.includes(c) && !NO_RESUMO.has(c.k) && c.k !== b.destaque);
     if (!itens.length) return;
-    blocos.push(bloco('heading', [texto(`${String(i + 1).padStart(2, '0')} · ${passo.titulo}`)], { level: 2 }));
+    secao += 1;
+    blocos.push(bloco('heading', [texto(`${String(secao).padStart(2, '0')} · ${passo.titulo}`)], { level: 2 }));
     for (const c of itens) blocos.push(...blocosDaResposta(c, respostas[c.k]));
   });
 
