@@ -60,6 +60,13 @@ não pediam quem respondia). As perguntas que o onboarding repete da marca saem 
 `igualMarca()` em `js/briefing-perguntas.js`: o enunciado é o da marca, não o do
 Google, para a resposta poder ser reaproveitada entre os dois.
 
+- **Regra (Carlos, 02/10/2026): briefing nunca cria projeto.** Toda resposta, de
+  qualquer tipo, vira um card no projeto `Hubber · Briefings`
+  (`6abf3ce857b946818a0ced8c`), e o tipo se distingue pela etiqueta. Projeto,
+  quadro, coluna e etiquetas ficam fixos em `api/briefing.js`, sem variável de
+  ambiente: uma variável errada na Vercel mandaria briefing de cliente para outro
+  projeto sem ninguém perceber. Etiqueta e formulário de briefing novo são criados
+  DENTRO desse projeto.
 - **Perguntas:** `js/briefing-perguntas.js`, fonte única. A página desenha as
   etapas a partir dele e `api/briefing.js` valida com o mesmo módulo. Mexer na
   pergunta é mexer num arquivo só.

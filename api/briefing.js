@@ -7,11 +7,17 @@
  * refeita aqui com o mesmo módulo que a página usa (js/briefing-perguntas.js),
  * então o que o navegador mandou além do que o formulário oferece é ignorado.
  *
- * Os briefings têm projeto próprio e não entram no de leads: quem preenche já é
- * cliente. O que distingue um tipo do outro (marca, website, onboarding,
- * designer) dentro do quadro é a etiqueta e o formulário. Briefing novo =
- * entrada em BRIEFINGS, etiqueta e formulário no JSYNQ e uma linha em TIPOS
- * abaixo.
+ * REGRA (decisão do Carlos, 02/10/2026): briefing nunca cria projeto. Toda
+ * resposta, de qualquer tipo, vira um card no projeto "Hubber · Briefings", e o
+ * que distingue marca, website, onboarding e designer é a etiqueta e o
+ * formulário. Por isso projeto, quadro, coluna e etiquetas são fixos aqui e não
+ * leem variável de ambiente: uma variável errada na Vercel mandaria briefing de
+ * cliente para outro projeto sem ninguém perceber. Mudar o destino é mudar este
+ * arquivo, com revisão.
+ *
+ * Os briefings não entram no projeto de leads: quem preenche já é cliente.
+ * Briefing novo = entrada em BRIEFINGS, etiqueta e formulário DENTRO do
+ * "Hubber · Briefings" no JSYNQ e uma linha em TIPOS abaixo.
  *
  * O card guarda os campos de contato e o destaque do tipo como campos do CRM, e
  * leva as respostas na descrição, já formatadas: um resumo no topo, uma seção
@@ -19,7 +25,7 @@
  * lista de blocos do editor (BlockNote) em JSON, por isso montamos blocos em
  * vez de mandar texto corrido, que chegaria sem peso nenhum.
  *
- * Variáveis de ambiente:
+ * Variáveis de ambiente (nenhuma muda o projeto de destino):
  *   JSYNQ_API_TOKEN              token de API do JSYNQ
  *   JSYNQ_BRIEFING_RESPONSAVEL_ID  quem recebe o card (opcional, padrão Larissa)
  */
@@ -29,9 +35,10 @@ import { randomUUID } from 'node:crypto';
 import { BRIEFINGS, validar, todosCampos, visivel, formatar, CONSENTIMENTO } from '../js/briefing-perguntas.js';
 
 const API_BASE = 'https://api.jsynq.com';
-const PROJECT_ID  = process.env.JSYNQ_BRIEFING_PROJECT_ID || '6abf3ce857b946818a0ced8c';
-const BOARD_ID    = process.env.JSYNQ_BRIEFING_BOARD_ID   || '6abf3ce857b946818a0ced90';
-const COLUMN_ID   = process.env.JSYNQ_BRIEFING_COLUMN_ID  || '6abf3ce857b946818a0ced98';
+// Hubber · Briefings: projeto, quadro "Hubber · Briefings" e coluna "Recebido".
+export const PROJECT_ID = '6abf3ce857b946818a0ced8c';
+const BOARD_ID          = '6abf3ce857b946818a0ced90';
+const COLUMN_ID         = '6abf3ce857b946818a0ced98';
 /* Todo briefing cai na mão da Larissa, que conduz a entrega. Sem responsável o
    card nasce órfão e depende de alguém varrer a coluna para ver que chegou. */
 const RESPONSAVEL = process.env.JSYNQ_BRIEFING_RESPONSAVEL_ID || '6a862692b045e567c7c8d55b';
@@ -42,7 +49,7 @@ const TIPOS = {
   marca: {
     formId: '6abf3d6157b946818a0cf4ec',
     formName: 'Hubber Briefing · Marca',
-    labelId: process.env.JSYNQ_BRIEFING_LABEL_MARCA || '6abf3cf157b946818a0cee9c',
+    labelId: '6abf3cf157b946818a0cee9c',
     origem: 'Briefing · Marca',
     campos: {
       empresa:     { id: '6abf3d6157b946818a0cf4ee', label: 'Empresa', type: 'text', crmKey: 'company' },
@@ -58,7 +65,7 @@ const TIPOS = {
   site: {
     formId: '6abf3d6457b946818a0cf52c',
     formName: 'Hubber Briefing · Website',
-    labelId: process.env.JSYNQ_BRIEFING_LABEL_SITE || '6abf3cf457b946818a0cef38',
+    labelId: '6abf3cf457b946818a0cef38',
     origem: 'Briefing · Website',
     campos: {
       empresa:     { id: '6abf3d6457b946818a0cf52e', label: 'Empresa', type: 'text', crmKey: 'company' },
@@ -74,7 +81,7 @@ const TIPOS = {
   onboarding: {
     formId: '6ac014d5911fcfbe1c39403b',
     formName: 'Hubber Briefing · Onboarding',
-    labelId: process.env.JSYNQ_BRIEFING_LABEL_ONBOARDING || '6ac014cf911fcfbe1c393f45',
+    labelId: '6ac014cf911fcfbe1c393f45',
     origem: 'Briefing · Onboarding',
     campos: {
       empresa:     { id: '6ac014d5911fcfbe1c394041', label: 'Empresa', type: 'text', crmKey: 'company' },
@@ -89,7 +96,7 @@ const TIPOS = {
   designer: {
     formId: '6ac014d7911fcfbe1c3940cd',
     formName: 'Hubber Briefing · Designer',
-    labelId: process.env.JSYNQ_BRIEFING_LABEL_DESIGNER || '6ac014d2911fcfbe1c393fd0',
+    labelId: '6ac014d2911fcfbe1c393fd0',
     origem: 'Briefing · Designer',
     campos: {
       empresa:     { id: '6ac014d7911fcfbe1c3940cf', label: 'Empresa', type: 'text', crmKey: 'company' },
