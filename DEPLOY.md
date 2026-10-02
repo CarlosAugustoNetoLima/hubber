@@ -42,6 +42,32 @@ novo dentro do mesmo projeto**, nunca projeto novo. Hoje existem dois:
 3. Nova função em `api/`, copiando o desenho de `api/diagnostico.js`: mesmo projeto, mesmo quadro, mesma coluna de entrada, etiqueta e formulário próprios.
 4. Nunca `create_project`.
 
+## Briefings (briefing.hubbermarketing.com)
+
+Subdomínio com os briefings de cliente: `/` escolhe o tipo, `/marca/` e `/site/`
+são os formulários em etapas. É página privada (`noindex`, `robots.txt` com
+`Disallow: /`).
+
+- **Perguntas:** `js/briefing-perguntas.js`, fonte única. A página desenha as
+  etapas a partir dele e `api/briefing.js` valida com o mesmo módulo. Mexer na
+  pergunta é mexer num arquivo só.
+- **Envio:** `POST /api/briefing` cria **um card por resposta** no projeto
+  `Hubber · Briefings` (`6abf3ce857b946818a0ced8c`), coluna `Recebido`, com a
+  Larissa como responsável. Contato e destaque do tipo viram campos do CRM e
+  todas as respostas, na ordem, vão na descrição. Passa pela mesma fila
+  (`_fila.js`) e pelo cron (`drenar.js`) dos outros formulários.
+- **Projeto separado dos leads de propósito:** quem preenche já é cliente. O tipo
+  se distingue por etiqueta (`Briefing · Marca`, `Briefing · Website`) e por
+  formulário, dentro do mesmo quadro.
+- **Briefing novo:** entrada em `BRIEFINGS`, etiqueta e formulário no JSYNQ, uma
+  linha em `TIPOS` no `api/briefing.js`, card no hub (`src/briefing/index.html`)
+  e página em `src/briefing/<slug>/index.html`.
+- **Domínio:** adicionar `briefing.hubbermarketing.com` ao projeto na Vercel e o
+  CNAME no DNS. O `middleware.js` reescreve por host, como no reels.
+- **Responsável:** `JSYNQ_BRIEFING_RESPONSAVEL_ID` troca quem recebe o card.
+- **Fila:** o item pendente é `{ tipo, respostas }` já validado, sob
+  `pendentes/briefing/`.
+
 ## Publicar na Vercel
 
 1. Transformar a pasta em repositório e subir para o GitHub.

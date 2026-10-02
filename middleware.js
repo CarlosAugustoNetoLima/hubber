@@ -1,9 +1,9 @@
 import { rewrite } from '@vercel/edge';
 
-const HOST = 'reels.hubbermarketing.com';
-const PREFIXO = '/reels';
-
-const ROTAS = {
+const REELS = {
+  host: 'reels.hubbermarketing.com',
+  prefixo: '/reels',
+  rotas: {
   '/': '/reels/index.html',
   '/pt': '/reels/pt/index.html',
   '/pt/': '/reels/pt/index.html',
@@ -14,7 +14,24 @@ const ROTAS = {
   '/robots.txt': '/reels/robots.txt',
   '/sitemap.xml': '/reels/sitemap.xml',
   '/llms.txt': '/reels/llms.txt',
+  },
 };
+
+/* Briefings dos clientes: página privada, sem indexação, três telas. */
+const BRIEFING = {
+  host: 'briefing.hubbermarketing.com',
+  prefixo: '/briefing',
+  rotas: {
+  '/': '/briefing/index.html',
+  '/marca': '/briefing/marca/index.html',
+  '/marca/': '/briefing/marca/index.html',
+  '/site': '/briefing/site/index.html',
+  '/site/': '/briefing/site/index.html',
+  '/robots.txt': '/briefing/robots.txt',
+  },
+};
+
+const SITES = [REELS, BRIEFING];
 
 export const config = {
   matcher: [
@@ -28,23 +45,34 @@ export const config = {
     '/robots.txt',
     '/sitemap.xml',
     '/llms.txt',
+    '/marca',
+    '/marca/',
+    '/site',
+    '/site/',
     '/reels',
     '/reels/:caminho*',
+    '/briefing',
+    '/briefing/:caminho*',
   ],
 };
 
 export default function middleware(requisicao) {
   const url = new URL(requisicao.url);
+  const host = requisicao.headers.get('host');
 
-  if (requisicao.headers.get('host') === HOST) {
-    const destino = ROTAS[url.pathname];
+  const dono = SITES.find((s) => s.host === host);
+  if (dono) {
+    const destino = dono.rotas[url.pathname];
     if (!destino) return;
     url.pathname = destino;
     return rewrite(url);
   }
 
-  if (url.pathname === PREFIXO || url.pathname.startsWith(`${PREFIXO}/`)) {
-    const resto = url.pathname.slice(PREFIXO.length) || '/';
-    return Response.redirect(`https://${HOST}${resto}${url.search}`, 308);
+  // No domínio principal, o caminho do subdomínio vai para o endereço próprio.
+  for (const s of SITES) {
+    if (url.pathname === s.prefixo || url.pathname.startsWith(`${s.prefixo}/`)) {
+      const resto = url.pathname.slice(s.prefixo.length) || '/';
+      return Response.redirect(`https://${s.host}${resto}${url.search}`, 308);
+    }
   }
 }
