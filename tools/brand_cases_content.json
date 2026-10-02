@@ -7,7 +7,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Automotivo de luxo",
   "lead": "A marca de um dealership automotivo de alto padrão, construída para ocupar dois espaços que o mercado costuma tratar como opostos: elegância silenciosa e esportividade agressiva. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a loja.",
   "accent": "#da0000",
-  "con_h2": "Luxo absoluto e engenharia de alta performance, <mark class=\"hl\">no mesmo símbolo</mark>.",
+  "con_h2": "Luxo absoluto e engenharia de alta performance, <mark class=\"hl\">no mesmo símbolo.</mark>",
   "con_lead": "O mercado geralmente dita uma escolha entre elegância silenciosa e esportividade agressiva. A Titanium ocupa os dois espaços.",
   "notes": [
    [
@@ -33,7 +33,7 @@
   "type_leads": [
    "Uma família geométrica de proporções amplas, inspirada na relação entre precisão técnica e estética de alta velocidade. O acabamento afiado conecta direto com a natureza predatória do símbolo."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "driver-x": {
@@ -44,7 +44,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Aluguel de carros",
   "lead": "A marca de um serviço de aluguel de carros pensado como concierge: o veículo certo, entregue onde o cliente precisa, no dia a dia ou em traslados de aeroporto. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a fachada, a papelaria e a sinalização.",
   "accent": "#fe6a00",
-  "con_h2": "Conveniência, flexibilidade e ação, <mark class=\"hl\">num X construído</mark>.",
+  "con_h2": "Conveniência, flexibilidade e ação, <mark class=\"hl\">num X construído.</mark>",
   "con_lead": "A Driver X não é uma locadora parada. É um concierge premium que se move rápido: o carro certo chega exatamente onde o cliente precisa, seja um sedan prático ou um carro de luxo de alta performance.",
   "notes": [
    [
@@ -70,7 +70,7 @@
   "type_leads": [
    "Uma família geométrica de proporções largas, em caixa alta e com bastante espaçamento entre as letras. A mesma leitura aberta do logotipo, para títulos e sinalização."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "cinnamon-finance": {
@@ -81,7 +81,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Câmbio e finanças",
   "lead": "A marca de uma operação de câmbio entre Brasil e Estados Unidos, construída para transmitir segurança antes da primeira conversa. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a papelaria e os objetos da marca.",
   "accent": "#b8832a",
-  "con_h2": "Mover dinheiro entre dois países, <mark class=\"hl\">com segurança</mark>.",
+  "con_h2": "Mover dinheiro entre dois países, <mark class=\"hl\">com segurança.</mark>",
   "con_lead": "A Cinnamon Finance nasce para traduzir movimento em segurança: entre reais e dólares, entre decisões financeiras importantes e a confiança para executá-las com clareza.",
   "notes": [
    [
@@ -109,7 +109,7 @@
   "type_leads": [
    "Escolhida para dar à marca uma camada mais técnica, precisa e institucional. Traços geométricos, cortes retos e desenho tecnológico reforçam uma operação construída com precisão, sem perder sofisticação."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "master-vacation-homes": {
@@ -146,7 +146,7 @@
   "type_leads": [
    "A Opulent é a voz da marca: suas serifas elegantes carregam a tradição, a autoridade e os valores atemporais de confiança. A Montserrat entra como a ponte para o futuro, com a performance técnica que as plataformas digitais e as aplicações físicas pedem."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "cinnamon-studio": {
@@ -157,7 +157,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Real estate · Palmas/TO",
   "lead": "A marca de um empreendimento de studios em Palmas, construída para carregar sofisticação sem depender de excesso. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a rua.",
   "accent": "#b7a48e",
-  "con_h2": "O nome em protagonismo, <mark class=\"hl\">o resto em silêncio</mark>.",
+  "con_h2": "O nome em protagonismo, <mark class=\"hl\">o resto em silêncio.</mark>",
   "con_lead": "A identidade foi construída para refletir a proposta do empreendimento: uma experiência contemporânea, prática e sofisticada.",
   "notes": [
    [
@@ -186,7 +186,7 @@
   "type_leads": [
    "Escolhida para traduzir precisão arquitetônica, sofisticação e leveza. Proporções amplas, traços finos e espaçamento generoso, para uma presença limpa que não recorre a excessos."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "infinity": {
@@ -197,7 +197,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Tratamento de água",
   "lead": "A marca de um sistema de tratamento de água que transforma fluxo em permanência: o símbolo do infinito é desenhado com canais contínuos que se cruzam. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para os equipamentos.",
   "accent": "#027ae8",
-  "con_h2": "Fluxo que <mark class=\"hl\">vira permanência</mark>.",
+  "con_h2": "Fluxo que <mark class=\"hl\">vira permanência.</mark>",
   "con_lead": "A Infinity trata a água em ciclo: ela entra no sistema, passa por um processo preciso e volta segura para o consumo, pronta para continuar operando.",
   "notes": [
    [
@@ -223,7 +223,7 @@
   "type_leads": [
    "A Hecativas Regular traduz o equilíbrio entre tecnologia, pureza e confiança. O desenho geométrico transmite precisão e controle, e as formas abertas e arredondadas criam uma sensação de fluidez, ligada ao percurso da água dentro do sistema."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "ka-rv-repair-sales": {
@@ -234,7 +234,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Reparo e venda de RVs",
   "lead": "A marca de um centro familiar de reparo, colisão e venda de RVs, construída sobre valores de família e símbolos que carregam significado. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a oficina e a loja.",
   "accent": "#1f8fc0",
-  "con_h2": "Dois ursos, um pássaro e <mark class=\"hl\">a estrada que a família quer manter aberta</mark>.",
+  "con_h2": "Dois ursos, um pássaro e <mark class=\"hl\">a estrada que a família quer manter aberta.</mark>",
   "con_lead": "A KA RV é uma empresa familiar de reparo, colisão e venda de RVs. A identidade parte de valores de família e de símbolos com significado, para que cada serviço e cada RV vendido carregue esse compromisso.",
   "notes": [
    [
@@ -260,7 +260,7 @@
   "type_leads": [
    "Allotrope Condensed Heavy é a fonte principal: compacta e pesada, para títulos e aplicações em que a marca precisa de presença, com a solidez e a precisão técnica dos serviços. A secundária, Room Black, traz equilíbrio e leitura nos textos descritivos e nas interfaces digitais."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "sos-direito": {
@@ -271,7 +271,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Imigração estratégica",
   "lead": "A marca de um escritório de imigração para os Estados Unidos, desenhada para transformar um processo complexo em uma trajetória conduzida com clareza, estratégia e segurança. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para o escritório.",
   "accent": "#570615",
-  "con_h2": "O próprio nome <mark class=\"hl\">vira símbolo</mark>.",
+  "con_h2": "O próprio nome <mark class=\"hl\">vira símbolo.</mark>",
   "con_lead": "Imigração é um processo complexo. A identidade da SOS Direito o transforma em uma trajetória conduzida com clareza, estratégia e segurança.",
   "notes": [
    [
@@ -297,7 +297,7 @@
   "type_leads": [
    "A Roses Bolero traduz a combinação de sofisticação, autoridade e movimento da marca. Seus traços de alto contraste e curvas expressivas afastam a SOS Direito dos códigos previsíveis da advocacia."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "skin-pro": {
@@ -308,7 +308,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Distribuidora de injetáveis",
   "lead": "A marca de uma distribuidora de injetáveis dermatológicos, nascida de décadas de experiência corporativa na indústria farmacêutica. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para a embalagem e o e-commerce.",
   "accent": "#8f918c",
-  "con_h2": "Delicadeza clínica e rigor farmacêutico, <mark class=\"hl\">no mesmo logotipo</mark>.",
+  "con_h2": "Delicadeza clínica e rigor farmacêutico, <mark class=\"hl\">no mesmo logotipo.</mark>",
   "con_lead": "A Skin Pro é a ponte para a nova geração de injetores que exige rigor clínico e eficiência logística. A marca precisava soar tecnológica sem perder a pele como referência.",
   "notes": [
    [
@@ -334,7 +334,7 @@
   "type_leads": [
    "Uma Neo-Grotesca expandida que equilibra dois mundos: SKIN em Light, com a finesse do tecido saudável, e PRO em Bold, com a base de segurança e autoridade. Para o ambiente digital, a Montserrat entra como secundária: geométrica, legível em sites e aplicativos."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "romtech-infrastructure": {
@@ -345,7 +345,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Infraestrutura · Flórida",
   "lead": "A marca de uma empresa de engenharia e infraestrutura com mais de 20 anos de experiência na Flórida, construída para comunicar autoridade imediata. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para o canteiro de obras.",
   "accent": "#ff2c09",
-  "con_h2": "Um símbolo que <mark class=\"hl\">funde a inicial com a estrada</mark>.",
+  "con_h2": "Um símbolo que <mark class=\"hl\">funde a inicial com a estrada.</mark>",
   "con_lead": "O símbolo funde a inicial da marca com o dinamismo estrutural das rodovias. Representa uma base sólida, construída sobre 20 anos de experiência, projetada para o futuro da infraestrutura americana.",
   "notes": [
    [
@@ -369,7 +369,7 @@
   "pal_h2": "Neutra e <mark class=\"hl\">um vermelho que não passa despercebido</mark>.",
   "font": "QB One Medium Expanded",
   "type_leads": [],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  },
  "usa-equity-summit": {
@@ -380,7 +380,7 @@
   "label": "<a href=\"/cases/\">Cases</a> · Identidade visual · Evento de investimentos nos EUA",
   "lead": "A marca de um summit de investimentos nos EUA, construída para transmitir tradição e seriedade institucional. Aqui está o sistema completo: conceito, paleta, tipografia e as aplicações que saíram do papel para o evento.",
   "accent": "#bf9e5f",
-  "con_h2": "Um símbolo que junta <mark class=\"hl\">proteção, alcance global e crescimento</mark>.",
+  "con_h2": "Um símbolo que junta <mark class=\"hl\">proteção, alcance global e crescimento.</mark>",
   "con_lead": "O símbolo é uma composição geométrica de três elementos: escudo, globo e gráfico ascendente. Uma heráldica moderna para um evento sobre o mercado americano.",
   "notes": [
    [
@@ -406,7 +406,7 @@
   "type_leads": [
    "Cinzel é a fonte primária, inspirada em inscrições clássicas, e comunica tradição e seriedade institucional. Montserrat é a secundária: moderna e limpa, garante legibilidade técnica em dados financeiros e cronogramas."
   ],
-  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado</mark>.</h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
+  "final": "<section class=\"final\" data-surface=\"brand\" aria-labelledby=\"final-title\">\n  <div class=\"wrap cta-final\">\n    <p class=\"t-label\" data-reveal>A decisão</p>\n    <h2 class=\"js-split\" id=\"final-title\">Sua marca também pode ter <mark class=\"hl\">esse cuidado.</mark></h2>\n    <p class=\"t-lead\" data-reveal>Preencha o diagnóstico e conta pra gente onde a sua marca está hoje. Se identidade visual fizer parte do gargalo, o Nicolas te diz.</p>\n    <div class=\"cta-final__actions\" data-reveal>\n      <a class=\"btn btn--primary\" href=\"/diagnostico/\">Solicitar diagnóstico</a>\n    </div>\n  </div>\n</section>",
   "tail": "<!--partial:footer-->\n\n<script defer src=\"/assets/vendor/gsap.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/ScrollTrigger.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/SplitText.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/CustomEase.3.15.0.min.js\"></script>\n<script defer src=\"/assets/vendor/lenis.1.3.26.min.js\"></script>\n<script type=\"module\" src=\"/js/main.js\"></script>\n\n<script defer src=\"/js/highlight.js\"></script>\n</body>\n</html>\n"
  }
 }

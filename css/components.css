@@ -1076,6 +1076,9 @@ html:not(.has-js) .step + .step { padding-top: var(--s48); border-top: 1px solid
           box-decoration-break: clone;
   padding: 0 0.06em 0 0.03em;
 }
+/* O SplitText às vezes deixa uma cópia vazia da <mark> no fim da linha
+   anterior; o padding dela virava uma barrinha solta. */
+.hl:empty { display: none; }
 .has-js .hl {
   background-size: 0% 100%;
   color: inherit;
