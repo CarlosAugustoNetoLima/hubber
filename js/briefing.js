@@ -457,10 +457,10 @@ function telaEnviado() {
           '.')
       : null,
     apagouAgora ? h('p', { class: 'hint', role: 'status', text: 'Dados apagados deste navegador.' }) : null,
+    // Leva à página com todos os briefings. Os dados da sessão seguem junto de propósito:
+    // é assim que o próximo briefing oferece reaproveitar o que a pessoa acabou de informar.
     h('div', { class: 'actions' },
-      h('a', { class: 'btn', href: '../' }, 'Voltar aos briefings'),
-      // Começar outro do zero vale para outra empresa: os dados da anterior não seguem junto.
-      h('button', { class: 'btn ghost', type: 'button', onclick: () => { apagarSessao(); zerar(); limparSalvo(); ir(0); } }, 'Preencher outro')),
+      h('a', { class: 'btn', href: '../' }, 'Preencher outro briefing')),
   ];
 }
 
