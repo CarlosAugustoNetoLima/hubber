@@ -49,8 +49,13 @@
       "permanent": true
     },
     {
-      "source": "/pocket/:path*",
-      "destination": "/core/:path*",
+      "source": "/pocket/",
+      "destination": "/core/",
+      "permanent": true
+    },
+    {
+      "source": "/pocket/:path+",
+      "destination": "/core/:path+",
       "permanent": true
     },
     {
@@ -59,8 +64,13 @@
       "permanent": true
     },
     {
-      "source": "/en/pocket/:path*",
-      "destination": "/en/core/:path*",
+      "source": "/en/pocket/",
+      "destination": "/en/core/",
+      "permanent": true
+    },
+    {
+      "source": "/en/pocket/:path+",
+      "destination": "/en/core/:path+",
       "permanent": true
     }
   ]
