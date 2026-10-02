@@ -7,6 +7,12 @@
  *
  * O servidor refaz a validação com o mesmo módulo de perguntas. A conferência
  * daqui existe para a pessoa ver o erro na hora, não para proteger nada.
+ *
+ * Quem faz um segundo briefing na mesma sessão pode reaproveitar o que já
+ * informou (contato e o básico do negócio). Os dados ficam em sessionStorage,
+ * só nesta aba, por SESSAO_MIN minutos depois do envio, e nunca são preenchidos
+ * sem a pessoa conferir e dar o ok. Não há consulta a servidor nem busca por
+ * e-mail: qualquer um digitaria o e-mail de outra pessoa e veria os dados dela.
  */
 
 import { BRIEFINGS, CONSENTIMENTO, validar, visivel, formatar, todosCampos } from './briefing-perguntas.js';
@@ -16,6 +22,10 @@ const B = BRIEFINGS[TIPO];
 const N = B.passos.length;
 const REVISAO = N + 1;
 const STORE_KEY = `hubber-briefing-${TIPO}-v1`;
+const SESSAO_KEY = 'hubber-briefing-sessao-v1';
+const SESSAO_MIN = 15;
+const SESSAO_MS = SESSAO_MIN * 60 * 1000;
+const GRUPOS_REUSO = { contato: 'Contato', negocio: 'Sobre o negócio' };
 
 // ---------- estado ----------
 const state = { a: {}, view: 0, max: 0 };
@@ -24,6 +34,12 @@ let enviado = false;
 let consentiu = false;
 let confirmandoApagar = false;
 let aviso = '';
+let ofertaRecusada = false;
+let ofertaVisivel = false;
+let avisoSessao = '';
+let apagouAgora = false;
+let timerSessao = null;
+const reaproveitados = new Set();
 
 let salvo = null;
 try {
@@ -52,7 +68,97 @@ function persistir() {
   try { localStorage.setItem(STORE_KEY, JSON.stringify({ a: state.a, v: state.view, max: state.max })); } catch { /* ignora */ }
 }
 function limparSalvo() { try { localStorage.removeItem(STORE_KEY); } catch { /* ignora */ } }
-function zerar() { state.a = {}; state.max = 0; temSalvo = false; consentiu = false; enviando = false; enviado = false; aviso = ''; }
+function zerar() {
+  state.a = {}; state.max = 0; temSalvo = false; consentiu = false; enviando = false; enviado = false; aviso = '';
+  reaproveitados.clear(); ofertaRecusada = false; avisoSessao = ''; apagouAgora = false;
+}
+
+// ---------- dados reaproveitados entre briefings ----------
+const chavesReusaveis = new Set(Object.values(BRIEFINGS).flatMap((b) => todosCampos(b).filter((c) => c.compartilha).map((c) => c.k)));
+
+function gravarSessao(itens) {
+  try {
+    if (itens.length) sessionStorage.setItem(SESSAO_KEY, JSON.stringify({ itens }));
+    else sessionStorage.removeItem(SESSAO_KEY);
+  } catch { /* sem sessionStorage o recurso simplesmente não existe */ }
+}
+
+/* Devolve as entradas ainda dentro do prazo e apaga do armazenamento as que
+   venceram ou vieram malformadas. Cada briefing enviado é uma entrada, com a
+   hora do envio: o prazo conta daí. */
+function lerSessao() {
+  let itens = [];
+  try {
+    const bruto = sessionStorage.getItem(SESSAO_KEY);
+    if (bruto) {
+      const p = JSON.parse(bruto);
+      if (p && Array.isArray(p.itens)) itens = p.itens;
+    }
+  } catch { gravarSessao([]); return []; }
+  const agora = Date.now();
+  const vivas = itens.filter((e) => e && BRIEFINGS[e.tipo] && typeof e.at === 'number'
+    && agora - e.at >= 0 && agora - e.at < SESSAO_MS && e.d && typeof e.d === 'object');
+  if (vivas.length !== itens.length) gravarSessao(vivas);
+  return vivas;
+}
+
+function guardarNaSessao(limpo) {
+  const d = {};
+  for (const k of chavesReusaveis) if (limpo[k] !== undefined) d[k] = limpo[k];
+  const outras = lerSessao().filter((e) => e.tipo !== TIPO);
+  gravarSessao(Object.keys(d).length ? [...outras, { tipo: TIPO, at: Date.now(), d }] : outras);
+  agendarExpiracao();
+}
+
+function apagarSessao() {
+  clearTimeout(timerSessao);
+  gravarSessao([]);
+}
+
+/* O que dá para oferecer neste briefing: só dados de OUTROS briefings, só de
+   perguntas marcadas como compartilhadas, e só valores que passam na validação
+   daqui. O mais recente vence quando dois briefings trazem o mesmo campo. */
+function ofertaDaSessao() {
+  const entradas = lerSessao().filter((e) => e.tipo !== TIPO).sort((x, y) => x.at - y.at);
+  if (!entradas.length) return null;
+  const valores = {};
+  for (const e of entradas) Object.assign(valores, e.d);
+  const { limpo } = validar(TIPO, valores);
+  const itens = todosCampos(B).filter((c) => c.compartilha && limpo[c.k] !== undefined).map((c) => [c, limpo[c.k]]);
+  if (!itens.length) return null;
+  return { itens, origens: entradas.map((e) => BRIEFINGS[e.tipo].titulo.toLowerCase()) };
+}
+
+/* Se a página ficar aberta além do prazo, os dados somem da tela e do
+   armazenamento sozinhos, sem esperar a pessoa clicar em nada. */
+function agendarExpiracao() {
+  clearTimeout(timerSessao);
+  const entradas = lerSessao();
+  if (!entradas.length) return;
+  const resta = Math.min(...entradas.map((e) => SESSAO_MS - (Date.now() - e.at)));
+  timerSessao = setTimeout(() => {
+    lerSessao();
+    if (ofertaVisivel) avisoSessao = 'Por segurança, os dados venceram e foram apagados. Preencha normalmente.';
+    if (state.view === 0 || (enviado && state.view === REVISAO)) desenhar(true);
+    agendarExpiracao();
+  }, Math.max(resta, 0) + 250);
+}
+
+function usarDados() {
+  // Confere de novo: o painel pode ter ficado aberto além do prazo.
+  const atual = ofertaDaSessao();
+  if (!atual) {
+    avisoSessao = 'Por segurança, os dados venceram e foram apagados. Preencha normalmente.';
+    desenhar(true);
+    return;
+  }
+  for (const [c, v] of atual.itens) {
+    if (!vazio(c)) continue;
+    state.a[c.k] = Array.isArray(v) ? v.slice() : v;
+    reaproveitados.add(c.k);
+  }
+  ir(1);
+}
 
 // ---------- util ----------
 function h(tag, props, ...filhos) {
@@ -105,6 +211,7 @@ function desenharCampo(c) {
         } else {
           state.a[c.k] = o;
         }
+        reaproveitados.delete(c.k);
         persistir(); limparErro(c); sincronizarLimite(c); sincronizarCondicionais();
       });
       lista.append(h('label', { class: 'opt', for: `${id}-${i}` }, input, h('span', { text: o })));
@@ -124,7 +231,7 @@ function desenharCampo(c) {
       'aria-describedby': descreve,
     });
     ctl.value = String(val(c.k));
-    ctl.addEventListener('input', () => { state.a[c.k] = ctl.value; persistir(); limparErro(c); sincronizarCondicionais(); });
+    ctl.addEventListener('input', () => { state.a[c.k] = ctl.value; reaproveitados.delete(c.k); persistir(); limparErro(c); sincronizarCondicionais(); });
     wrap = h('div', { class: 'field', 'data-k': c.k },
       h('label', { for: id }, c.label, marca), dica, ctl, erro);
   }
@@ -241,16 +348,47 @@ function desenharPainel() {
 }
 
 // ---------- telas ----------
+/* Painel de conferência: lista tudo o que seria preenchido e só preenche com o
+   ok. Quem prefere começar do zero segue sem nada preenchido. */
+function painelDeReuso(oferta) {
+  const origem = oferta.origens.length === 1 ? `do ${oferta.origens[0]}` : 'dos briefings';
+  const grupos = Object.entries(GRUPOS_REUSO).map(([chave, nome]) => {
+    const itens = oferta.itens.filter(([c]) => c.compartilha === chave);
+    if (!itens.length) return null;
+    const dl = h('dl');
+    for (const [c, v] of itens) {
+      dl.append(h('div', { class: 'qa' }, h('dt', { text: c.label }), h('dd', { text: formatar(c, v) })));
+    }
+    return h('section', { class: 'group' }, h('div', { class: 'group-head' }, h('h2', { text: nome })), dl);
+  });
+  return h('section', { class: 'oferta', 'aria-labelledby': 'ofertaTitulo' },
+    h('h2', { id: 'ofertaTitulo', text: `Reaproveitar os dados ${origem} que você enviou?` }),
+    h('p', null, 'Para você não digitar tudo de novo, podemos preencher os campos que se repetem. Confira os dados abaixo: nada é preenchido sem o seu ok, e você ainda poderá editar cada campo.'),
+    grupos,
+    h('div', { class: 'actions' },
+      h('button', { class: 'btn', type: 'button', onclick: usarDados }, 'Usar estes dados'),
+      h('button', { class: 'btn ghost', type: 'button', onclick: () => { ofertaRecusada = true; ir(1); } }, 'Começar sem preencher')),
+    h('p', { class: 'hint' },
+      `Por segurança, estes dados ficam só nesta aba do navegador, por ${SESSAO_MIN} minutos depois do envio, e somem quando você fechar a aba. `,
+      h('button', { class: 'linkbtn', type: 'button', onclick: () => { apagarSessao(); avisoSessao = 'Dados apagados deste navegador.'; desenhar(true); } }, 'Apagar agora')));
+}
+
 function telaIntro() {
   const retomar = temSalvo && vistaSalva > 0 && vistaSalva <= REVISAO;
+  // Rascunho tem prioridade: não se preenche por cima do que a pessoa já escreveu.
+  const oferta = !temSalvo && !ofertaRecusada ? ofertaDaSessao() : null;
+  ofertaVisivel = !!oferta;
   return [
     h('p', { class: 'lead' }, B.intro),
     h('p', { class: 'lead sm' }, `São ${N} etapas e ${B.duracao}. Suas respostas ficam salvas neste navegador até você enviar. Se não souber responder algo, escreva “não sei”: isso também é informação.`),
-    h('div', { class: 'actions' },
-      retomar
-        ? [h('button', { class: 'btn', type: 'button', onclick: () => ir(Math.max(1, vistaSalva)) }, 'Continuar de onde parou'),
-           h('button', { class: 'btn ghost', type: 'button', onclick: () => { zerar(); limparSalvo(); ir(1); } }, 'Começar do zero')]
-        : h('button', { class: 'btn', type: 'button', onclick: () => ir(1) }, 'Começar')),
+    avisoSessao ? h('p', { class: 'aviso', role: 'status', text: avisoSessao }) : null,
+    oferta
+      ? painelDeReuso(oferta)
+      : h('div', { class: 'actions' },
+          retomar
+            ? [h('button', { class: 'btn', type: 'button', onclick: () => ir(Math.max(1, vistaSalva)) }, 'Continuar de onde parou'),
+               h('button', { class: 'btn ghost', type: 'button', onclick: () => { zerar(); limparSalvo(); ir(1); } }, 'Começar do zero')]
+            : h('button', { class: 'btn', type: 'button', onclick: () => ir(1) }, 'Começar')),
   ];
 }
 
@@ -260,6 +398,9 @@ function telaPasso() {
     h('p', { class: 'meta', text: `Etapa ${state.view} de ${N}` }),
     h('p', { class: 'lead', text: passo.porque }),
   ];
+  if (passo.campos.some((c) => reaproveitados.has(c.k) && !vazio(c))) {
+    saida.push(h('p', { class: 'aviso', role: 'note', text: 'Alguns campos vieram preenchidos com os dados do briefing anterior. Confira antes de continuar.' }));
+  }
   const form = h('form', { novalidate: true, onsubmit: (e) => { e.preventDefault(); proximo(); } });
 
   const cs = passo.campos;
@@ -302,13 +443,22 @@ function primeiroPendente() {
 
 function telaEnviado() {
   const empresa = String(val('empresa')).trim();
+  const guardado = lerSessao().some((e) => e.tipo === TIPO);
   return [
     h('p', { class: 'meta', text: 'Recebemos' }),
     h('p', { class: 'lead', text: `${empresa ? `${empresa}, o` : 'O'} ${B.titulo.toLowerCase()} chegou à equipe da Hubber.` }),
     h('p', { class: 'lead sm', text: 'Vamos ler com calma e falar com você pelo e-mail ou pelo WhatsApp que informou. Não precisa enviar de novo.' }),
+    guardado
+      ? h('p', { class: 'hint' },
+          `Se precisar preencher outro briefing agora, podemos reaproveitar seus dados de contato. Eles ficam só nesta aba do navegador, por ${SESSAO_MIN} minutos, e você pode `,
+          h('button', { class: 'linkbtn', type: 'button', onclick: () => { apagarSessao(); apagouAgora = true; desenhar(true); } }, 'apagar agora'),
+          '.')
+      : null,
+    apagouAgora ? h('p', { class: 'hint', role: 'status', text: 'Dados apagados deste navegador.' }) : null,
     h('div', { class: 'actions' },
       h('a', { class: 'btn', href: '../' }, 'Voltar aos briefings'),
-      h('button', { class: 'btn ghost', type: 'button', onclick: () => { zerar(); limparSalvo(); ir(0); } }, 'Preencher outro')),
+      // Começar outro do zero vale para outra empresa: os dados da anterior não seguem junto.
+      h('button', { class: 'btn ghost', type: 'button', onclick: () => { apagarSessao(); zerar(); limparSalvo(); ir(0); } }, 'Preencher outro')),
   ];
 }
 
@@ -427,6 +577,7 @@ async function enviarBriefing(isca, dizer, botao) {
   if (resposta && resposta.ok) {
     enviado = true;
     limparSalvo();
+    guardarNaSessao(limpo);
     desenhar(false);
     return;
   }
@@ -447,10 +598,11 @@ function desenhar(manterRolagem) {
   desenharPainel();
   const col = $('col'); col.textContent = '';
   const nos = state.view === 0 ? telaIntro() : state.view === REVISAO ? telaRevisao() : telaPasso();
-  for (const n of nos) col.append(n);
+  for (const n of nos) if (n) col.append(n);   // blocos opcionais chegam como null
   if (state.view >= 1 && state.view <= N) B.passos[state.view - 1].campos.forEach(sincronizarLimite);
   if (!manterRolagem) window.scrollTo(0, 0);
   if (!manterRolagem && state.view !== 0) { try { $('railTitle').focus({ preventScroll: true }); } catch { /* ignora */ } }
 }
 
 desenhar(true);
+agendarExpiracao();

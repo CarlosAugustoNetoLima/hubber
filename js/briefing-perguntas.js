@@ -10,6 +10,12 @@
  * multi (várias, com `max` opcional). `showIf` esconde o campo conforme as
  * respostas anteriores; campo escondido não é cobrado nem enviado.
  *
+ * `compartilha` ('contato' ou 'negocio') marca a pergunta que é IDÊNTICA em mais
+ * de um briefing. É o que a página oferece reaproveitar quando a pessoa faz um
+ * segundo briefing na mesma sessão (ver js/briefing.js). Só vale marcar quando o
+ * enunciado e as opções são os mesmos: chave igual não basta, porque `tom`,
+ * `regiao`, `provas` e `objetivo` se chamam igual e perguntam coisas diferentes.
+ *
  * Briefing novo = entrada nova em BRIEFINGS, etiqueta e formulário no JSYNQ e
  * os ids em api/briefing.js. Nada mais.
  */
@@ -37,12 +43,12 @@ const MARCA = {
       titulo: 'Empresa e contato',
       porque: 'Para saber com quem a Hubber está falando e onde a marca atua.',
       campos: [
-        { k: 'empresa', t: 'text', label: 'Nome da empresa', req: true },
-        { k: 'responsavel', t: 'text', label: 'Nome do responsável', hint: 'Quem decide sobre a marca e aprova as entregas.', req: true },
-        { k: 'email', t: 'email', label: 'E-mail principal', req: true },
-        { k: 'whatsapp', t: 'tel', label: 'WhatsApp', hint: 'Com DDD ou código do país.', req: true },
-        { k: 'cidade', t: 'text', label: 'Cidade e região de atuação', req: true },
-        { k: 'instagram', t: 'text', ig: true, label: 'Instagram da empresa', ph: '@usuario' },
+        { k: 'empresa', t: 'text', compartilha: 'contato', label: 'Nome da empresa', req: true },
+        { k: 'responsavel', t: 'text', compartilha: 'contato', label: 'Nome do responsável', hint: 'Quem decide sobre a marca e aprova as entregas.', req: true },
+        { k: 'email', t: 'email', compartilha: 'contato', label: 'E-mail principal', req: true },
+        { k: 'whatsapp', t: 'tel', compartilha: 'contato', label: 'WhatsApp', hint: 'Com DDD ou código do país.', req: true },
+        { k: 'cidade', t: 'text', compartilha: 'contato', label: 'Cidade e região de atuação', req: true },
+        { k: 'instagram', t: 'text', compartilha: 'contato', ig: true, label: 'Instagram da empresa', ph: '@usuario' },
         { k: 'site', t: 'text', url: true, label: 'Site e outras redes', hint: 'Facebook, LinkedIn, TikTok, YouTube. Cole os links.' },
         { k: 'cnpj', t: 'text', label: 'CNPJ ou EIN', grupo: 'Dados para cadastro (opcional)' },
         { k: 'endereco', t: 'text', label: 'Endereço completo', hint: 'Rua, número, bairro, cidade e estado.', grupo: 'Dados para cadastro (opcional)' },
@@ -54,7 +60,7 @@ const MARCA = {
       titulo: 'O negócio',
       porque: 'A estratégia de marca parte do que a empresa vende e do que mais dá resultado.',
       campos: [
-        { k: 'oquefaz', t: 'textarea', label: 'O que a empresa faz?', hint: 'Explique como se fosse para alguém que nunca ouviu falar de vocês.', req: true },
+        { k: 'oquefaz', t: 'textarea', compartilha: 'negocio', label: 'O que a empresa faz?', hint: 'Explique como se fosse para alguém que nunca ouviu falar de vocês.', req: true },
         { k: 'tempo', t: 'single', label: 'Há quanto tempo a empresa opera?', req: true, opts: ['Menos de 1 ano', 'De 1 a 3 anos', 'De 3 a 7 anos', 'Mais de 7 anos'] },
         { k: 'divulgar', t: 'textarea', label: 'Quais produtos ou serviços você quer divulgar agora?', req: true },
         { k: 'lucrativo', t: 'text', label: 'Qual produto ou serviço é o mais lucrativo hoje?' },
@@ -68,22 +74,22 @@ const MARCA = {
       campos: [
         { k: 'proposito', t: 'textarea', label: 'Por que a empresa existe, além de ganhar dinheiro?', req: true },
         { k: 'origem', t: 'textarea', label: 'Como a empresa começou?', hint: 'A história do fundador costuma ser o melhor material de marca.' },
-        { k: 'diferencial', t: 'textarea', label: 'O que o cliente só encontra com vocês?', hint: 'Evite “qualidade” e “bom atendimento”. Dê um fato ou um exemplo.', req: true },
+        { k: 'diferencial', t: 'textarea', compartilha: 'negocio', label: 'O que o cliente só encontra com vocês?', hint: 'Evite “qualidade” e “bom atendimento”. Dê um fato ou um exemplo.', req: true },
         { k: 'palavras', t: 'text', label: 'Três palavras que definem a marca', ph: 'Ex.: precisa, próxima, ousada', req: true },
         { k: 'percepcao', t: 'textarea', label: 'Depois de conhecer a marca, o que o cliente deve pensar e sentir?', req: true },
         { k: 'tom', t: 'multi', max: 3, label: 'Como a marca deve soar?', hint: 'Escolha até 3.', req: true, opts: TOM },
         { k: 'naoser', t: 'text', label: 'O que a marca nunca deve parecer?' },
         { k: 'referencias', t: 'textarea', label: 'Marcas que você admira, de qualquer setor', hint: 'Diga o que atrai em cada uma: o visual, o jeito de falar, a postura.' },
-        { k: 'identidade', t: 'single', label: 'Como está a identidade visual hoje?', req: true,
+        { k: 'identidade', t: 'single', compartilha: 'negocio', label: 'Como está a identidade visual hoje?', req: true,
           opts: ['Tenho logo e manual de marca', 'Tenho logo, mas sem manual', 'Tenho um logo antigo que quero refazer', 'Ainda não tenho identidade visual'] },
-        { k: 'arquivos', t: 'text', url: true, label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
+        { k: 'arquivos', t: 'text', compartilha: 'negocio', url: true, label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
       ],
     },
     {
       titulo: 'O público',
       porque: 'A marca só funciona quando é escrita para uma pessoa específica.',
       campos: [
-        { k: 'cliente', t: 'textarea', label: 'Quem é o cliente ideal?', hint: 'Idade, perfil, cargo, interesses e onde mora.', req: true },
+        { k: 'cliente', t: 'textarea', compartilha: 'negocio', label: 'Quem é o cliente ideal?', hint: 'Idade, perfil, cargo, interesses e onde mora.', req: true },
         { k: 'tipo', t: 'single', label: 'A empresa atende', req: true, opts: ['Cliente final (pessoa física)', 'Outras empresas', 'Os dois'] },
         { k: 'dor', t: 'textarea', label: 'Qual o principal problema que esse cliente enfrenta hoje?', req: true },
         { k: 'objecao', t: 'textarea', label: 'O que faz um cliente hesitar ou desistir antes de comprar?' },
@@ -151,12 +157,12 @@ const SITE = {
       titulo: 'Empresa e contato',
       porque: 'Para saber com quem a Hubber está falando e quem aprova o site.',
       campos: [
-        { k: 'empresa', t: 'text', label: 'Nome da empresa', req: true },
-        { k: 'responsavel', t: 'text', label: 'Nome do responsável', hint: 'Quem acompanha o projeto no dia a dia.', req: true },
-        { k: 'email', t: 'email', label: 'E-mail principal', req: true },
-        { k: 'whatsapp', t: 'tel', label: 'WhatsApp', hint: 'Com DDD ou código do país.', req: true },
-        { k: 'cidade', t: 'text', label: 'Cidade e região de atuação', req: true },
-        { k: 'instagram', t: 'text', ig: true, label: 'Instagram da empresa', ph: '@usuario' },
+        { k: 'empresa', t: 'text', compartilha: 'contato', label: 'Nome da empresa', req: true },
+        { k: 'responsavel', t: 'text', compartilha: 'contato', label: 'Nome do responsável', hint: 'Quem acompanha o projeto no dia a dia.', req: true },
+        { k: 'email', t: 'email', compartilha: 'contato', label: 'E-mail principal', req: true },
+        { k: 'whatsapp', t: 'tel', compartilha: 'contato', label: 'WhatsApp', hint: 'Com DDD ou código do país.', req: true },
+        { k: 'cidade', t: 'text', compartilha: 'contato', label: 'Cidade e região de atuação', req: true },
+        { k: 'instagram', t: 'text', compartilha: 'contato', ig: true, label: 'Instagram da empresa', ph: '@usuario' },
         { k: 'siteatual', t: 'text', url: true, label: 'Endereço do site atual, se houver', ph: 'https://' },
       ],
     },
@@ -183,10 +189,10 @@ const SITE = {
       titulo: 'Negócio e público',
       porque: 'O site precisa falar com a pessoa certa, no momento em que ela decide.',
       campos: [
-        { k: 'oquefaz', t: 'textarea', label: 'O que a empresa faz?', hint: 'Explique como se fosse para alguém que nunca ouviu falar de vocês.', req: true },
-        { k: 'cliente', t: 'textarea', label: 'Quem é o cliente ideal?', hint: 'Idade, perfil, cargo, interesses e onde mora.', req: true },
+        { k: 'oquefaz', t: 'textarea', compartilha: 'negocio', label: 'O que a empresa faz?', hint: 'Explique como se fosse para alguém que nunca ouviu falar de vocês.', req: true },
+        { k: 'cliente', t: 'textarea', compartilha: 'negocio', label: 'Quem é o cliente ideal?', hint: 'Idade, perfil, cargo, interesses e onde mora.', req: true },
         { k: 'busca', t: 'textarea', label: 'O que esse cliente quer saber ou resolver quando chega ao site?', req: true },
-        { k: 'diferencial', t: 'textarea', label: 'O que o cliente só encontra com vocês?', hint: 'Evite “qualidade” e “bom atendimento”. Dê um fato ou um exemplo.', req: true },
+        { k: 'diferencial', t: 'textarea', compartilha: 'negocio', label: 'O que o cliente só encontra com vocês?', hint: 'Evite “qualidade” e “bom atendimento”. Dê um fato ou um exemplo.', req: true },
         { k: 'regiao', t: 'text', label: 'Onde a empresa atende?', hint: 'Cidades, estados ou países.', req: true },
         { k: 'concorrentes', t: 'textarea', label: 'Sites de concorrentes para a Hubber olhar', hint: 'Cole os links e diga o que eles fazem bem e o que fazem mal.' },
       ],
@@ -221,14 +227,14 @@ const SITE = {
         { k: 'integracoes', t: 'textarea', label: 'O site precisa se integrar a algum sistema?',
           hint: 'Agenda, e-mail marketing, CRM, ERP, meio de pagamento, planilha ou automações. Diga qual e para quê. Se não precisa, escreva “não”.' },
         { k: 'provas', t: 'textarea', label: 'Que provas o site pode mostrar?', hint: 'Cases, depoimentos, logos de clientes, prêmios e números. Só o que dá para comprovar.' },
-        { k: 'arquivos', t: 'text', url: true, label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
+        { k: 'arquivos', t: 'text', compartilha: 'negocio', url: true, label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
       ],
     },
     {
       titulo: 'Visual e referências',
       porque: 'Saber o que agrada e o que não agrada evita refazer o design depois.',
       campos: [
-        { k: 'identidade', t: 'single', label: 'Como está a identidade visual hoje?', req: true,
+        { k: 'identidade', t: 'single', compartilha: 'negocio', label: 'Como está a identidade visual hoje?', req: true,
           opts: ['Tenho logo e manual de marca', 'Tenho logo, mas sem manual', 'Tenho um logo antigo que quero refazer', 'Ainda não tenho identidade visual'] },
         { k: 'cores', t: 'text', label: 'Cores e fontes da marca, se já definidas' },
         { k: 'tom', t: 'multi', max: 3, label: 'Como o site deve soar?', hint: 'Escolha até 3.', req: true, opts: TOM },

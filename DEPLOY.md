@@ -64,6 +64,16 @@ são os formulários em etapas. É página privada (`noindex`, `robots.txt` com
 - **Projeto separado dos leads de propósito:** quem preenche já é cliente. O tipo
   se distingue por etiqueta (`Briefing · Marca`, `Briefing · Website`) e por
   formulário, dentro do mesmo quadro.
+- **Reaproveitar dados entre briefings:** ao enviar um briefing, a página guarda
+  em `sessionStorage` (só aquela aba, some ao fechá-la) as respostas das perguntas
+  marcadas com `compartilha` em `js/briefing-perguntas.js`, por 15 minutos
+  (`SESSAO_MIN` em `js/briefing.js`). No outro briefing, a abertura mostra um
+  painel listando tudo e só preenche com o ok da pessoa; ela pode seguir sem
+  preencher ou apagar na hora. Nada passa pelo servidor nem por busca de e-mail,
+  de propósito: qualquer um digitaria o e-mail de outro e veria os dados dele.
+  Só vale marcar `compartilha` quando enunciado e opções são idênticos nos dois
+  briefings (`tom`, `regiao`, `provas` e `objetivo` têm a mesma chave e perguntam
+  coisas diferentes). Rascunho existente tem prioridade sobre a oferta.
 - **Briefing novo:** entrada em `BRIEFINGS`, etiqueta e formulário no JSYNQ, uma
   linha em `TIPOS` no `api/briefing.js`, card no hub (`src/briefing/index.html`)
   e página em `src/briefing/<slug>/index.html`.
