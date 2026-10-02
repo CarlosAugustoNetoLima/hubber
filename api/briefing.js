@@ -65,7 +65,7 @@ const TIPOS = {
       email:       { id: '6abf3d6457b946818a0cf530', label: 'E-mail', type: 'email', crmKey: 'email' },
       whatsapp:    { id: '6abf3d6457b946818a0cf531', label: 'WhatsApp', type: 'text', crmKey: 'phone' },
       cidade:      { id: '6abf3d6457b946818a0cf532', label: 'Cidade e região', type: 'text' },
-      tipoprojeto: { id: '6abf3d6457b946818a0cf533', label: 'Tipo de projeto', type: 'select' },
+      tipoprojeto: { id: '6abf3d6457b946818a0cf533', label: 'Tipo de site', type: 'select' },
     },
     consentimento: { id: '6abf3d6457b946818a0cf534', label: 'Autoriza a Hubber a usar os dados para desenvolver o projeto', type: 'select' },
     origemCampo:   { id: '6abf3d6457b946818a0cf535', label: 'Origem', type: 'text' },

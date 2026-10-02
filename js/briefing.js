@@ -9,7 +9,7 @@
  * daqui existe para a pessoa ver o erro na hora, não para proteger nada.
  */
 
-import { BRIEFINGS, CONSENTIMENTO, validar, visivel, formatar } from './briefing-perguntas.js';
+import { BRIEFINGS, CONSENTIMENTO, validar, visivel, formatar, todosCampos } from './briefing-perguntas.js';
 
 const TIPO = document.body.dataset.tipo;
 const B = BRIEFINGS[TIPO];
@@ -37,6 +37,14 @@ try {
     }
   }
 } catch { /* armazenamento indisponível */ }
+/* Rascunho de uma versão antiga pode apontar para uma opção que deixou de
+   existir. Ela sai da memória em vez de travar o envio sem a pessoa entender. */
+for (const c of todosCampos(B)) {
+  const v = state.a[c.k];
+  if (v === undefined) continue;
+  if (c.t === 'single' && !c.opts.includes(v)) delete state.a[c.k];
+  if (c.t === 'multi') state.a[c.k] = Array.isArray(v) ? v.filter((o) => c.opts.includes(o)) : [];
+}
 let temSalvo = !!(salvo && Object.keys(salvo.a).some((k) => String(salvo.a[k] || '').length));
 const vistaSalva = salvo ? Math.min(+salvo.v || 0, REVISAO) : 0;
 

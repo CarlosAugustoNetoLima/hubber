@@ -126,6 +126,18 @@ const MARCA = {
 
 /* ---------------------------------------------------------------- SITE */
 
+/* O tipo de site decide o que mais se pergunta: landing page é uma página só,
+   então a quantidade de páginas não faz sentido para ela. */
+const LANDING = 'Landing page (uma página, focada em uma ação)';
+const TIPOS_DE_SITE = [
+  LANDING,
+  'Site institucional enxuto (poucas páginas, sem subpáginas)',
+  'Site institucional completo (várias páginas e subpáginas)',
+  'Loja online (e-commerce)',
+  'Site com área de login ou sistema',
+  'Ainda não sei, preciso de orientação',
+];
+
 const SITE = {
   slug: 'site',
   titulo: 'Briefing de website',
@@ -133,7 +145,7 @@ const SITE = {
   duracao: 'cerca de 15 minutos',
   intro: 'Estas perguntas definem o que o site precisa fazer, o que vai dentro dele e como será publicado. Quanto mais específica a resposta, menos idas e vindas até o site ir ao ar.',
   destaque: 'tipoprojeto',
-  rotuloDestaque: 'Tipo de projeto',
+  rotuloDestaque: 'Tipo de site',
   passos: [
     {
       titulo: 'Empresa e contato',
@@ -152,8 +164,11 @@ const SITE = {
       titulo: 'O projeto',
       porque: 'Define o tamanho do trabalho e o que o site precisa entregar para o negócio.',
       campos: [
-        { k: 'tipoprojeto', t: 'single', label: 'O que você precisa?', req: true,
-          opts: ['Site novo', 'Redesign de um site existente', 'Landing page', 'Loja online', 'Ainda não sei, preciso de orientação'] },
+        { k: 'tipoprojeto', t: 'single', label: 'Que tipo de site você precisa?', req: true,
+          hint: 'Landing page é uma página só, feita para uma ação. Site institucional apresenta a empresa em várias páginas.',
+          opts: TIPOS_DE_SITE },
+        { k: 'situacao', t: 'single', label: 'É um site novo ou a reformulação de um site existente?', req: true,
+          opts: ['Site novo', 'Redesign de um site existente'] },
         { k: 'objetivo', t: 'single', label: 'Qual o principal objetivo do site?', req: true,
           opts: ['Gerar contatos e pedidos de orçamento', 'Vender online', 'Agendar reuniões ou consultas', 'Passar credibilidade e autoridade', 'Apresentar portfólio e cases', 'Informar e tirar dúvidas do cliente'] },
         { k: 'acao', t: 'textarea', label: 'Quando alguém chega ao site, qual é a ação que você mais quer que ela faça?', hint: 'Ex.: chamar no WhatsApp, preencher o formulário, comprar, agendar.', req: true },
@@ -161,8 +176,6 @@ const SITE = {
         { k: 'prazo', t: 'single', label: 'Para quando precisa do site no ar?', req: true,
           opts: ['O quanto antes, em até 30 dias', 'De 1 a 2 meses', 'De 2 a 4 meses', 'Sem data definida'] },
         { k: 'evento', t: 'text', label: 'Existe uma data ou evento que define esse prazo?', hint: 'Lançamento, campanha, feira, abertura de unidade.' },
-        { k: 'investimento', t: 'single', label: 'Faixa de investimento prevista', hint: 'Ajuda a propor o escopo certo. Não é um orçamento fechado.',
-          opts: ['Até US$ 3 mil', 'De US$ 3 a 8 mil', 'De US$ 8 a 15 mil', 'Acima de US$ 15 mil', 'Ainda não sei'] },
         { k: 'aprovador', t: 'text', label: 'Quem aprova o site antes de ir ao ar?', hint: 'Nome e cargo. Se for mais de uma pessoa, liste todas.' },
       ],
     },
@@ -182,16 +195,31 @@ const SITE = {
       titulo: 'Conteúdo e estrutura',
       porque: 'Com páginas e textos definidos, o prazo deixa de estourar.',
       campos: [
+        { k: 'qtdpaginas', t: 'single', label: 'Quantas páginas o site deve ter, aproximadamente?', req: true,
+          hint: 'Conte as páginas do menu e as subpáginas, como uma para cada serviço.',
+          showIf: (a) => a.tipoprojeto !== LANDING,
+          opts: ['De 2 a 5 páginas', 'De 6 a 10 páginas', 'De 11 a 20 páginas', 'Mais de 20 páginas', 'Ainda não sei, preciso de orientação'] },
         { k: 'paginas', t: 'multi', label: 'Quais páginas o site precisa ter?', req: true,
+          hint: 'Em landing page, marque as seções que a página deve ter.',
           opts: ['Início', 'Sobre a empresa', 'Serviços ou produtos', 'Cases e portfólio', 'Depoimentos', 'Blog ou conteúdos', 'Perguntas frequentes', 'Contato', 'Agendamento', 'Loja online', 'Área do cliente', 'Outras, descrevo abaixo'] },
-        { k: 'paginasoutras', t: 'textarea', label: 'Descreva as outras páginas ou como imagina o menu', showIf: (a) => inclui(a, 'paginas', 'Outras, descrevo abaixo') },
-        { k: 'idiomas', t: 'multi', label: 'Em quais idiomas o site vai existir?', req: true, opts: ['Português', 'Inglês', 'Espanhol'] },
+        { k: 'paginasoutras', t: 'textarea', label: 'Quais outras páginas?', showIf: (a) => inclui(a, 'paginas', 'Outras, descrevo abaixo') },
+        { k: 'menu', t: 'textarea', label: 'Como você imagina o menu e as subpáginas?',
+          hint: 'Liste os itens na ordem em que devem aparecer e diga quais terão subpáginas. Ex.: Serviços (Implantes, Clareamento), Sobre, Contato. Em landing page, diga se quer um menu que leve às seções.' },
+        { k: 'idiomaprincipal', t: 'single', label: 'Qual o idioma principal do site?', req: true, opts: ['Português', 'Inglês', 'Espanhol', 'Outro'] },
+        { k: 'traducoes', t: 'multi', label: 'O site terá tradução para outros idiomas?',
+          hint: 'Marque só os idiomas além do principal. Se o site terá um idioma só, deixe em branco.',
+          opts: ['Português', 'Inglês', 'Espanhol', 'Outro'] },
+        { k: 'idiomaoutro', t: 'text', label: 'Qual outro idioma?', showIf: (a) => a.idiomaprincipal === 'Outro' || inclui(a, 'traducoes', 'Outro') },
         { k: 'textos', t: 'single', label: 'Quem escreve os textos do site?', req: true,
           opts: ['Já tenho os textos prontos', 'Tenho parte, preciso de ajuda', 'A Hubber escreve tudo', 'Ainda não sei'] },
         { k: 'fotos', t: 'single', label: 'Como estão as fotos e os vídeos?', req: true,
           opts: ['Tenho material profissional', 'Tenho fotos simples, preciso melhorar', 'Preciso produzir tudo'] },
         { k: 'funcionalidades', t: 'multi', label: 'O que o site precisa ter além das páginas?',
           opts: ['Formulário de contato', 'Botão de WhatsApp', 'Agendamento online', 'Pagamento online', 'Chat', 'Blog', 'Área de login', 'Integração com CRM', 'Mapa e endereço', 'Calculadora ou simulador'] },
+        { k: 'destinocontato', t: 'textarea', label: 'Para onde devem chegar os contatos do site?', req: true,
+          hint: 'Informe o WhatsApp e o e-mail que vão receber os pedidos de contato. Se forem pessoas diferentes por assunto, explique.' },
+        { k: 'integracoes', t: 'textarea', label: 'O site precisa se integrar a algum sistema?',
+          hint: 'Agenda, e-mail marketing, CRM, ERP, meio de pagamento, planilha ou automações. Diga qual e para quê. Se não precisa, escreva “não”.' },
         { k: 'provas', t: 'textarea', label: 'Que provas o site pode mostrar?', hint: 'Cases, depoimentos, logos de clientes, prêmios e números. Só o que dá para comprovar.' },
         { k: 'arquivos', t: 'text', url: true, label: 'Link da pasta com logo, fotos e materiais', hint: 'Google Drive, Dropbox ou similar. Libere o acesso por link.' },
       ],
