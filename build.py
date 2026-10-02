@@ -41,7 +41,7 @@ SLUGS = {
     "home": "home",
     "build": "build",
     "agencia": "agency",
-    "pocket": "pocket",
+    "core": "core",
     "diagnostico": "diagnostic",
     "termos": "terms",
     "privacidade": "privacy",

@@ -41,5 +41,27 @@
       "path": "/api/drenar",
       "schedule": "0 9 * * *"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/pocket",
+      "destination": "/core/",
+      "permanent": true
+    },
+    {
+      "source": "/pocket/:path*",
+      "destination": "/core/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/en/pocket",
+      "destination": "/en/core/",
+      "permanent": true
+    },
+    {
+      "source": "/en/pocket/:path*",
+      "destination": "/en/core/:path*",
+      "permanent": true
+    }
   ]
 }

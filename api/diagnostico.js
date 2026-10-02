@@ -11,7 +11,7 @@
  *   application/json                    fetch de js/form.js, responde JSON
  *   application/x-www-form-urlencoded   POST nativo do <form>, responde HTML
  *
- * A rota (Build, Agência, Pocket, Nutrição) é sempre recalculada aqui a partir
+ * A rota (Build, Agência, Core, Nutrição) é sempre recalculada aqui a partir
  * das respostas. O que o navegador mandou em `rota` é ignorado: senão bastaria
  * editar o payload para aparecer no CRM como lead qualificado.
  *
@@ -45,7 +45,7 @@ const FORM_ID    = process.env.JSYNQ_DIAG_FORM_ID    || '6aaac60ff1edc4c69801a1a
 const BOARD_ID   = process.env.JSYNQ_DIAG_BOARD_ID   || '6aaac5d2f1edc4c69801972d';
 const COLUMN_ID  = process.env.JSYNQ_DIAG_COLUMN_ID  || '6aaac5d2f1edc4c698019735';
 /* A etiqueta do diagnóstico é a própria rota: o comercial abre o quadro e vê
-   Pocket, Build ou Agência sem precisar abrir card nenhum. Nutrição é quem
+   Core, Build ou Agência sem precisar abrir card nenhum. Nutrição é quem
    ainda não tem condição de contratar, e por isso precisa de etiqueta também:
    sem ela não se distingue de lead que ninguém avaliou. */
 const LABEL_POR_ROTA = {
@@ -242,8 +242,8 @@ const PAGINA = {
     },
     pocket: {
       titulo: 'Comece pela base.',
-      texto: 'O Pocket resolve o essencial: mídia paga, site, Perfil do Google e redes, coordenados para ser encontrado e converter.',
-      href: '/pocket/', link: 'Conhecer o Pocket',
+      texto: 'O Core resolve o essencial: mídia paga, site, Perfil do Google e redes, coordenados para ser encontrado e converter.',
+      href: '/core/', link: 'Conhecer o Core',
     },
     nutricao: {
       titulo: 'Ainda não é hora de contratar, e tudo bem.',
@@ -268,8 +268,8 @@ const PAGINA = {
     },
     pocket: {
       titulo: 'Start with the foundation.',
-      texto: 'Pocket covers the essentials: paid media, website, Google Business Profile and social, coordinated to be found and to convert.',
-      href: '/en/pocket/', link: 'Explore Pocket',
+      texto: 'Core covers the essentials: paid media, website, Google Business Profile and social, coordinated to be found and to convert.',
+      href: '/en/core/', link: 'Explore Core',
     },
     nutricao: {
       titulo: 'It is not time to hire yet, and that is fine.',

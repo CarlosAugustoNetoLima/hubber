@@ -7,7 +7,7 @@
 | `build.py` | Estampa `partials/` em `src/**/*.html` e grava o HTML final na raiz. Rodar depois de editar HTML. |
 | `api/connect-lead.js` | Função serverless da Vercel. Recebe o formulário da Connect e cria o lead no CRM do JSYNQ. |
 | `api/diagnostico.js` | Função serverless da Vercel. Recebe o diagnóstico do site e cria o card no CRM do JSYNQ. |
-| `js/route.js` | A regra que escolhe a rota (Build, Agência, Pocket, Nutrição). Lida pelo navegador e pelo servidor. |
+| `js/route.js` | A regra que escolhe a rota (Build, Agência, Core, Nutrição). Lida pelo navegador e pelo servidor. |
 | `vercel.json` | Cabeçalhos de segurança (CSP, HSTS, etc.) e cache dos assets. |
 | `package.json` | Só marca o projeto como ESM para a função serverless. Não há build de JS. |
 
@@ -280,7 +280,7 @@ O campo `rota` que vier no corpo do POST é **ignorado** e recalculado. Sem isso
 bastaria editar o payload para entrar no CRM como lead qualificado.
 
 Ao mudar a regra, mudar só `js/route.js`. Se a lógica for duplicada, a pessoa lê
-"Pocket" na tela e o card sai "Build".
+"Core" na tela e o card sai "Build".
 
 ### Funciona sem JavaScript
 

@@ -3,7 +3,7 @@
  *
  * `js/form.js` usa para mostrar a devolutiva na hora; `api/diagnostico.js`
  * recalcula antes de gravar no CRM. Não é organização por gosto: se as duas
- * cópias divergirem, a pessoa lê "Pocket" na tela e o card sai "Build". O que
+ * cópias divergirem, a pessoa lê "Core" na tela e o card sai "Build". O que
  * o navegador manda no corpo do POST é ignorado — só este cálculo vale.
  *
  * Função pura, sem DOM: roda igual nos dois lados.
@@ -15,7 +15,7 @@ const PISO = new Set(['85-200k', '200-500k', '500k+']);
 export const ROUTE_LABEL = {
   build: 'Build',
   agencia: 'Agência',
-  pocket: 'Pocket',
+  pocket: 'Core',
   nutricao: 'Nutrição',
 };
 
