@@ -3,7 +3,8 @@
  *
  * Lê o tipo em <body data-tipo="marca|site">, desenha as etapas a partir de
  * js/briefing-perguntas.js e, na revisão, manda tudo para /api/briefing, que
- * cria o card no JSYNQ. As respostas ficam salvas no navegador até o envio.
+ * cria o card no JSYNQ. As respostas ficam salvas no navegador até o envio e
+ * somem depois de RASCUNHO_HORAS sem alteração, mesmo com a página aberta.
  *
  * O servidor refaz a validação com o mesmo módulo de perguntas. A conferência
  * daqui existe para a pessoa ver o erro na hora, não para proteger nada.
@@ -22,6 +23,9 @@ const B = BRIEFINGS[TIPO];
 const N = B.passos.length;
 const REVISAO = N + 1;
 const STORE_KEY = `hubber-briefing-${TIPO}-v1`;
+const RASCUNHO_HORAS = 24;
+const RASCUNHO_MS = RASCUNHO_HORAS * 60 * 60 * 1000;
+const AVISO_RASCUNHO = `As respostas que estavam salvas neste navegador foram apagadas porque ficaram ${RASCUNHO_HORAS} horas sem alteração.`;
 const SESSAO_KEY = 'hubber-briefing-sessao-v1';
 const SESSAO_MIN = 15;
 const SESSAO_MS = SESSAO_MIN * 60 * 1000;
@@ -39,6 +43,9 @@ let ofertaVisivel = false;
 let avisoSessao = '';
 let apagouAgora = false;
 let timerSessao = null;
+let avisoRascunho = '';
+let timerRascunho = null;
+let ultimaAlteracao = null;   // hora da última alteração do rascunho nesta aba
 const reaproveitados = new Set();
 
 let salvo = null;
@@ -47,9 +54,20 @@ try {
   if (bruto) {
     const p = JSON.parse(bruto);
     if (p && p.a && typeof p.a === 'object') {
-      salvo = p;
-      state.a = p.a;
-      state.max = Math.min(+p.max || 0, REVISAO);
+      const agora = Date.now();
+      /* Rascunho sem hora é de antes desta regra: ganha o prazo a partir de agora,
+         em vez de sumir na cara de quem estava no meio do preenchimento. */
+      const t = typeof p.t === 'number' && p.t <= agora ? p.t : agora;
+      if (agora - t >= RASCUNHO_MS) {
+        localStorage.removeItem(STORE_KEY);
+        if (Object.keys(p.a).some((k) => String(p.a[k] || '').length)) avisoRascunho = AVISO_RASCUNHO;
+      } else {
+        salvo = p;
+        ultimaAlteracao = t;
+        state.a = p.a;
+        state.max = Math.min(+p.max || 0, REVISAO);
+        if (p.t !== t) localStorage.setItem(STORE_KEY, JSON.stringify({ ...p, t }));
+      }
     }
   }
 } catch { /* armazenamento indisponível */ }
@@ -65,9 +83,42 @@ let temSalvo = !!(salvo && Object.keys(salvo.a).some((k) => String(salvo.a[k] ||
 const vistaSalva = salvo ? Math.min(+salvo.v || 0, REVISAO) : 0;
 
 function persistir() {
-  try { localStorage.setItem(STORE_KEY, JSON.stringify({ a: state.a, v: state.view, max: state.max })); } catch { /* ignora */ }
+  ultimaAlteracao = Date.now();
+  try { localStorage.setItem(STORE_KEY, JSON.stringify({ a: state.a, v: state.view, max: state.max, t: ultimaAlteracao })); } catch { /* ignora */ }
+  agendarVencimentoRascunho(ultimaAlteracao);
 }
-function limparSalvo() { try { localStorage.removeItem(STORE_KEY); } catch { /* ignora */ } }
+function limparSalvo() {
+  clearTimeout(timerRascunho);
+  ultimaAlteracao = null;
+  try { localStorage.removeItem(STORE_KEY); } catch { /* ignora */ }
+}
+
+/* O rascunho some depois de RASCUNHO_HORAS sem alteração, também com a página
+   aberta: num computador compartilhado, quem senta depois não encontra as
+   respostas de outra pessoa. Cada alteração recomeça a contagem. */
+function agendarVencimentoRascunho(t) {
+  clearTimeout(timerRascunho);
+  timerRascunho = setTimeout(verificarRascunho, Math.max(RASCUNHO_MS - (Date.now() - t), 0) + 1000);
+}
+function verificarRascunho() {
+  if (enviado || enviando) return;
+  // Vale a alteração mais recente, desta aba ou de outra aberta no mesmo briefing.
+  let t = ultimaAlteracao;
+  try {
+    const p = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+    if (p && typeof p.t === 'number') t = Math.max(t || 0, p.t);
+  } catch { /* ignora */ }
+  if (t === null) return;
+  if (Date.now() - t < RASCUNHO_MS) { agendarVencimentoRascunho(t); return; }
+  const tinhaRespostas = Object.keys(state.a).some((k) => String(state.a[k] || '').length);
+  zerar();
+  limparSalvo();
+  if (tinhaRespostas) avisoRascunho = AVISO_RASCUNHO;
+  state.view = 0;
+  desenhar(false);
+}
+// Computador que dormiu ou aba esquecida em segundo plano: confere ao voltar.
+document.addEventListener('visibilitychange', () => { if (!document.hidden) verificarRascunho(); });
 function zerar() {
   state.a = {}; state.max = 0; temSalvo = false; consentiu = false; enviando = false; enviado = false; aviso = '';
   reaproveitados.clear(); ofertaRecusada = false; avisoSessao = ''; apagouAgora = false;
@@ -309,6 +360,7 @@ function focarCampo(c) {
 
 // ---------- navegação ----------
 function ir(vista, opcoes) {
+  if (vista !== 0) avisoRascunho = '';
   state.view = vista;
   if (vista > state.max) state.max = vista;
   confirmandoApagar = false;
@@ -382,7 +434,8 @@ function telaIntro() {
   ofertaVisivel = !!oferta;
   return [
     h('p', { class: 'lead' }, B.intro),
-    h('p', { class: 'lead sm' }, `São ${N} etapas e ${B.duracao}. Suas respostas ficam salvas neste navegador até você enviar. Se não souber responder algo, escreva “não sei”: isso também é informação.`),
+    h('p', { class: 'lead sm' }, `São ${N} etapas e ${B.duracao}. Suas respostas ficam salvas neste navegador até você enviar e somem depois de ${RASCUNHO_HORAS} horas sem alteração. Se não souber responder algo, escreva “não sei”: isso também é informação.`),
+    avisoRascunho ? h('p', { class: 'aviso', role: 'status', text: avisoRascunho }) : null,
     avisoSessao ? h('p', { class: 'aviso', role: 'status', text: avisoSessao }) : null,
     oferta
       ? painelDeReuso(oferta)
@@ -608,3 +661,4 @@ function desenhar(manterRolagem) {
 
 desenhar(true);
 agendarExpiracao();
+if (ultimaAlteracao !== null) agendarVencimentoRascunho(ultimaAlteracao);

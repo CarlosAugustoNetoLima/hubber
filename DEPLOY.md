@@ -84,6 +84,10 @@ Google, para a resposta poder ser reaproveitada entre os dois.
   se distingue por etiqueta (`Briefing · Marca`, `Briefing · Website`,
   `Briefing · Onboarding`, `Briefing · Designer`) e por formulário, dentro do
   mesmo quadro.
+- **Rascunho:** fica no `localStorage` do navegador e some depois de 24 horas sem
+  alteração (`RASCUNHO_HORAS` em `js/briefing.js`), também com a página aberta ou
+  quando o computador volta de horas parado. Cada alteração recomeça a contagem.
+  Rascunho salvo antes dessa regra ganha o prazo a partir da primeira abertura.
 - **Reaproveitar dados entre briefings:** ao enviar um briefing, a página guarda
   em `sessionStorage` (só aquela aba, some ao fechá-la) as respostas das perguntas
   marcadas com `compartilha` em `js/briefing-perguntas.js`, por 15 minutos
