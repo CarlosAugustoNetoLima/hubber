@@ -1236,3 +1236,6 @@ html.reveal-ready [data-reveal].is-in {
   align-items: center;
   min-height: 44px;
 }
+
+/* Destaque de título na paleta da LP (âmbar + texto escuro), não o magenta da Hubber */
+[data-lp="reels"] .hl { --hl-bg: var(--lp-accent); --hl-fg: var(--lp-on-accent); }

@@ -1061,3 +1061,29 @@ html:not(.has-js) .step + .step { padding-top: var(--s48); border-top: 1px solid
 }
 .consent-controle[hidden] { display: none; }
 .consent-controle p { margin: 0; }
+
+/* ── Destaque de título (marca-texto) ─────────────────────────────────
+   <mark class="hl"> dentro de h1/h2. Um bloco por linha (box-decoration-break),
+   magenta com texto branco; em superfície "brand" (degradê) vira tinta.
+   Com JS, o bloco "pinta" da esquerda para a direita quando o título aparece
+   (js/highlight.js põe .hl-on no título). Sem JS, já aparece pintado. */
+:root { --hl-bg: var(--c-magenta); --hl-fg: #fff; }
+[data-surface="brand"] { --hl-bg: var(--c-ink); }
+.hl {
+  background: linear-gradient(var(--hl-bg), var(--hl-bg)) no-repeat 0 0 / 100% 100%;
+  color: var(--hl-fg);
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
+  padding: 0 0.06em 0 0.03em;
+}
+.has-js .hl {
+  background-size: 0% 100%;
+  color: inherit;
+  transition:
+    background-size 0.9s var(--ease) var(--hl-d, 0s),
+    color 0.35s var(--ease) calc(var(--hl-d, 0s) + 0.3s);
+}
+.has-js .hl-on .hl { background-size: 100% 100%; color: var(--hl-fg); }
+@media (prefers-reduced-motion: reduce) {
+  .has-js .hl { transition: none; }
+}
