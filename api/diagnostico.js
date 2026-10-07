@@ -424,3 +424,9 @@ function responder(res, navegador, gravou, rota, status, erro, ingles, pendente)
     ? res.status(200).json({ ok: true, rota: rota.route, notas: rota.notes, ...(pendente && { pendente: true }) })
     : res.status(status).json({ ok: false, error: erro, rota: rota.route, notas: rota.notes });
 }
+
+/* Peças compartilhadas com outros formulários que gravam no MESMO projeto do
+   CRM (ex.: api/clinic-lead.js, da LP /plastic/). Todo lead do site cai neste
+   quadro; a origem se distingue pela etiqueta e pelo campo Origem. */
+export const CRM = Object.freeze({ FORM_ID, FORM_NAME, BOARD_ID, COLUMN_ID, LABEL_POR_ROTA, RESPONSAVEL });
+export { FIELDS, ROTA_FIELD, IDIOMA_FIELD, ORIGEM_FIELD, criarCard, isEmail, isPhone, parseUrlEncoded, MAX_BODY };

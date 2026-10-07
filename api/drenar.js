@@ -16,6 +16,7 @@ import { entregarLead } from './connect-lead.js';
 import { entregarDiagnostico } from './diagnostico.js';
 import { entregarReelsLead } from './reels-lead.js';
 import { entregarBriefing } from './briefing.js';
+import { entregarClinicLead } from './clinic-lead.js';
 
 export default async function handler(req, res) {
   const segredo = process.env.CRON_SECRET;
@@ -39,6 +40,7 @@ export default async function handler(req, res) {
     ['diagnostico', (d) => entregarDiagnostico(d, token)],
     ['reels', (d) => entregarReelsLead(d, token)],
     ['briefing', (d) => entregarBriefing(d, token)],
+    ['clinica', (d) => entregarClinicLead(d, token)],
   ];
 
   const saida = {};
