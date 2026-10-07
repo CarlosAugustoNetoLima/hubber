@@ -195,3 +195,26 @@
 .pl-js .pl-reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
 .pl-js .pl-reveal.is-in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .pl-js .pl-reveal { opacity: 1; transform: none; transition: none; } }
+
+/* Faixa de prova no hero (só números reais) */
+.pl-proofrow { list-style: none; margin: clamp(28px, 3vw, 44px) 0 0; padding: var(--s24) 0 0; border-top: 1px solid var(--c-rule-ink); display: flex; flex-wrap: wrap; gap: var(--s16) clamp(24px, 3vw, 48px); }
+.pl-proofrow li { display: flex; flex-direction: column; gap: 4px; max-width: 18ch; }
+.pl-proofrow__n { font-family: var(--font-display); font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 1; color: #fff; }
+.pl-proofrow__t { font-size: var(--fs-small); color: var(--fg-muted); line-height: 1.35; }
+
+/* Agência genérica × Hubber */
+.pl-cmp__h { margin: clamp(56px, 7vw, 104px) 0 var(--s24); font-family: var(--font-display); font-weight: var(--fw-regular); font-size: clamp(1.5rem, 2.6vw, 2.4rem); }
+.pl-cmp { overflow-x: auto; }
+.pl-cmp table { width: 100%; min-width: 640px; border-collapse: collapse; }
+.pl-cmp th, .pl-cmp td { text-align: left; vertical-align: top; padding: var(--s16) var(--s16) var(--s16) 0; border-bottom: 1px solid var(--c-rule-ink); line-height: 1.5; }
+.pl-cmp thead th { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; color: var(--fg-muted); border-bottom-color: currentColor; }
+.pl-cmp thead th:last-child { color: var(--c-magenta); }
+.pl-cmp tbody th { width: 24%; font-weight: 500; }
+.pl-cmp tbody td { color: var(--fg-muted); width: 38%; }
+.pl-cmp tbody td:last-child { color: #fff; }
+
+/* Etapa no escopo */
+.pl-stage { display: inline-block; margin-bottom: var(--s8); color: var(--accent-alt); font-size: .68rem; }
+
+/* Aviso de resultados */
+.pl-foot__disc { flex-basis: 100%; order: 3; max-width: 80ch; font-size: .8125rem; }

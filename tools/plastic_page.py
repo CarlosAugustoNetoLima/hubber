@@ -69,6 +69,18 @@ C = {
   lead='We connect what they find along the way, from your content and ads to your website and the first reply, so the trust you have built shows up at every step and taking the next one feels easy.',
   cta="Talk through your practice’s growth plan", cta2='See how we work',
   note='A 30-minute conversation with Nicolas Palma, specific to your practice. No cost.',
+  proofrow=[('100+', 'plastic surgeons worked with in Brazil'), ('300+', 'surgeons have heard Nicolas speak'), ('On site', 'content filmed at the practice')],
+  cmp_h3='A generic agency vs. Hubber',
+  cmp_cols=('', 'Generic agency', 'Hubber'),
+  cmp=[
+   ('Who works on your account', 'A generalist team serving every industry', 'A team that has worked with 100+ plastic surgeons in Brazil'),
+   ('What gets measured', 'Clicks, followers and reach', 'Where each lead came from and whether it became a consultation'),
+   ('How the pieces connect', 'Ads, content and website from different vendors', 'One team for content, ads, pages and first follow-up'),
+   ('How patients are treated', 'Like any other purchase', 'As a decision built on trust, from first impression to consultation'),
+   ('What is promised', 'Guaranteed results', 'Clear scope, a fixed review cadence and honest numbers'),
+  ],
+  stages={'attract': 'Attract', 'trust': 'Build trust', 'convert': 'Convert', 'all': 'Every stage'},
+  disclaimer='Results vary by practice. Nothing on this page is a guarantee of patients, consultations or revenue.',
   hero_alt='Nicolas Palma, founder of Hubber, speaking on stage with a microphone.',
   hero_cap='Nicolas Palma, founder of Hubber.',
   proof_label='Who we work with',
@@ -97,8 +109,8 @@ C = {
   ],
   prob_close='When content, ads, website and follow-up are run by people who never talk to each other, each one can look fine on its own report while opportunities fall through the gaps.',
   scope_label='What Hubber Agency does',
-  scope_h2='One team for the path from first impression to <mark class="hl">booked consultation.</mark>',
-  scope_intro='Included according to the scope we agree on with your practice.',
+  scope_h2='Attract, build trust, convert. <mark class="hl">One team for all three.</mark>',
+  scope_intro='Plastic surgery is a decision built on trust. Our work covers the three stages where it is won or lost, within the scope we agree on with your practice.',
   scope=[
    ('Paid media strategy and management', 'Meta and Google campaigns built around your procedures, your market and the patients you want to attract.'),
    ('Content planning and production', 'Content that shows your expertise and your practice, including on-site filming at the practice, planned with you and produced within the agreed scope.'),
@@ -182,6 +194,18 @@ C = {
   lead='Nós conectamos o que ele encontra pelo caminho, do seu conteúdo e dos anúncios ao site e à primeira resposta, para que a confiança que você construiu apareça em cada etapa e dar o próximo passo fique fácil.',
   cta='Conversar sobre o plano de crescimento da clínica', cta2='Ver como trabalhamos',
   note='Uma conversa de 30 minutos com Nicolas Palma, específica para a sua clínica. Sem custo.',
+  proofrow=[('100+', 'cirurgiões plásticos atendidos no Brasil'), ('300+', 'cirurgiões já assistiram ao Nicolas'), ('Presencial', 'captação de conteúdo na clínica')],
+  cmp_h3='Uma agência genérica × a Hubber',
+  cmp_cols=('', 'Agência genérica', 'Hubber'),
+  cmp=[
+   ('Quem cuida da sua conta', 'Um time generalista, que atende qualquer segmento', 'Um time que já trabalhou com mais de 100 cirurgiões plásticos no Brasil'),
+   ('O que é medido', 'Cliques, seguidores e alcance', 'De onde veio cada lead e se ele virou consulta'),
+   ('Como as partes se conectam', 'Anúncio, conteúdo e site com fornecedores diferentes', 'Um time para conteúdo, anúncios, páginas e primeiro acompanhamento'),
+   ('Como o paciente é tratado', 'Como qualquer outra compra', 'Como uma decisão baseada em confiança, da primeira impressão à consulta'),
+   ('O que é prometido', 'Resultado garantido', 'Escopo claro, cadência fixa de revisão e números honestos'),
+  ],
+  stages={'attract': 'Atração', 'trust': 'Confiança', 'convert': 'Conversão', 'all': 'Todas as etapas'},
+  disclaimer='Os resultados variam de clínica para clínica. Nada nesta página é garantia de pacientes, consultas ou faturamento.',
   hero_alt='Nicolas Palma, fundador da Hubber, palestrando com microfone no palco.',
   hero_cap='Nicolas Palma, fundador da Hubber.',
   proof_label='Com quem trabalhamos',
@@ -210,8 +234,8 @@ C = {
   ],
   prob_close='Quando conteúdo, anúncios, site e atendimento ficam com pessoas que não conversam entre si, cada parte pode parecer bem no próprio relatório enquanto as oportunidades escapam entre elas.',
   scope_label='O que a Hubber Agency faz',
-  scope_h2='Um time para o caminho entre a primeira impressão e <mark class="hl">a consulta marcada.</mark>',
-  scope_intro='Incluído conforme o escopo que combinamos com a sua clínica.',
+  scope_h2='Atrair, gerar confiança, converter. <mark class="hl">Um time para as três etapas.</mark>',
+  scope_intro='Cirurgia plástica é uma decisão baseada em confiança. Nosso trabalho cobre as três etapas em que ela é ganha ou perdida, dentro do escopo que combinamos com a sua clínica.',
   scope=[
    ('Estratégia e gestão de mídia paga', 'Campanhas no Meta e no Google pensadas para os seus procedimentos, o seu mercado e os pacientes que você quer atrair.'),
    ('Planejamento e produção de conteúdo', 'Conteúdo que mostra a sua expertise e a sua clínica, com captação presencial na clínica, planejado com você e produzido dentro do escopo combinado.'),
@@ -336,6 +360,9 @@ def work_items(k, t):
     return '\n'.join(out)
 
 
+SCOPE_STAGES = ['attract', 'attract', 'trust', 'convert', 'convert', 'all']
+
+
 def page(k):
     t = C[k]
     f = t['f']
@@ -349,7 +376,9 @@ def page(k):
     path = '\n'.join(
         f'      <li><span class="pl-path__n">{i:02d}</span><span class="pl-path__stage">{E(a)}</span><p class="pl-path__text">{E(b)}</p></li>'
         for i, (a, b) in enumerate(t['journey'], 1))
-    scope = '\n'.join(f'        <li class="pl-reveal"><h3>{E(a)}</h3><p>{E(b)}</p></li>' for a, b in t['scope'])
+    scope = '\n'.join(f'        <li class="pl-reveal"><span class="pl-stage pl-mono">{E(t["stages"][SCOPE_STAGES[i]])}</span><h3>{E(a)}</h3><p>{E(b)}</p></li>' for i, (a, b) in enumerate(t['scope']))
+    proofrow = '\n'.join(f'        <li><span class="pl-proofrow__n">{E(n)}</span><span class="pl-proofrow__t">{E(x)}</span></li>' for n, x in t['proofrow'])
+    cmp_rows = '\n'.join(f'        <tr><th scope="row">{E(a)}</th><td>{E(b)}</td><td>{E(c)}</td></tr>' for a, b, c in t['cmp'])
     us = '\n'.join(f'          <li>{E(x)}</li>' for x in t['us'])
     them = '\n'.join(f'          <li>{E(x)}</li>' for x in t['them'])
     steps = '\n'.join(
@@ -456,6 +485,9 @@ def page(k):
         <a class="pl-link" href="#work">{E(t["cta2"])}</a>
       </div>
       <p class="pl-hero__note pl-mono">{E(t["note"])}</p>
+      <ul class="pl-proofrow" role="list">
+{proofrow}
+      </ul>
     </div>
     <figure class="pl-hero__fig">
       <img src="{IMG}/stage-keynote-sm.webp" srcset="{IMG}/stage-keynote-sm.webp 900w, {IMG}/stage-keynote-lg.webp 1080w" sizes="(max-width: 900px) 90vw, 36vw" alt="{E(t["hero_alt"])}" width="900" height="996" fetchpriority="high" decoding="async">
@@ -469,7 +501,6 @@ def page(k):
     <p class="pl-label t-label t-accent">{E(t["proof_label"])}</p>
     <h2 class="pl-h2 pl-reveal" id="proof-title">{t["proof_h2"]}</h2>
     <p class="pl-intro">{E(t["proof_intro"])}</p>
-    <p class="pl-stat"><span class="pl-stat__n">{E(t["stat100"])}</span><span class="pl-stat__t">{E(t["stat100_t"])}</span></p>
     <ul class="pl-names" role="list">
 {clients}
     </ul>{testimonials(k, t)}
@@ -484,6 +515,15 @@ def page(k):
 {path}
     </ol>
     <p class="pl-close pl-reveal">{E(t["prob_close"])}</p>
+    <h3 class="pl-cmp__h">{E(t["cmp_h3"])}</h3>
+    <div class="pl-cmp pl-reveal" role="region" aria-label="{E(t["cmp_h3"])}" tabindex="0">
+      <table>
+        <thead><tr><th scope="col"><span class="visually-hidden">{E(t["cmp_h3"])}</span></th><th scope="col">{E(t["cmp_cols"][1])}</th><th scope="col">{E(t["cmp_cols"][2])}</th></tr></thead>
+        <tbody>
+{cmp_rows}
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -609,6 +649,7 @@ def page(k):
 <footer class="pl-foot" data-surface="ink">
   <div class="wrap pl-foot__in">
     <p>{E(t["foot"])}</p>
+    <p class="pl-foot__disc">{E(t["disclaimer"])}</p>
     <p><a href="{t["privacy_href"]}">{E(t["privacy"])}</a> · <a href="{t["terms_href"]}">{E(t["terms"])}</a></p>
   </div>
 </footer>
