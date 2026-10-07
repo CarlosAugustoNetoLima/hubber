@@ -218,3 +218,11 @@
 
 /* Aviso de resultados */
 .pl-foot__disc { flex-basis: 100%; order: 3; max-width: 80ch; font-size: .8125rem; }
+
+/* Três pontos da captação */
+.pl-work__points { list-style: none; margin: clamp(40px, 5vw, 64px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); }
+.pl-work__points li { border-top: 2px solid var(--c-magenta); padding-top: var(--s16); }
+.pl-work__n { color: var(--c-magenta); }
+.pl-work__points h3 { margin: var(--s8) 0 0; font-family: var(--font-display); font-weight: var(--fw-regular); font-size: clamp(1.25rem, 1.9vw, 1.7rem); line-height: 1.1; }
+.pl-work__points p { margin: var(--s8) 0 0; color: var(--fg-muted); line-height: 1.55; }
+@media (max-width: 760px) { .pl-work__points { grid-template-columns: 1fr; } }

@@ -89,8 +89,12 @@ C = {
   country='Brazil',
   stat100='100+', stat100_t='plastic surgeons have worked with Hubber in Brazil',
   work_label='Content we produce',
-  work_h2='We film on site, <mark class="hl">at the practice.</mark>',
-  work_intro='A few pieces Hubber filmed and edited for plastic surgeons in Brazil, in Portuguese. Some contain surgical footage, so nothing plays until you click.',
+  work_h2='We don’t just film. <mark class="hl">We arrive with what already works.</mark>',
+  work_intro='After working with more than 100 plastic surgeons, we know which content brings a patient closer to booking and which only collects views. So we skip the guesswork: everything is planned before we arrive, and one shoot day at your practice becomes dozens of pieces of content.',
+  work_points=[('The recipe', 'Formats and topics already proven with plastic surgeons, and the ones we know to avoid.'),
+               ('Ready before we arrive', 'Scripts, shot list and schedule approved with you ahead of the shoot.'),
+               ('One day, dozens of pieces', 'A single shoot day at your practice, edited into content for weeks.')],
+  work_note='A few pieces filmed for surgeons in Brazil, in Portuguese. Some contain surgical footage, so nothing plays until you click.',
   work_play='Play',
   testi_h3='In their words',
   testi_note='Original in Portuguese, with English subtitles.',
@@ -214,8 +218,12 @@ C = {
   country='Brasil',
   stat100='100+', stat100_t='cirurgiões plásticos já trabalharam com a Hubber no Brasil',
   work_label='Conteúdo que produzimos',
-  work_h2='Gravamos presencialmente, <mark class="hl">na clínica.</mark>',
-  work_intro='Algumas peças que a Hubber gravou e editou para cirurgiões plásticos no Brasil. Algumas contêm imagens de cirurgia, por isso nada toca até você clicar.',
+  work_h2='Não só gravamos. <mark class="hl">Chegamos com o que já funciona.</mark>',
+  work_intro='Depois de trabalhar com mais de 100 cirurgiões plásticos, sabemos qual conteúdo aproxima o paciente da consulta e qual só junta visualização. Por isso não tem achismo: tudo é planejado antes de chegarmos, e um dia de gravação na sua clínica vira dezenas de conteúdos.',
+  work_points=[('A receita', 'Formatos e temas que já funcionam com cirurgiões plásticos, e os que sabemos evitar.'),
+               ('Tudo pronto antes de chegar', 'Roteiros, lista de cenas e cronograma aprovados com você antes da gravação.'),
+               ('Um dia, dezenas de conteúdos', 'Uma única diária na sua clínica, editada em conteúdo para semanas.')],
+  work_note='Algumas peças gravadas para cirurgiões no Brasil, em português. Algumas contêm imagens de cirurgia, por isso nada toca até você clicar.',
   work_play='Assistir',
   testi_h3='Nas palavras deles',
   testi_note='Original em português.',
@@ -377,6 +385,7 @@ def page(k):
         f'      <li><span class="pl-path__n">{i:02d}</span><span class="pl-path__stage">{E(a)}</span><p class="pl-path__text">{E(b)}</p></li>'
         for i, (a, b) in enumerate(t['journey'], 1))
     scope = '\n'.join(f'        <li class="pl-reveal"><span class="pl-stage pl-mono">{E(t["stages"][SCOPE_STAGES[i]])}</span><h3>{E(a)}</h3><p>{E(b)}</p></li>' for i, (a, b) in enumerate(t['scope']))
+    work_points = '\n'.join(f'      <li class="pl-reveal"><span class="pl-work__n pl-mono">{i:02d}</span><h3>{E(a)}</h3><p>{E(b)}</p></li>' for i, (a, b) in enumerate(t['work_points'], 1))
     proofrow = '\n'.join(f'        <li><span class="pl-proofrow__n">{E(n)}</span><span class="pl-proofrow__t">{E(x)}</span></li>' for n, x in t['proofrow'])
     cmp_rows = '\n'.join(f'        <tr><th scope="row">{E(a)}</th><td>{E(b)}</td><td>{E(c)}</td></tr>' for a, b, c in t['cmp'])
     us = '\n'.join(f'          <li>{E(x)}</li>' for x in t['us'])
@@ -548,6 +557,10 @@ def page(k):
     <p class="pl-label t-label t-accent">{E(t["work_label"])}</p>
     <h2 class="pl-h2 pl-reveal" id="work-title">{t["work_h2"]}</h2>
     <p class="pl-intro">{E(t["work_intro"])}</p>
+    <ol class="pl-work__points" role="list">
+{work_points}
+    </ol>
+    <p class="pl-fine">{E(t["work_note"])}</p>
     <div class="pl-work">
 {work_items(k, t)}
     </div>
