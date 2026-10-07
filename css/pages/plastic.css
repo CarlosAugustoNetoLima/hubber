@@ -114,7 +114,7 @@
 .pl-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 96px); margin-top: clamp(48px, 6vw, 88px); }
 .pl-split h3 { margin: 0 0 var(--s16); padding-bottom: var(--s16); border-bottom: 1px solid currentColor; font-family: var(--font-mono); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
 .pl-split ul { list-style: none; margin: 0; padding: 0; }
-.pl-split li { padding: var(--s12) 0; border-bottom: 1px solid var(--c-rule-ink); line-height: 1.5; }
+.pl-split li { padding: var(--s12) 0; border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent); line-height: 1.5; }
 .pl-split__us h3 { color: var(--c-magenta); border-bottom-color: var(--c-magenta); }
 @media (max-width: 760px) { .pl-split { grid-template-columns: 1fr; } }
 
@@ -135,11 +135,20 @@
 .pl-mosaic img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-media); }
 .pl-mosaic figure:first-child img { aspect-ratio: 16 / 11; object-position: 50% 40%; }
 .pl-mosaic figure:not(:first-child) img { aspect-ratio: 4 / 3; }
-.pl-mosaic figcaption { margin-top: var(--s8); color: var(--c-muted-on-ink); }
+.pl-mosaic figcaption { margin-top: var(--s8); color: var(--fg-muted); }
 .pl-stat { margin: clamp(32px, 4vw, 56px) 0 0; display: flex; align-items: baseline; gap: var(--s16); flex-wrap: wrap; }
 .pl-stat__n { font-family: var(--font-display); font-size: clamp(3.5rem, 7vw, 6rem); line-height: .9; color: var(--c-magenta); }
-.pl-stat__t { max-width: 22ch; color: var(--c-muted-on-ink); }
+.pl-stat__t { max-width: 24ch; color: var(--fg-muted); }
 @media (max-width: 900px) { .pl-founder { grid-template-columns: 1fr; } }
+
+/* Conteúdo que produzimos: 4 vídeos verticais, só tocam no clique */
+.pl-work { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); margin-top: clamp(40px, 5vw, 72px); }
+.pl-work__player { aspect-ratio: 9 / 16; }
+.pl-work__player .pl-testi__play { left: var(--s16); bottom: var(--s16); }
+.pl-work__player .pl-testi__play i { width: 44px; height: 44px; }
+.pl-work__warn { position: absolute; z-index: 1; top: var(--s12); left: var(--s12); right: var(--s12); padding: 6px 8px; background: rgba(0,0,0,.6); color: #fff; font-size: .62rem; line-height: 1.35; text-align: left; border-radius: 2px; }
+.pl-work figcaption { margin-top: var(--s12); color: var(--fg-muted); }
+@media (max-width: 900px) { .pl-work { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* FAQ: reaproveita .faq do site; só o espaçamento */
 .pl .faq { margin-top: clamp(40px, 5vw, 72px); }

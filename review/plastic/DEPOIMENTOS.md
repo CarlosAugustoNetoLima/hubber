@@ -10,10 +10,10 @@ Identificados pelo conteúdo (áudio transcrito + quadros), não pelo nome do ar
 |---|---|---|
 | `nicolasjpalma_1743022800_…mp4` (70s) | **Depoimento A**: Dr. Luiz Cruz, gravado com Nicolas no evento Experts Club | Sim, versão recortada (53,7s) |
 | `nicolasjpalma_1743109832_…mp4` (121s) | **Depoimento B**: Dr. Ícaro Samuel e Dr. Rafael Sabino (cirurgiões plásticos), com Nicolas | Sim, versão recortada (110,3s) |
-| `TOPO03.mp4` | Conteúdo clínico: sequência de cirurgias de paciente pós-bariátrica, com imagens corporais | **Não** (paciente identificável, procedimento) |
-| `FUNDO03.mp4` | Anúncio de lipo HD da clínica do Dr. Ícaro Samuel, com cenas de cirurgia | **Não** |
-| `TOPO02.mp4` | Conteúdo clínico: técnica de prótese em 15 minutos, centro cirúrgico | **Não** |
-| `Icaro samuel.mp4` | Cenas de cirurgia e "antes" com nudez parcial | **Não** |
+| `TOPO03.mp4` | Conteúdo clínico: sequência de cirurgias de paciente pós-bariátrica, com imagens corporais | Sim, desde 07/out, na seção "Content we produce" (autorizado pelo Nicolas), com capa desfocada e aviso |
+| `FUNDO03.mp4` | Anúncio de lipo HD da clínica do Dr. Ícaro Samuel, com cenas de cirurgia | Sim, desde 07/out, com aviso |
+| `TOPO02.mp4` | Conteúdo clínico: técnica de prótese em 15 minutos, centro cirúrgico | Sim, desde 07/out, com aviso de nudez parcial |
+| `Icaro samuel.mp4` | Cenas de cirurgia e "antes" com nudez parcial | Sim, desde 07/out, com capa desfocada e aviso |
 
 Os arquivos originais não foram alterados. As versões web estão em `assets/video/plastic/`.
 
@@ -80,3 +80,16 @@ Riscos técnicos:
 4. Revise quadro a quadro: boca do falante certo, nomes ("MedGrowth", "Ícaro", "Rafael") pronunciados corretamente, nenhuma frase acrescentada.
 5. Coloque o selo "English AI dub of the original Portuguese testimonial." na página e no próprio vídeo.
 6. Só publique depois da sua revisão. O arquivo original permanece guardado.
+
+## Atualização 07/out
+
+Nicolas autorizou os 4 vídeos clínicos ("pode usar esses, fazemos captação presencial também"). Eles ficam na seção "Content we produce" com estas proteções:
+- capa sem nudez ou desfocada;
+- aviso de conteúdo cirúrgico ou nudez parcial;
+- vídeo só toca no clique.
+
+**Riscos que continuam:**
+- A Meta revisa a página de destino e pode reprovar anúncios por nudez ou imagens de cirurgia. Vale testar com um anúncio antes de escalar.
+- O uso pressupõe autorização das pacientes para material da Hubber.
+
+Incluído também, a pedido dele: "100+ plastic surgeons have worked with Hubber in Brazil".

@@ -45,6 +45,18 @@ CLIENTS = [
     ('Human Clinic', '', '', 'humanclinicbr'),
 ]
 
+WORK = [
+    # (arquivo, legenda EN, PT, aviso EN, PT) — vídeos originais em português, produzidos pela Hubber.
+    ('work-ad-creative', 'Ad creative: the surgeon on camera', 'Criativo de anúncio: o cirurgião na câmera',
+     'Contains surgical footage', 'Contém imagens de cirurgia'),
+    ('work-or-technique', 'In the operating room: a technique, explained', 'No centro cirúrgico: uma técnica, explicada',
+     'Contains surgical footage and partial nudity', 'Contém imagens de cirurgia e nudez parcial'),
+    ('work-patient-journey', 'A patient’s journey, narrated by the surgeon', 'A jornada de uma paciente, narrada pelo cirurgião',
+     'Contains surgical footage and body images', 'Contém imagens de cirurgia e do corpo da paciente'),
+    ('work-procedure', 'Procedure and results content', 'Conteúdo de procedimento e resultado',
+     'Contains surgical footage and partial nudity', 'Contém imagens de cirurgia e nudez parcial'),
+]
+
 C = {
  'en': dict(
   lang='en-US', path='/plastic/', other='/plastic/pt/',
@@ -63,6 +75,11 @@ C = {
   proof_h2='We already do this work for plastic surgeons, <mark class="hl">in Brazil.</mark>',
   proof_intro='These practices are Hubber clients. Their reputation, audience and clinical results are their own work; we are part of the team behind the marketing. In the U.S. we apply that experience with adaptation: a different market, different patients and different rules.',
   country='Brazil',
+  stat100='100+', stat100_t='plastic surgeons have worked with Hubber in Brazil',
+  work_label='Content we produce',
+  work_h2='We film on site, <mark class="hl">at the practice.</mark>',
+  work_intro='A few pieces Hubber filmed and edited for plastic surgeons in Brazil, in Portuguese. Some contain surgical footage, so nothing plays until you click.',
+  work_play='Play',
   testi_h3='In their words',
   testi_note='Original in Portuguese, with English subtitles.',
   testi_play='Play testimonial',
@@ -84,7 +101,7 @@ C = {
   scope_intro='Included according to the scope we agree on with your practice.',
   scope=[
    ('Paid media strategy and management', 'Meta and Google campaigns built around your procedures, your market and the patients you want to attract.'),
-   ('Content planning and production', 'Content that shows your expertise and your practice, planned with you and produced within the agreed scope.'),
+   ('Content planning and production', 'Content that shows your expertise and your practice, including on-site filming at the practice, planned with you and produced within the agreed scope.'),
    ('Website and landing pages', 'Pages that answer what patients ask before they reach out, and make the next step obvious.'),
    ('Lead source tracking', 'You see where each lead came from and how it moved forward, so budget decisions rest on data.'),
    ('Pipeline and first follow-up', 'A clear pipeline, alerts for new leads, scheduling and basic follow-up, so no inquiry sits unanswered.'),
@@ -171,6 +188,11 @@ C = {
   proof_h2='Já fazemos esse trabalho para cirurgiões plásticos, <mark class="hl">no Brasil.</mark>',
   proof_intro='Estas clínicas são clientes da Hubber. A reputação, a audiência e os resultados clínicos são trabalho delas; nós fazemos parte do time por trás do marketing. Nos EUA, aplicamos essa experiência com adaptação: outro mercado, outros pacientes e outras regras.',
   country='Brasil',
+  stat100='100+', stat100_t='cirurgiões plásticos já trabalharam com a Hubber no Brasil',
+  work_label='Conteúdo que produzimos',
+  work_h2='Gravamos presencialmente, <mark class="hl">na clínica.</mark>',
+  work_intro='Algumas peças que a Hubber gravou e editou para cirurgiões plásticos no Brasil. Algumas contêm imagens de cirurgia, por isso nada toca até você clicar.',
+  work_play='Assistir',
   testi_h3='Nas palavras deles',
   testi_note='Original em português.',
   testi_play='Assistir ao depoimento',
@@ -192,7 +214,7 @@ C = {
   scope_intro='Incluído conforme o escopo que combinamos com a sua clínica.',
   scope=[
    ('Estratégia e gestão de mídia paga', 'Campanhas no Meta e no Google pensadas para os seus procedimentos, o seu mercado e os pacientes que você quer atrair.'),
-   ('Planejamento e produção de conteúdo', 'Conteúdo que mostra a sua expertise e a sua clínica, planejado com você e produzido dentro do escopo combinado.'),
+   ('Planejamento e produção de conteúdo', 'Conteúdo que mostra a sua expertise e a sua clínica, com captação presencial na clínica, planejado com você e produzido dentro do escopo combinado.'),
    ('Site e landing pages', 'Páginas que respondem o que o paciente pergunta antes de entrar em contato e deixam o próximo passo óbvio.'),
    ('Mensuração da origem dos leads', 'Você vê de onde veio cada lead e como ele avançou, e as decisões de verba passam a se apoiar em dados.'),
    ('Pipeline e primeiro acompanhamento', 'Um pipeline claro, aviso de novos leads, agendamento e follow-up básico, para nenhum contato ficar sem resposta.'),
@@ -297,6 +319,21 @@ def testimonials(k, t):
     <div class="pl-testis" style="margin-top:var(--s24)">
 {chr(10).join(out)}
     </div>'''
+
+
+def work_items(k, t):
+    out = []
+    for vid, cen, cpt, wen, wpt in WORK:
+        cap, warn = (cen, wen) if k == 'en' else (cpt, wpt)
+        out.append(f'''      <figure class="pl-work__item pl-reveal">
+        <button class="pl-testi__player pl-work__player" type="button" data-video="{VID}/{vid}.mp4" data-playing-label="{E(cap)}"
+          style="background-image:url('{VID}/{vid}-poster.webp')" aria-label="{E(t["work_play"])}: {E(cap)}. {E(warn)}.">
+          <span class="pl-work__warn pl-mono">{E(warn)}</span>
+          <span class="pl-testi__play"><i aria-hidden="true"></i>{E(t["work_play"])}</span>
+        </button>
+        <figcaption class="t-small">{E(cap)}</figcaption>
+      </figure>''')
+    return '\n'.join(out)
 
 
 def page(k):
@@ -432,6 +469,7 @@ def page(k):
     <p class="pl-label t-label t-accent">{E(t["proof_label"])}</p>
     <h2 class="pl-h2 pl-reveal" id="proof-title">{t["proof_h2"]}</h2>
     <p class="pl-intro">{E(t["proof_intro"])}</p>
+    <p class="pl-stat"><span class="pl-stat__n">{E(t["stat100"])}</span><span class="pl-stat__t">{E(t["stat100_t"])}</span></p>
     <ul class="pl-names" role="list">
 {clients}
     </ul>{testimonials(k, t)}
@@ -465,7 +503,18 @@ def page(k):
   </div>
 </section>
 
-<section class="pl-sec" data-surface="ink" aria-labelledby="split-title">
+<section class="pl-sec" data-surface="ink" aria-labelledby="work-title">
+  <div class="wrap">
+    <p class="pl-label t-label t-accent">{E(t["work_label"])}</p>
+    <h2 class="pl-h2 pl-reveal" id="work-title">{t["work_h2"]}</h2>
+    <p class="pl-intro">{E(t["work_intro"])}</p>
+    <div class="pl-work">
+{work_items(k, t)}
+    </div>
+  </div>
+</section>
+
+<section class="pl-sec" data-surface="light" aria-labelledby="split-title">
   <div class="wrap">
     <p class="pl-label t-label t-accent">{E(t["split_label"])}</p>
     <h2 class="pl-h2 pl-reveal" id="split-title">{t["split_h2"]}</h2>
@@ -487,7 +536,7 @@ def page(k):
   </div>
 </section>
 
-<section class="pl-sec" data-surface="light" aria-labelledby="steps-title">
+<section class="pl-sec" data-surface="ink" aria-labelledby="steps-title">
   <div class="wrap">
     <p class="pl-label t-label t-accent">{E(t["steps_label"])}</p>
     <h2 class="pl-h2 pl-reveal" id="steps-title">{t["steps_h2"]}</h2>
@@ -498,7 +547,7 @@ def page(k):
   </div>
 </section>
 
-<section class="pl-sec" data-surface="ink" aria-labelledby="nic-title">
+<section class="pl-sec" data-surface="light" aria-labelledby="nic-title">
   <div class="wrap pl-founder">
     <div class="pl-mosaic">
 {photos}
@@ -512,7 +561,7 @@ def page(k):
   </div>
 </section>
 
-<section class="pl-sec" data-surface="light" aria-labelledby="faq-title">
+<section class="pl-sec" data-surface="ink" aria-labelledby="faq-title">
   <div class="wrap">
     <p class="pl-label t-label t-accent">{E(t["faq_label"])}</p>
     <h2 class="pl-h2" id="faq-title">{E(t["faq_h2"])}</h2>
