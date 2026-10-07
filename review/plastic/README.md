@@ -1,6 +1,6 @@
 # LP /plastic/: revisão de conversão (07/out)
 
-**Status:** versão de revisão, só local. **Não publicada.** Nenhum anúncio, orçamento ou público da Meta foi criado ou alterado. Nenhuma mensagem enviada a prospects, nenhum evento de agenda criado.
+**Status:** PUBLICADA em 07/out (commit 726be6d). E2E em produção: card HSD-58 com as 2 etiquetas, responsável Nicolas e próxima ação. Nenhum anúncio, orçamento ou público da Meta foi criado ou alterado. Nenhuma mensagem enviada a prospects, nenhum evento de agenda criado.
 
 - **Branch:** `claude/plastic-publish`, no worktree `~/projetos-web/hubber-site-plastic`. Commit local, sem push (push na `main` = deploy).
 - **Prévia:** `node tools/dev-plastic.mjs` → http://127.0.0.1:4329/plastic/ e `/plastic/pt/`. O CRM é simulado: o card que seria criado aparece no terminal.
