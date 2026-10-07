@@ -115,7 +115,7 @@
 .pl-split h3 { margin: 0 0 var(--s16); padding-bottom: var(--s16); border-bottom: 1px solid currentColor; font-family: var(--font-mono); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
 .pl-split ul { list-style: none; margin: 0; padding: 0; }
 .pl-split li { padding: var(--s12) 0; border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent); line-height: 1.5; }
-.pl-split__us h3 { color: var(--c-magenta); border-bottom-color: var(--c-magenta); }
+.pl-split__us h3 { color: var(--c-ink); font-weight: 700; border-bottom: 2px solid var(--c-magenta); }
 @media (max-width: 760px) { .pl-split { grid-template-columns: 1fr; } }
 
 /* Como começamos */
@@ -244,7 +244,7 @@
 .pl-chips[aria-invalid="true"] .pl-chip span { border-color: var(--c-error); }
 .pl-form .pl-check { margin-top: var(--s16); }
 .pl-form .pl-field input { min-height: 52px; font-size: 1.05rem; }
-.pl-form .pl-form__submit { background: var(--c-magenta); color: #fff; border-color: var(--c-magenta); min-height: 56px; font-size: 1rem; }
+.pl-form .pl-form__submit { background: var(--c-magenta); color: var(--c-ink); border-color: var(--c-magenta); min-height: 56px; font-size: 1rem; }
 .pl-form .pl-form__submit:hover { background: var(--c-ink); border-color: var(--c-ink); color: #fff; }
 .pl-form .pl-form__submit:disabled { opacity: .7; cursor: default; }
 @media (max-width: 560px) {
@@ -254,3 +254,60 @@
   .pl-chip span { min-height: 40px; padding: 8px 12px; font-size: .82rem; }
   .pl-fields { gap: 12px; }
 }
+
+/* Tabela: coluna Hubber em destaque, com o logo */
+.pl-cmp table { border-collapse: separate; border-spacing: 0; }
+.pl-cmp .pl-cmp__us { padding-left: var(--s24); padding-right: var(--s24); background: rgba(255, 0, 158, .09); border-left: 2px solid var(--c-magenta); border-right: 2px solid var(--c-magenta); border-bottom-color: rgba(255, 0, 158, .28); }
+.pl-cmp thead th.pl-cmp__us { background: var(--c-magenta); border-bottom-color: var(--c-magenta); border-radius: 14px 14px 0 0; padding-top: var(--s16); padding-bottom: var(--s16); vertical-align: middle; }
+.pl-cmp tbody tr:last-child .pl-cmp__us { border-bottom: 2px solid var(--c-magenta); border-radius: 0 0 14px 14px; }
+.pl-cmp tbody td.pl-cmp__us { color: #fff; font-weight: 500; }
+.pl-cmp__logo { display: inline-flex; }
+.pl-cmp__logo svg { display: block; height: 22px; width: auto; color: #fff; }
+.pl-cmp tbody td:not(.pl-cmp__us) { opacity: .78; }
+@media (max-width: 700px) {
+  .pl-cmp { overflow: visible; }
+  .pl-cmp table { min-width: 0; }
+  .pl-cmp thead th:first-child, .pl-cmp thead th:nth-child(2) { display: none; }
+  .pl-cmp thead tr { display: block; }
+  .pl-cmp thead th.pl-cmp__us { display: flex; justify-content: center; border-radius: 14px; }
+  .pl-cmp tbody, .pl-cmp tbody tr, .pl-cmp tbody th, .pl-cmp tbody td { display: block; width: auto; }
+  .pl-cmp tbody tr { padding: var(--s16) 0; border-bottom: 1px solid var(--c-rule-ink); }
+  .pl-cmp tbody th, .pl-cmp tbody td { padding: 0; border: 0; }
+  .pl-cmp tbody th { margin-bottom: var(--s8); }
+  .pl-cmp tbody td::before { content: attr(data-label); display: block; font-family: var(--font-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: 2px; }
+  .pl-cmp tbody td + td { margin-top: var(--s8); }
+  .pl-cmp .pl-cmp__us, .pl-cmp tbody tr:last-child .pl-cmp__us { padding: 10px 14px; border: 0; border-left: 3px solid var(--c-magenta); border-radius: 0 10px 10px 0; }
+  .pl-cmp tbody td.pl-cmp__us::before { color: var(--c-magenta); }
+}
+
+/* Depoimento em destaque, logo abaixo do hero */
+.pl-feat { padding: clamp(40px, 5vw, 72px) 0; border-top: 1px solid var(--c-rule-ink); }
+.pl-feat__in { max-width: 1040px; }
+.pl-feat__label { margin: 0 0 var(--s16); }
+.pl-feat__q { margin: 0; padding-left: clamp(16px, 2vw, 28px); border-left: 3px solid var(--c-magenta); }
+.pl-feat__q p { margin: 0; font-family: var(--font-display); font-weight: var(--fw-regular); font-size: clamp(1.35rem, 3vw, 2.4rem); line-height: 1.18; color: #fff; }
+.pl-feat__who { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: var(--s16) 0 0; padding-left: clamp(19px, calc(2vw + 3px), 31px); }
+.pl-feat__who strong { font-weight: 500; }
+.pl-feat__who span { font-size: .72rem; color: var(--fg-muted); letter-spacing: .06em; text-transform: uppercase; }
+.pl-feat__note { margin: var(--s8) 0 0; padding-left: clamp(19px, calc(2vw + 3px), 31px); font-size: .72rem; color: var(--fg-muted); }
+.pl-feat__note a { color: #fff; }
+.pl-testi__intro { margin-top: var(--s12); }
+
+/* 5 etapas: serviços de cada uma */
+.pl-rows__svc { margin: 6px 0 0 !important; font-size: .74rem; letter-spacing: .04em; color: var(--accent-alt) !important; }
+
+/* Formulário: detalhes opcionais e "o que acontece depois" */
+.pl-form .pl-field select { min-height: 52px; font-size: 1.05rem; }
+.pl-more { margin-top: var(--s16); border: 1px solid #D6D6D6; border-radius: 12px; }
+.pl-more summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-height: 48px; padding: 13px 44px 13px 16px; cursor: pointer; list-style: none; position: relative; font-size: .9375rem; font-weight: 500; }
+.pl-more summary::-webkit-details-marker { display: none; }
+.pl-more summary::after { content: "+"; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 1.3rem; line-height: 1; color: var(--c-magenta); }
+.pl-more[open] summary::after { content: "–"; }
+.pl-more summary:focus-visible { outline: var(--focus-w) solid var(--c-blue); outline-offset: 2px; border-radius: 12px; }
+.pl-more__hint { font-size: .8rem; font-weight: 400; color: var(--c-muted-on-white); }
+.pl-more__body { padding: 0 16px 16px; display: grid; gap: var(--s16); }
+.pl-more .pl-chips { margin: 0; }
+.pl-next { margin-top: var(--s16); padding: 14px 16px; background: var(--c-white-raised); border-radius: 10px; font-size: .85rem; line-height: 1.5; }
+.pl-next__h { margin: 0; font-weight: 600; }
+.pl-next ul { margin: 6px 0 0; padding-left: 1.1em; }
+.pl-next li + li { margin-top: 2px; }

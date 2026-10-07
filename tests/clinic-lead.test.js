@@ -84,24 +84,30 @@ test('Validation: required fields, closed lists, email, consent', () => {
   const r = validateClinicLead({ nome: '', email: 'not-an-email', funcao: 'ceo', objetivo: 'consultations', idioma: 'en' });
   assert.ok(r.missing.includes('nome'));
   assert.ok(r.missing.includes('clinica'));
-  assert.ok(!r.missing.includes('local')); // cidade/estado é opcional no formulário curto
-  assert.ok(r.missing.includes('objetivo') === false); // veio preenchido
+  assert.ok(r.missing.includes('local'));
   assert.ok(r.missing.includes('consentimento'));
   assert.ok(r.invalid.includes('email'));
   assert.ok(r.invalid.includes('funcao'));
 });
 
-test('Short form: only name, practice, email, goal and consent are required', () => {
-  const r = validateClinicLead({ nome: 'Jane', clinica: '@exampleclinic', email: 'jane@clinic.com', objetivo: 'authority', consentimento: 'sim', idioma: 'en-US' });
-  assert.deepEqual(r.missing, []);
-  assert.deepEqual(r.invalid, []);
-  const card = buildClinicCard(r.data);
-  assert.equal(card.desc.includes('Função'), false);
-  assert.equal(card.desc.includes('Cidade/estado'), false);
+test('Required: name, email, practice, city/state, role and consent; goals optional', () => {
+  const ok = validateClinicLead({ nome: 'Jane', email: 'jane@clinic.com', clinica: 'Example Surgery', local: 'Miami, FL',
+    funcao: 'practice-manager', consentimento: 'sim', idioma: 'en-US' });
+  assert.deepEqual(ok.missing, []);
+  assert.deepEqual(ok.invalid, []);
+  const r = validateClinicLead({ nome: 'Jane', email: 'jane@clinic.com', clinica: 'X', consentimento: 'sim' });
+  assert.ok(r.missing.includes('local'));
+  assert.ok(r.missing.includes('funcao'));
+  assert.equal(r.missing.includes('objetivo'), false);
 });
 
-test('Goal is required in the short form', () => {
-  assert.ok(validateClinicLead({ nome: 'Jane', clinica: 'X', email: 'jane@clinic.com', consentimento: 'sim' }).missing.includes('objetivo'));
+test('Goals: multiple choices accepted (array or comma list), unknown values rejected', () => {
+  const base = { nome: 'Jane', email: 'jane@clinic.com', clinica: 'X', local: 'Miami, FL', funcao: 'other', consentimento: 'sim' };
+  assert.deepEqual(validateClinicLead({ ...base, objetivo: ['ads', 'website', 'ads'] }).data.objetivo, ['ads', 'website']);
+  assert.deepEqual(validateClinicLead({ ...base, objetivo: 'ads,tracking' }).data.objetivo, ['ads', 'tracking']);
+  assert.ok(validateClinicLead({ ...base, objetivo: ['ads', 'free-money'] }).invalid.includes('objetivo'));
+  const card = buildClinicCard(validateClinicLead({ ...base, objetivo: ['ads', 'website'] }).data);
+  assert.match(card.desc, /Objetivos: Anúncios que trazem o paciente certo, Site e landing pages que convertem/);
 });
 
 test('Phone is optional but must look like a phone when present', () => {
@@ -143,7 +149,8 @@ test('Card goes to the shared diagnostic board with the Agency label and the Nic
   const card = buildClinicCard(data);
   assert.equal(card.board, CRM.BOARD_ID);
   assert.equal(card.column, CRM.COLUMN_ID);
-  assert.deepEqual(card.labels, [CRM.LABEL_POR_ROTA.agencia]);
+  assert.deepEqual(card.labels, [CRM.LABEL_POR_ROTA.agencia, '6ac5abde7217c6d8ae9810ff']); // Agência + HUBBER ADS — AGENCY
+  assert.match(card.desc, /Próxima ação: Nicolas responde por e-mail/);
   assert.deepEqual(card.assignedUsers, [CRM.RESPONSAVEL]);
   assert.equal(card.title, 'Example Aesthetic Surgery');
   assert.match(card.desc, /Reunião NÃO agendada/);

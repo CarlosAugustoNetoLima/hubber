@@ -25,13 +25,16 @@ import {
 import { validateCampaign } from '../js/campaign-context.js';
 
 const productionQueue = async () => import('./_fila.js');
+/* Etiqueta da operação de anúncios no projeto "Hubber Site · Diagnósticos"
+   (criada em 06/10, conferida pela leitura das etiquetas do projeto). */
+const LABEL_ADS_AGENCY = process.env.JSYNQ_LABEL_ADS_AGENCY || '6ac5abde7217c6d8ae9810ff';
 const TIPO_FILA = 'clinica';
 
 /* Listas fechadas: valor fora daqui é recusado, não repassado ao CRM. Os
    rótulos são os que aparecem no card (em PT, que é como a equipe lê). */
 export const ROLES = Object.freeze({
-  'surgeon-owner':    'Cirurgião(ã) e dono(a) da clínica',
-  'practice-owner':   'Dono(a) / sócio(a), não cirurgião',
+  'surgeon-owner':    'Cirurgião(ã) / dono(a) da clínica',
+  'practice-owner':   'Dono(a) ou sócio(a), não cirurgião',
   'practice-manager': 'Gestor(a) da clínica',
   marketing:          'Responsável por marketing',
   other:              'Outra função',
@@ -66,15 +69,19 @@ export function validateClinicLead(body) {
   text('telefone', { max: 40 });
   text('clinica', { required: true, max: 160 });
   text('site', { max: 300 });
-  text('local', { max: 120 });
+  text('local', { required: true, max: 120 });
   text('detalhe', { max: 1000 });
-  // Objetivo é obrigatório (um toque na página); função é opcional.
-  for (const [name, list, required] of [['funcao', ROLES, false], ['objetivo', GOALS, true]]) {
-    const raw = typeof body[name] === 'string' ? body[name].trim() : '';
-    if (!raw) { if (required) missing.push(name); }
-    else if (!(raw in list)) invalid.push(name);
-    else out[name] = raw;
-  }
+  // Função é obrigatória; objetivos são opcionais e podem ser vários (lista
+  // fechada, até 6). Aceita array (JSON) ou valores separados por vírgula.
+  const funcao = typeof body.funcao === 'string' ? body.funcao.trim() : '';
+  if (!funcao) missing.push('funcao');
+  else if (!(funcao in ROLES)) invalid.push('funcao');
+  else out.funcao = funcao;
+  const rawGoals = Array.isArray(body.objetivo) ? body.objetivo
+    : typeof body.objetivo === 'string' ? body.objetivo.split(',') : [];
+  const goals = [...new Set(rawGoals.map((g) => (typeof g === 'string' ? g.trim() : '')).filter(Boolean))];
+  if (goals.length > 6 || goals.some((g) => !(g in GOALS))) invalid.push('objetivo');
+  else if (goals.length) out.objetivo = goals;
   if (body.consentimento !== 'sim') missing.push('consentimento');
   else out.consentimento = 'sim';
 
@@ -110,7 +117,8 @@ export function buildClinicCard(d) {
   if (d.site) push(FIELDS.site, d.site);
   push(FIELDS.setor, 'Cirurgia plástica');
   push(FIELDS.mercado, FIELDS.mercado.options.eua);
-  push(FIELDS.objetivo, d.detalhe ? `${GOALS[d.objetivo]}: ${d.detalhe}` : GOALS[d.objetivo]);
+  const objetivos = (d.objetivo || []).map((g) => GOALS[g]).join(', ');
+  if (objetivos || d.detalhe) push(FIELDS.objetivo, [objetivos, d.detalhe].filter(Boolean).join(': '));
   push(FIELDS.consentimento, FIELDS.consentimento.options.sim);
   push(ROTA_FIELD, 'Agência');
   push(IDIOMA_FIELD, d.idioma);
@@ -125,10 +133,11 @@ export function buildClinicCard(d) {
     d.telefone && `Telefone: ${d.telefone}`,
     d.site && `Site / Instagram: ${d.site}`,
     d.local && `Cidade/estado: ${d.local}`,
-    `Objetivo principal: ${GOALS[d.objetivo]}`,
+    d.objetivo?.length && `Objetivos: ${d.objetivo.map((g) => GOALS[g]).join(', ')}`,
     d.detalhe && `Detalhe: ${d.detalhe}`,
     `Idioma: ${d.idioma} · Origem: ${d.origem}`,
     'Reunião NÃO agendada: a página só confirma o recebimento.',
+    'Próxima ação: Nicolas responde por e-mail para combinar a conversa de 30 min. Agenda não conectada: confirmar horário só depois de checar disponibilidade.',
   ].filter(Boolean);
   const campaign = Object.entries(validateCampaign(d).value);
   if (campaign.length) {
@@ -140,7 +149,7 @@ export function buildClinicCard(d) {
     type: 'task',
     board: CRM.BOARD_ID,
     column: CRM.COLUMN_ID,
-    labels: [CRM.LABEL_POR_ROTA.agencia],
+    labels: [CRM.LABEL_POR_ROTA.agencia, LABEL_ADS_AGENCY],
     assignedUsers: [CRM.RESPONSAVEL],
     desc: linhas.join('\n'),
     customFields,

@@ -64,22 +64,21 @@ C = {
   desc='Hubber Agency connects content, ads, landing pages and lead tracking for plastic surgery practices in the U.S. Talk through your growth plan with Nicolas Palma.',
   og_title='Marketing for plastic surgery practices | Hubber Agency',
   skip='Skip to content', top_cta='Talk to Nicolas', lang_label='Language',
-  eyebrow='Hubber Agency · For plastic surgery practices in the U.S.',
-  h1='Patients research the surgeon <mark class="hl">long before they book</mark> the consultation.',
-  lead='We connect what they find along the way, from your content and ads to your website and the first reply, so the trust you have built shows up at every step and taking the next one feels easy.',
-  cta="Talk through your practice’s growth plan", cta2='See how we work',
-  note='A 30-minute conversation with Nicolas Palma, specific to your practice. No cost.',
-  proofrow=[('100+', 'plastic surgeons worked with in Brazil'), ('300+', 'surgeons have heard Nicolas speak'), ('On site', 'content filmed at the practice')],
+  eyebrow='Marketing for U.S. plastic surgery practices',
+  h1='Make your expertise <mark class="hl">the reason patients reach out.</mark>',
+  lead='We bring your content, ads, website and lead follow-up into one plan, so the right patients understand your practice and find it easy to take the next step.',
+  cta='Talk to Nicolas', cta2='See how it works',
+  note='A 30-minute conversation about your practice. No cost, no obligation.',
+  proofrow=[('100+', 'plastic surgeons worked with in Brazil'), ('300+', 'surgeons have heard Nicolas speak'), ('16', 'content pieces a month included in Hubber Agency')],
   cmp_h3='A generic agency vs. Hubber',
   cmp_cols=('', 'Generic agency', 'Hubber'),
   cmp=[
    ('Who works on your account', 'A generalist team serving every industry', 'A team that has worked with 100+ plastic surgeons in Brazil'),
    ('What gets measured', 'Clicks, followers and reach', 'Where each lead came from and whether it became a consultation'),
-   ('How the pieces connect', 'Ads, content and website from different vendors', 'One team for content, ads, pages and first follow-up'),
+   ('How the pieces connect', 'Ads, content and website from different vendors', 'One team for content, ads, pages and basic follow-up'),
    ('How patients are treated', 'Like any other purchase', 'As a decision built on trust, from first impression to consultation'),
-   ('What is promised', 'Guaranteed results', 'Clear scope, a fixed review cadence and honest numbers'),
+   ('What is promised', 'Big promises, vague scope', 'Clear scope, a fixed review cadence and honest numbers'),
   ],
-  stages={'attract': 'Attract', 'trust': 'Build trust', 'convert': 'Convert', 'all': 'Every stage'},
   disclaimer='Results vary by practice. Nothing on this page is a guarantee of patients, consultations or revenue.',
   hero_alt='Nicolas Palma, founder of Hubber, speaking on stage with a microphone.',
   hero_cap='Nicolas Palma, founder of Hubber.',
@@ -89,14 +88,19 @@ C = {
   country='Brazil',
   stat100='100+', stat100_t='plastic surgeons have worked with Hubber in Brazil',
   work_label='Content we produce',
-  work_h2='We don’t just film. <mark class="hl">We arrive with what already works.</mark>',
-  work_intro='After working with more than 100 plastic surgeons, we know which content brings a patient closer to booking and which only collects views. So we skip the guesswork: everything is planned before we arrive, and one shoot day at your practice becomes dozens of pieces of content.',
-  work_points=[('The recipe', 'Formats and topics already proven with plastic surgeons, and the ones we know to avoid.'),
-               ('Ready before we arrive', 'Scripts, shot list and schedule approved with you ahead of the shoot.'),
-               ('One day, dozens of pieces', 'A single shoot day at your practice, edited into content for weeks.')],
+  work_h2='We don’t just film. <mark class="hl">We arrive knowing what has worked.</mark>',
+  work_intro='After working with more than 100 plastic surgeons, we have a clear sense of which content tends to bring a patient closer to booking and which mostly collects views. So the planning happens before the camera comes out.',
+  work_points=[('Included in Hubber Agency', '16 content pieces a month, planned with you from formats and topics that have worked with plastic surgeons, and the ones we know to avoid. A format is a starting point, not a guarantee of results.'),
+               ('On-site filming, by location and scope', 'Whether we film at your practice depends on where you are and what is in your scope. In Florida it can come as a bonus; elsewhere it is agreed case by case.'),
+               ('A full content day is a separate service', 'Scripts, shot list and schedule approved ahead of time, then one day at your practice edited into dozens of pieces. It is scoped and quoted on its own, apart from the monthly plan.')],
   work_note='A few pieces filmed for surgeons in Brazil, in Portuguese. Some contain surgical footage, so nothing plays until you click.',
   work_play='Play',
   testi_h3='In their words',
+  testi_intro='In these recordings Nicolas introduces the surgeons as clients of his agency, and they call it MedGrowth. Hubber is led by the same founder.',
+  feat_label='From a client',
+  feat_quote='“Because in plastic surgery especially, there’s no point in being the same for everyone; it has to be personalized.”',
+  feat_who='Dr. Ícaro Samuel', feat_role='Plastic surgeon · Brazil · Client',
+  feat_note='Recorded with Nicolas Palma, translated from Portuguese.', feat_link='Watch the testimonial',
   testi_note='Original in Portuguese, with English subtitles.',
   testi_play='Play testimonial',
   testi_playing='Playing testimonial',
@@ -104,26 +108,25 @@ C = {
   testi_orig='Original (Portuguese)', testi_tr='English translation',
   testi_pending='',
   prob_label='The problem',
-  prob_h2='Most practices don’t lose patients to a competitor. <mark class="hl">They lose them along the way.</mark>',
+  prob_h2='Where interest can get lost <mark class="hl">between the ad and the consultation.</mark>',
   journey=[
-   ('Discovery', 'A potential patient sees a reel or an ad. If it looks like everyone else’s, they keep scrolling.'),
+   ('Discovery', 'A potential patient sees a reel or an ad. If it looks like everyone else’s, they may keep scrolling.'),
    ('Trust', 'They check your profile, your results and your reviews. Gaps here cost more than a weak ad.'),
    ('Contact', 'They send a message or fill out a form. If the reply takes a day, they may already be talking to another practice.'),
-   ('Consultation', 'Someone books. Nobody knows which campaign, post or page brought them, so the budget keeps going to guesses.'),
+   ('Consultation', 'Someone books. Nobody knows which campaign, post or page brought them, so budget decisions end up based on guesses.'),
   ],
   prob_close='When content, ads, website and follow-up are run by people who never talk to each other, each one can look fine on its own report while opportunities fall through the gaps.',
   scope_label='What Hubber Agency does',
-  scope_h2='Attract, build trust, convert. <mark class="hl">One team for all three.</mark>',
-  scope_intro='Plastic surgery is a decision built on trust. Our work covers the three stages where it is won or lost, within the scope we agree on with your practice.',
+  scope_h2='What Hubber Agency does, <mark class="hl">step by step.</mark>',
+  scope_intro='Plastic surgery is a decision built on trust. Each step below is part of one plan, within the scope agreed with your practice.',
   scope=[
-   ('Paid media strategy and management', 'Meta and Google campaigns built around your procedures, your market and the patients you want to attract.'),
-   ('Content planning and production', 'Content that shows your expertise and your practice, including on-site filming at the practice, planned with you and produced within the agreed scope.'),
-   ('Website and landing pages', 'Pages that answer what patients ask before they reach out, and make the next step obvious.'),
-   ('Lead source tracking', 'You see where each lead came from and how it moved forward, so budget decisions rest on data.'),
-   ('Pipeline and first follow-up', 'A clear pipeline, alerts for new leads, scheduling and basic follow-up, so no inquiry sits unanswered.'),
-   ('Ongoing reviews and optimization', 'Regular reviews of what is working, and adjustments based on what we learn together.'),
+   ('Help the right patients find you', 'Paid media on Meta and Google', 'Campaigns built around your procedures, your market and the patients you want to attract.'),
+   ('Show your expertise and build trust', 'Content planning and production', '16 content pieces a month are included, planned with you around your procedures and the questions patients ask.'),
+   ('Make it easy to reach out', 'Website and landing pages', 'Pages that answer what patients want to know before they contact you, with a clear next step.'),
+   ('Keep track of every inquiry', 'Lead source tracking, pipeline, new-lead alerts and basic follow-up', 'Your team sees where each inquiry came from and is alerted when it arrives, with a simple pipeline and basic follow-up that help them reply and keep track.'),
+   ('Measure what moved and adjust', 'Reporting and regular reviews', 'We review with you what advanced, from first click to the consultations your team reports, and adjust the plan.'),
   ],
-  scope_fine='Scope is defined per practice and written into the contract. Complex CRM migrations, full conversational AI agents, AI phone calls and custom integrations are scoped separately. We do not promise leads, consultations, revenue or return.',
+  scope_fine='Scope is agreed per practice and written into the contract. Full conversational AI agents, AI phone calls, complex CRM migrations and custom integrations are scoped separately. We are accountable for doing the agreed work, measuring it and reviewing it with you. Patient volume, surgeries and revenue also depend on your market, your offer and how your team handles each conversation, so they are not guaranteed.',
   split_label='Who does what',
   split_h2='We bring the patient to the conversation. <mark class="hl">Your team leads it from there.</mark>',
   us_h='Hubber', us=[
@@ -162,26 +165,31 @@ C = {
           ('stage-group', 'Nicolas Palma on stage with two other speakers, audience behind them.', 'After a talk.')],
   faq_label='Questions', faq_h2='Before you reach out.',
   faq=[
-   ('Do you guarantee patients or revenue?', 'No. We are responsible for the marketing structure and its execution: campaigns, content, pages, tracking and first follow-up. Results depend on many factors, including your market, your offer and how your team handles each conversation. We commit to the work, the cadence and being transparent about what the numbers show.'),
+   ('Do you guarantee patients or revenue?', 'No. Patient volume, surgeries and revenue are not guaranteed, because they also depend on your market, your offer and how your team handles each conversation. What we are accountable for is the agreed scope: campaigns, content, pages, tracking and basic follow-up, done on schedule, measured and reviewed with you.'),
    ('Your clients are in Brazil. Why the U.S.?', 'Our experience comes from working with plastic surgeons in Brazil. In the U.S. we apply it with adaptation to a different market, platforms, competition and rules. We do not promise to replicate any Brazilian result.'),
-   ('Who will work on our account?', 'A dedicated Hubber team, with Nicolas involved in the strategy. Our team is based in Brazil and works in U.S. time zones.'),
-   ('What happens after I send the form?', 'We confirm we received it and reply by email to find a time. The call takes about 30 minutes: we look at your current presence, understand your goals and point out the priorities we see. It is not a full marketing plan, and there is no obligation.'),
-   ('Do you need patient data?', 'No. Marketing does not require patient medical information, and this form only asks for business contact details.'),
+   ('Who will work on our account?', 'Nicolas leads Hubber’s work with practices in the U.S. and stays involved in the strategy. The production and campaign team is Brazilian and works remotely, in your time zone.'),
+   ('What happens after I send the form?', 'You see a confirmation that the request was received. Nicolas then replies by email to find a time for a 30-minute conversation about your marketing: your current presence, your goals and the priorities we see. Sending the form does not book a meeting, and there is no obligation.'),
+   ('Will you add me to a newsletter or send promotional texts?', 'No. We use your details only to reply to this request. A phone number is optional, and adding one does not sign you up for promotional messages.'),
+   ('Do you need patient data?', 'No. Marketing does not require patient medical information, and this form only asks for business contact details. Please do not include patient information in it.'),
   ],
   fin_label='Next step',
-  fin_h2='Talk through your practice’s <mark class="hl">growth plan.</mark>',
-  fin_p='In about 30 minutes we look at how your practice shows up today, understand what you want to achieve and point out the priorities we would tackle first.',
+  fin_h2='Talk to Nicolas <mark class="hl">about your practice.</mark>',
+  fin_p='A 30-minute conversation about your practice’s marketing. We look at how you show up today, understand what you want to achieve and point out the priorities we would tackle first. It is not a medical consultation and not a sales pitch.',
   fin_list=['A look at your current presence: content, ads, website and response', 'Your goals for the next months', 'The priorities we see, and whether Hubber Agency is a fit'],
-  form_h='Request a call with Nicolas',
-  form_sub='Four fields, about 30 seconds.',
-  goal_q='What matters most right now?',
-  f=dict(nome='Your name', email='Work email', telefone='Phone or WhatsApp', clinica='Practice name or Instagram', site='Website or Instagram',
-         local='City and state', funcao='Your role', objetivo='Main goal', detalhe='Anything we should know?',
+  form_h='Request a conversation',
+  form_sub='5 quick fields · about a minute',
+  goal_q='What matters most right now? Choose any.',
+  more='Add a few details', more_hint='Phone, goals, a note. All optional.',
+  next_h='What happens next',
+  next=['Nicolas reads your request and replies by email to find a time.', 'Sending it does not book a meeting.', 'No newsletter, no promotional texts. Please don’t include patient information.'],
+  f=dict(nome='Full name', email='Work email', telefone='Phone', clinica='Practice name', site='Website or Instagram',
+         local='City and state', funcao='Your role', objetivo='Goals', detalhe='Anything we should know?',
          optional='(optional)', choose='Choose one',
          detalhe_ph='Procedures you focus on, current marketing, what is not working. Please do not include patient information.',
-         consent='Hubber may contact me about this request. <a href="/en/privacy/">Privacy</a>',
-         submit='Request a call with Nicolas',
-         after='We reply to find a time. Sending this does not book a meeting yet.'),
+         local_ph='Miami, FL', site_ph='yourpractice.com or @handle',
+         consent='Hubber may contact me by email, or by phone if I add one, about this request only. This is not a newsletter or promotional text sign-up. <a href="/en/privacy/">Privacy</a>',
+         submit='Request a conversation with Nicolas',
+         after='No meeting is booked until we confirm a time with you by email.'),
   roles=[('surgeon-owner', 'Surgeon and practice owner'), ('practice-owner', 'Owner or partner (non-surgeon)'),
          ('practice-manager', 'Practice manager'), ('marketing', 'Marketing lead'), ('other', 'Other')],
   goals=[('consultations', 'More consultations'), ('authority', 'Stronger authority'),
@@ -195,22 +203,21 @@ C = {
   desc='A Hubber Agency conecta conteúdo, anúncios, landing pages e mensuração de leads para clínicas de cirurgia plástica nos EUA. Converse com Nicolas Palma.',
   og_title='Marketing para clínicas de cirurgia plástica | Hubber Agency',
   skip='Pular para o conteúdo', top_cta='Falar com o Nicolas', lang_label='Idioma',
-  eyebrow='Hubber Agency · Para clínicas de cirurgia plástica nos EUA',
-  h1='O paciente pesquisa o cirurgião <mark class="hl">muito antes de marcar</mark> a consulta.',
-  lead='Nós conectamos o que ele encontra pelo caminho, do seu conteúdo e dos anúncios ao site e à primeira resposta, para que a confiança que você construiu apareça em cada etapa e dar o próximo passo fique fácil.',
-  cta='Conversar sobre o plano de crescimento da clínica', cta2='Ver como trabalhamos',
-  note='Uma conversa de 30 minutos com Nicolas Palma, específica para a sua clínica. Sem custo.',
-  proofrow=[('100+', 'cirurgiões plásticos atendidos no Brasil'), ('300+', 'cirurgiões já assistiram ao Nicolas'), ('Presencial', 'captação de conteúdo na clínica')],
+  eyebrow='Marketing para clínicas de cirurgia plástica nos EUA',
+  h1='Faça da sua expertise <mark class="hl">o motivo do contato do paciente.</mark>',
+  lead='Reunimos conteúdo, anúncios, site e acompanhamento dos contatos num único plano, para que os pacientes certos entendam a sua clínica e achem fácil dar o próximo passo.',
+  cta='Falar com o Nicolas', cta2='Ver como funciona',
+  note='Uma conversa de 30 minutos sobre a sua clínica. Sem custo e sem compromisso.',
+  proofrow=[('100+', 'cirurgiões plásticos atendidos no Brasil'), ('300+', 'cirurgiões já assistiram ao Nicolas'), ('16', 'conteúdos por mês incluídos na Hubber Agency')],
   cmp_h3='Uma agência genérica × a Hubber',
   cmp_cols=('', 'Agência genérica', 'Hubber'),
   cmp=[
    ('Quem cuida da sua conta', 'Um time generalista, que atende qualquer segmento', 'Um time que já trabalhou com mais de 100 cirurgiões plásticos no Brasil'),
    ('O que é medido', 'Cliques, seguidores e alcance', 'De onde veio cada lead e se ele virou consulta'),
-   ('Como as partes se conectam', 'Anúncio, conteúdo e site com fornecedores diferentes', 'Um time para conteúdo, anúncios, páginas e primeiro acompanhamento'),
+   ('Como as partes se conectam', 'Anúncio, conteúdo e site com fornecedores diferentes', 'Um time para conteúdo, anúncios, páginas e follow-up básico'),
    ('Como o paciente é tratado', 'Como qualquer outra compra', 'Como uma decisão baseada em confiança, da primeira impressão à consulta'),
-   ('O que é prometido', 'Resultado garantido', 'Escopo claro, cadência fixa de revisão e números honestos'),
+   ('O que é prometido', 'Promessas grandes, escopo vago', 'Escopo claro, cadência fixa de revisão e números honestos'),
   ],
-  stages={'attract': 'Atração', 'trust': 'Confiança', 'convert': 'Conversão', 'all': 'Todas as etapas'},
   disclaimer='Os resultados variam de clínica para clínica. Nada nesta página é garantia de pacientes, consultas ou faturamento.',
   hero_alt='Nicolas Palma, fundador da Hubber, palestrando com microfone no palco.',
   hero_cap='Nicolas Palma, fundador da Hubber.',
@@ -220,14 +227,19 @@ C = {
   country='Brasil',
   stat100='100+', stat100_t='cirurgiões plásticos já trabalharam com a Hubber no Brasil',
   work_label='Conteúdo que produzimos',
-  work_h2='Não só gravamos. <mark class="hl">Chegamos com o que já funciona.</mark>',
-  work_intro='Depois de trabalhar com mais de 100 cirurgiões plásticos, sabemos qual conteúdo aproxima o paciente da consulta e qual só junta visualização. Por isso não tem achismo: tudo é planejado antes de chegarmos, e um dia de gravação na sua clínica vira dezenas de conteúdos.',
-  work_points=[('A receita', 'Formatos e temas que já funcionam com cirurgiões plásticos, e os que sabemos evitar.'),
-               ('Tudo pronto antes de chegar', 'Roteiros, lista de cenas e cronograma aprovados com você antes da gravação.'),
-               ('Um dia, dezenas de conteúdos', 'Uma única diária na sua clínica, editada em conteúdo para semanas.')],
+  work_h2='Não só gravamos. <mark class="hl">Chegamos sabendo o que já funcionou.</mark>',
+  work_intro='Depois de trabalhar com mais de 100 cirurgiões plásticos, temos clareza sobre qual conteúdo costuma aproximar o paciente da consulta e qual mais junta visualização. Por isso o planejamento acontece antes de a câmera ligar.',
+  work_points=[('Incluído na Hubber Agency', '16 conteúdos por mês, planejados com você a partir de formatos e temas que já funcionaram com cirurgiões plásticos, e dos que sabemos evitar. Formato é ponto de partida, não garantia de resultado.'),
+               ('Gravação presencial, conforme local e escopo', 'Gravar na sua clínica depende de onde você está e do que entra no escopo. Na Flórida pode vir como bônus; em outros lugares, é combinado caso a caso.'),
+               ('A diária de conteúdo é um serviço à parte', 'Roteiros, lista de cenas e cronograma aprovados antes, e um dia na sua clínica editado em dezenas de conteúdos. Tem escopo e orçamento próprios, separados do plano mensal.')],
   work_note='Algumas peças gravadas para cirurgiões no Brasil, em português. Algumas contêm imagens de cirurgia, por isso nada toca até você clicar.',
   work_play='Assistir',
   testi_h3='Nas palavras deles',
+  testi_intro='Nestas gravações o Nicolas apresenta os cirurgiões como clientes da agência dele, que eles chamam de MedGrowth. A Hubber é liderada pelo mesmo fundador.',
+  feat_label='De um cliente',
+  feat_quote='“Porque dentro da plástica, principalmente, não adianta ser aquela coisa igual pra todo mundo; tem que ser personalizado.”',
+  feat_who='Dr. Ícaro Samuel', feat_role='Cirurgião plástico · Brasil · Cliente',
+  feat_note='Gravado com Nicolas Palma.', feat_link='Ver o depoimento',
   testi_note='Original em português.',
   testi_play='Assistir ao depoimento',
   testi_playing='Reproduzindo depoimento',
@@ -235,26 +247,25 @@ C = {
   testi_orig='Original (português)', testi_tr='Tradução em inglês',
   testi_pending='',
   prob_label='O problema',
-  prob_h2='A maioria das clínicas não perde pacientes para um concorrente. <mark class="hl">Perde pelo caminho.</mark>',
+  prob_h2='Onde o interesse pode se perder <mark class="hl">entre o anúncio e a consulta.</mark>',
   journey=[
-   ('Descoberta', 'O potencial paciente vê um reel ou um anúncio. Se parece igual ao de todo mundo, ele segue rolando.'),
+   ('Descoberta', 'O potencial paciente vê um reel ou um anúncio. Se parece igual ao de todo mundo, ele pode seguir rolando.'),
    ('Confiança', 'Ele confere seu perfil, seus resultados e suas avaliações. Lacunas aqui custam mais do que um anúncio fraco.'),
    ('Contato', 'Ele manda mensagem ou preenche um formulário. Se a resposta demora um dia, talvez já esteja conversando com outra clínica.'),
-   ('Consulta', 'Alguém agenda. Ninguém sabe qual campanha, post ou página trouxe essa pessoa, e a verba continua indo para palpites.'),
+   ('Consulta', 'Alguém agenda. Ninguém sabe qual campanha, post ou página trouxe essa pessoa, e as decisões de verba acabam baseadas em palpites.'),
   ],
   prob_close='Quando conteúdo, anúncios, site e atendimento ficam com pessoas que não conversam entre si, cada parte pode parecer bem no próprio relatório enquanto as oportunidades escapam entre elas.',
   scope_label='O que a Hubber Agency faz',
-  scope_h2='Atrair, gerar confiança, converter. <mark class="hl">Um time para as três etapas.</mark>',
-  scope_intro='Cirurgia plástica é uma decisão baseada em confiança. Nosso trabalho cobre as três etapas em que ela é ganha ou perdida, dentro do escopo que combinamos com a sua clínica.',
+  scope_h2='O que a Hubber Agency faz, <mark class="hl">etapa por etapa.</mark>',
+  scope_intro='Cirurgia plástica é uma decisão baseada em confiança. Cada etapa abaixo faz parte de um único plano, dentro do escopo combinado com a sua clínica.',
   scope=[
-   ('Estratégia e gestão de mídia paga', 'Campanhas no Meta e no Google pensadas para os seus procedimentos, o seu mercado e os pacientes que você quer atrair.'),
-   ('Planejamento e produção de conteúdo', 'Conteúdo que mostra a sua expertise e a sua clínica, com captação presencial na clínica, planejado com você e produzido dentro do escopo combinado.'),
-   ('Site e landing pages', 'Páginas que respondem o que o paciente pergunta antes de entrar em contato e deixam o próximo passo óbvio.'),
-   ('Mensuração da origem dos leads', 'Você vê de onde veio cada lead e como ele avançou, e as decisões de verba passam a se apoiar em dados.'),
-   ('Pipeline e primeiro acompanhamento', 'Um pipeline claro, aviso de novos leads, agendamento e follow-up básico, para nenhum contato ficar sem resposta.'),
-   ('Revisões e otimização contínua', 'Revisões periódicas do que está funcionando e ajustes a partir do que aprendemos juntos.'),
+   ('Ajudar os pacientes certos a conhecer a clínica', 'Mídia paga no Meta e no Google', 'Campanhas pensadas para os seus procedimentos, o seu mercado e os pacientes que você quer atrair.'),
+   ('Mostrar a expertise e construir confiança', 'Planejamento e produção de conteúdo', '16 conteúdos por mês estão incluídos, planejados com você a partir dos seus procedimentos e das dúvidas dos pacientes.'),
+   ('Facilitar o pedido de contato', 'Site e landing pages', 'Páginas que respondem o que o paciente quer saber antes de entrar em contato, com um próximo passo claro.'),
+   ('Organizar cada contato', 'Origem dos leads, pipeline, aviso de novos leads e follow-up básico', 'Sua equipe vê de onde veio cada contato e é avisada quando ele chega, com um pipeline simples e follow-up básico que ajudam a responder e acompanhar.'),
+   ('Medir o que avançou e ajustar', 'Relatórios e revisões periódicas', 'Revisamos com você o que avançou, do primeiro clique às consultas que a sua equipe informa, e ajustamos o plano.'),
   ],
-  scope_fine='O escopo é definido por clínica e registrado no contrato. Migração complexa de CRM, agentes conversacionais completos, ligações com IA e integrações personalizadas têm escopo separado. Não prometemos leads, consultas, faturamento nem retorno.',
+  scope_fine='O escopo é combinado por clínica e registrado no contrato. Agentes conversacionais completos, ligações com IA, migrações complexas de CRM e integrações personalizadas têm escopo separado. Somos responsáveis por executar o que foi combinado, medir e revisar com você. Volume de pacientes, cirurgias e faturamento também dependem do seu mercado, da sua oferta e de como a sua equipe conduz cada conversa, e por isso não são garantidos.',
   split_label='Quem faz o quê',
   split_h2='Nós trazemos o paciente até a conversa. <mark class="hl">Sua equipe conduz a partir dali.</mark>',
   us_h='Hubber', us=[
@@ -293,26 +304,31 @@ C = {
           ('stage-group', 'Nicolas Palma no palco com outros dois palestrantes, com a plateia ao fundo.', 'Depois de uma palestra.')],
   faq_label='Perguntas', faq_h2='Antes de entrar em contato.',
   faq=[
-   ('Vocês garantem pacientes ou faturamento?', 'Não. Somos responsáveis pela estrutura de marketing e pela execução: campanhas, conteúdo, páginas, mensuração e primeiro acompanhamento. O resultado depende de muitos fatores, entre eles o seu mercado, a sua oferta e como a sua equipe conduz cada conversa. Nosso compromisso é com o trabalho, a cadência e a transparência sobre o que os números mostram.'),
+   ('Vocês garantem pacientes ou faturamento?', 'Não. Volume de pacientes, cirurgias e faturamento não são garantidos, porque também dependem do seu mercado, da sua oferta e de como a sua equipe conduz cada conversa. Somos responsáveis pelo escopo combinado: campanhas, conteúdo, páginas, mensuração e follow-up básico, entregues no prazo, medidos e revisados com você.'),
    ('Seus clientes estão no Brasil. Por que os EUA?', 'Nossa experiência vem do trabalho com cirurgiões plásticos no Brasil. Nos EUA, aplicamos essa experiência com adaptação a outro mercado, outras plataformas, outra concorrência e outras regras. Não prometemos repetir nenhum resultado brasileiro.'),
-   ('Quem vai trabalhar na nossa conta?', 'Um time dedicado da Hubber, com o Nicolas envolvido na estratégia. Nossa equipe fica no Brasil e trabalha no fuso dos EUA.'),
-   ('O que acontece depois que eu envio o formulário?', 'Confirmamos o recebimento e respondemos por e-mail para encontrar um horário. A conversa dura cerca de 30 minutos: olhamos sua presença atual, entendemos seus objetivos e apontamos as prioridades que enxergamos. Não é um plano de marketing completo, e não há compromisso.'),
-   ('Vocês precisam de dados de pacientes?', 'Não. O marketing não precisa de informação médica de pacientes, e este formulário só pede dados de contato comercial.'),
+   ('Quem vai trabalhar na nossa conta?', 'O Nicolas lidera o trabalho da Hubber com clínicas nos EUA e acompanha a estratégia. O time de produção e campanhas é brasileiro e trabalha remoto, no seu fuso horário.'),
+   ('O que acontece depois que eu envio o formulário?', 'Você vê a confirmação de que o pedido foi recebido. Depois o Nicolas responde por e-mail para combinar uma conversa de 30 minutos sobre o seu marketing: presença atual, objetivos e as prioridades que enxergamos. Enviar o formulário não marca a reunião, e não há compromisso.'),
+   ('Vocês vão me colocar numa newsletter ou mandar SMS promocional?', 'Não. Usamos seus dados só para responder a este pedido. O telefone é opcional, e informá-lo não inscreve você em mensagens promocionais.'),
+   ('Vocês precisam de dados de pacientes?', 'Não. O marketing não precisa de informação médica de pacientes, e este formulário só pede dados de contato comercial. Não inclua informações de pacientes nele.'),
   ],
   fin_label='Próximo passo',
-  fin_h2='Converse sobre o <mark class="hl">plano de crescimento da clínica.</mark>',
-  fin_p='Em cerca de 30 minutos olhamos como a sua clínica aparece hoje, entendemos o que você quer alcançar e apontamos as prioridades que atacaríamos primeiro.',
+  fin_h2='Fale com o Nicolas <mark class="hl">sobre a sua clínica.</mark>',
+  fin_p='Uma conversa de 30 minutos sobre o marketing da sua clínica. Olhamos como você aparece hoje, entendemos o que você quer alcançar e apontamos as prioridades que atacaríamos primeiro. Não é consulta médica nem apresentação de vendas.',
   fin_list=['Uma leitura da sua presença atual: conteúdo, anúncios, site e atendimento', 'Seus objetivos para os próximos meses', 'As prioridades que enxergamos, e se a Hubber Agency faz sentido'],
-  form_h='Peça uma ligação do Nicolas',
-  form_sub='Quatro campos, uns 30 segundos.',
-  goal_q='O que mais importa agora?',
-  f=dict(nome='Seu nome', email='E-mail profissional', telefone='Telefone ou WhatsApp', clinica='Clínica ou Instagram', site='Site ou Instagram',
-         local='Cidade e estado', funcao='Sua função', objetivo='Objetivo principal', detalhe='Algo que devemos saber?',
+  form_h='Peça uma conversa',
+  form_sub='5 campos rápidos · cerca de 1 minuto',
+  goal_q='O que mais importa agora? Escolha quantos quiser.',
+  more='Adicionar alguns detalhes', more_hint='Telefone, objetivos, uma observação. Tudo opcional.',
+  next_h='O que acontece depois',
+  next=['O Nicolas lê o seu pedido e responde por e-mail para combinar um horário.', 'Enviar não marca a reunião.', 'Sem newsletter e sem SMS promocional. Não inclua informações de pacientes.'],
+  f=dict(nome='Nome completo', email='E-mail profissional', telefone='Telefone', clinica='Nome da clínica', site='Site ou Instagram',
+         local='Cidade e estado', funcao='Sua função', objetivo='Objetivos', detalhe='Algo que devemos saber?',
          optional='(opcional)', choose='Escolha uma opção',
          detalhe_ph='Procedimentos em que você foca, marketing atual, o que não está funcionando. Não inclua informações de pacientes.',
-         consent='A Hubber pode me contatar sobre este pedido. <a href="/privacidade/">Privacidade</a>',
-         submit='Pedir ligação do Nicolas',
-         after='Respondemos para combinar um horário. Enviar não marca a reunião ainda.'),
+         local_ph='Miami, FL', site_ph='suaclinica.com ou @perfil',
+         consent='A Hubber pode me contatar por e-mail, ou por telefone se eu informar, apenas sobre este pedido. Isto não é inscrição em newsletter nem em SMS promocional. <a href="/privacidade/">Privacidade</a>',
+         submit='Pedir conversa com o Nicolas',
+         after='Nenhuma reunião é marcada até confirmarmos um horário com você por e-mail.'),
   roles=[('surgeon-owner', 'Cirurgião(ã) e dono(a) da clínica'), ('practice-owner', 'Dono(a) ou sócio(a), não cirurgião'),
          ('practice-manager', 'Gestor(a) da clínica'), ('marketing', 'Responsável por marketing'), ('other', 'Outra')],
   goals=[('consultations', 'Mais consultas'), ('authority', 'Mais autoridade'),
@@ -351,7 +367,8 @@ def testimonials(k, t):
         </figcaption>
       </figure>''')
     return f'''
-    <h3 class="pl-label t-label t-accent" style="margin-top:clamp(56px,7vw,104px)">{E(t["testi_h3"])}</h3>
+    <h3 class="pl-label t-label t-accent" id="testimonials" style="margin-top:clamp(56px,7vw,104px)">{E(t["testi_h3"])}</h3>
+    <p class="pl-intro pl-testi__intro">{E(t["testi_intro"])}</p>
     <div class="pl-testis" style="margin-top:var(--s24)">
 {chr(10).join(out)}
     </div>'''
@@ -372,9 +389,6 @@ def work_items(k, t):
     return '\n'.join(out)
 
 
-SCOPE_STAGES = ['attract', 'attract', 'trust', 'convert', 'convert', 'all']
-
-
 def page(k):
     t = C[k]
     f = t['f']
@@ -388,10 +402,14 @@ def page(k):
     path = '\n'.join(
         f'      <li><span class="pl-path__n">{i:02d}</span><span class="pl-path__stage">{E(a)}</span><p class="pl-path__text">{E(b)}</p></li>'
         for i, (a, b) in enumerate(t['journey'], 1))
-    scope = '\n'.join(f'        <li class="pl-reveal"><span class="pl-stage pl-mono">{E(t["stages"][SCOPE_STAGES[i]])}</span><h3>{E(a)}</h3><p>{E(b)}</p></li>' for i, (a, b) in enumerate(t['scope']))
+    scope = '\n'.join(
+        f'        <li class="pl-reveal"><span class="pl-stage pl-mono">{i:02d}</span><h3>{E(a)}</h3>'
+        f'<p class="pl-rows__svc pl-mono">{E(svc)}</p><p>{E(b)}</p></li>'
+        for i, (a, svc, b) in enumerate(t['scope'], 1))
     work_points = '\n'.join(f'      <li class="pl-reveal"><span class="pl-work__n pl-mono">{i:02d}</span><h3>{E(a)}</h3><p>{E(b)}</p></li>' for i, (a, b) in enumerate(t['work_points'], 1))
     proofrow = '\n'.join(f'        <li><span class="pl-proofrow__n">{E(n)}</span><span class="pl-proofrow__t">{E(x)}</span></li>' for n, x in t['proofrow'])
-    cmp_rows = '\n'.join(f'        <tr><th scope="row">{E(a)}</th><td>{E(b)}</td><td>{E(c)}</td></tr>' for a, b, c in t['cmp'])
+    cmp_rows = '\n'.join(f'        <tr><th scope="row">{E(a)}</th><td data-label="{E(t["cmp_cols"][1])}">{E(b)}</td><td class="pl-cmp__us" data-label="{E(t["cmp_cols"][2])}">{E(c)}</td></tr>' for a, b, c in t['cmp'])
+    cmp_logo = LOGO.replace('hubber-logo-title-pl', 'hubber-logo-title-cmp')
     us = '\n'.join(f'          <li>{E(x)}</li>' for x in t['us'])
     them = '\n'.join(f'          <li>{E(x)}</li>' for x in t['them'])
     steps = '\n'.join(
@@ -406,7 +424,7 @@ def page(k):
     faq = '\n'.join(
         f'      <details>\n        <summary>{E(q)}</summary>\n        <div class="faq__a"><p class="t-body">{E(a)}</p></div>\n      </details>'
         for q, a in t['faq'])
-    goal_chips = '\n'.join(f'          <label class="pl-chip"><input type="radio" name="objetivo" value="{v}" required><span>{E(lbl)}</span></label>' for v, lbl in t['goals'])
+    goal_chips = '\n'.join(f'          <label class="pl-chip"><input type="checkbox" name="objetivo" value="{v}"><span>{E(lbl)}</span></label>' for v, lbl in t['goals'])
     fin_list = '\n'.join(f'        <li>{E(x)}</li>' for x in t['fin_list'])
     opt = lambda pairs: '\n'.join(f'              <option value="{v}">{E(lbl)}</option>' for v, lbl in pairs)
 
@@ -417,6 +435,11 @@ def page(k):
         return (f'          <div class="pl-field{" pl-field--full" if full else ""}">'
                 f'<label for="f-{name}">{E(label)}{o}</label>'
                 f'<input id="f-{name}" name="{name}" type="{typ}"{req}{ac}{extra} aria-describedby="e-{name}">'
+                f'<p class="pl-field__err" id="e-{name}" data-err="{name}" aria-live="polite"></p></div>')
+
+    def textarea(name, label, ph):
+        return (f'          <div class="pl-field pl-field--full"><label for="f-{name}">{E(label)} <span>{E(f["optional"])}</span></label>'
+                f'<textarea id="f-{name}" name="{name}" rows="3" maxlength="1200" placeholder="{E(ph)}" aria-describedby="e-{name}"></textarea>'
                 f'<p class="pl-field__err" id="e-{name}" data-err="{name}" aria-live="polite"></p></div>')
 
     def select(name, label, pairs):
@@ -510,6 +533,15 @@ def page(k):
   </div>
 </section>
 
+<section class="pl-feat" data-surface="ink" aria-label="{E(t["feat_label"])}">
+  <div class="wrap pl-feat__in">
+    <p class="pl-feat__label t-label t-accent">{E(t["feat_label"])}</p>
+    <blockquote class="pl-feat__q"><p>{E(t["feat_quote"])}</p></blockquote>
+    <p class="pl-feat__who"><strong>{E(t["feat_who"])}</strong><span class="pl-mono">{E(t["feat_role"])}</span></p>
+    <p class="pl-feat__note pl-mono">{E(t["feat_note"])} <a href="#testimonials">{E(t["feat_link"])}</a></p>
+  </div>
+</section>
+
 <section class="pl-sec" data-surface="light" aria-labelledby="proof-title">
   <div class="wrap">
     <p class="pl-label t-label t-accent">{E(t["proof_label"])}</p>
@@ -532,7 +564,7 @@ def page(k):
     <h3 class="pl-cmp__h">{E(t["cmp_h3"])}</h3>
     <div class="pl-cmp pl-reveal" role="region" aria-label="{E(t["cmp_h3"])}" tabindex="0">
       <table>
-        <thead><tr><th scope="col"><span class="visually-hidden">{E(t["cmp_h3"])}</span></th><th scope="col">{E(t["cmp_cols"][1])}</th><th scope="col">{E(t["cmp_cols"][2])}</th></tr></thead>
+        <thead><tr><th scope="col"><span class="visually-hidden">{E(t["cmp_h3"])}</span></th><th scope="col">{E(t["cmp_cols"][1])}</th><th scope="col" class="pl-cmp__us"><span class="pl-cmp__logo" role="img" aria-label="{E(t["cmp_cols"][2])}">{cmp_logo}</span></th></tr></thead>
         <tbody>
 {cmp_rows}
         </tbody>
@@ -643,18 +675,35 @@ def page(k):
       <div class="pl-form__head"><h3>{E(t["form_h"])}</h3><p class="pl-mono">{E(t["form_sub"])}</p></div>
       <input type="hidden" name="idioma" value="{t["lang"]}">
       <div class="pl-hp" aria-hidden="true"><label for="f-website_extra">Leave empty</label><input id="f-website_extra" name="website_extra" type="text" tabindex="-1" autocomplete="off"></div>
-      <fieldset class="pl-chips" aria-describedby="e-objetivo">
-        <legend>{E(t["goal_q"])}</legend>
-        <div class="pl-chips__row">
-{goal_chips}
-        </div>
-        <p class="pl-field__err" id="e-objetivo" data-err="objetivo" aria-live="polite"></p>
-      </fieldset>
       <div class="pl-fields">
 {field("nome", f["nome"], auto="name")}
-{field("clinica", f["clinica"], auto="organization")}
 {field("email", f["email"], "email", auto="email")}
+{field("clinica", f["clinica"], auto="organization")}
+{field("local", f["local"], auto="address-level2", extra=f' placeholder="{E(f["local_ph"])}"')}
+{select("funcao", f["funcao"], t["roles"])}
+{field("site", f["site"], required=False, auto="url", extra=f' placeholder="{E(f["site_ph"])}"')}
+      </div>
+      <details class="pl-more">
+        <summary><span>{E(t["more"])}</span><span class="pl-more__hint">{E(t["more_hint"])}</span></summary>
+        <div class="pl-more__body">
+          <div class="pl-fields">
 {field("telefone", f["telefone"], "tel", required=False, auto="tel")}
+          </div>
+          <fieldset class="pl-chips" aria-describedby="e-objetivo">
+            <legend>{E(t["goal_q"])}</legend>
+            <div class="pl-chips__row">
+{goal_chips}
+            </div>
+            <p class="pl-field__err" id="e-objetivo" data-err="objetivo" aria-live="polite"></p>
+          </fieldset>
+          <div class="pl-fields">
+{textarea("detalhe", f["detalhe"], f["detalhe_ph"])}
+          </div>
+        </div>
+      </details>
+      <div class="pl-next">
+        <p class="pl-next__h">{E(t["next_h"])}</p>
+        <ul role="list">{"".join(f"<li>{E(x)}</li>" for x in t["next"])}</ul>
       </div>
       <div class="pl-check"><input id="f-consentimento" name="consentimento" type="checkbox" value="sim" required aria-describedby="e-consentimento"><label for="f-consentimento">{f["consent"]}</label><p class="pl-field__err" id="e-consentimento" data-err="consentimento" aria-live="polite" style="grid-column:2"></p></div>
       <button class="btn btn--primary pl-form__submit" type="submit">{E(f["submit"])}</button>

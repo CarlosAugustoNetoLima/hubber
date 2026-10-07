@@ -24,7 +24,7 @@ const T = en ? {
   error: 'We could not send your request. Please check your connection and try again.',
   fix: 'Please review the highlighted fields.',
   required: 'Required.',
-  goal: 'Choose one.',
+  goal: 'Please review your choices.',
   email: 'Enter a valid email address.',
   phone: 'Enter a valid phone number, or leave it blank.',
   consent: 'Please confirm so we can contact you.',
@@ -35,7 +35,7 @@ const T = en ? {
   error: 'Não conseguimos enviar seu pedido. Confira sua conexão e tente de novo.',
   fix: 'Revise os campos destacados.',
   required: 'Obrigatório.',
-  goal: 'Escolha uma opção.',
+  goal: 'Revise suas escolhas.',
   email: 'Informe um e-mail válido.',
   phone: 'Informe um telefone válido ou deixe em branco.',
   consent: 'Confirme para podermos falar com você.',
@@ -50,11 +50,22 @@ export function initClinicForm(root = doc) {
   const label = button.textContent;
   const campaign = campaignFromUrl(location.href);
   let state = 'idle'; // idle | sending | done
+  const REQUIRED = ['nome', 'email', 'clinica', 'local', 'funcao'];
+  const FIELDS = [...REQUIRED, 'site', 'telefone', 'objetivo', 'detalhe', 'consentimento'];
+
+  // Campo com erro dentro de "Adicionar detalhes" fechado: abre antes de focar.
+  const focusFirstError = () => {
+    const bad = form.querySelector('[aria-invalid="true"]');
+    if (!bad) return;
+    const more = bad.closest('details');
+    if (more) more.open = true;
+    (bad.matches('fieldset') ? bad.querySelector('input') : bad).focus();
+  };
 
   const setError = (name, msg) => {
     const field = form.elements[name];
     const err = form.querySelector(`[data-err="${name}"]`);
-    // Grupo de rádio (objetivo): marca o fieldset, não cada opção.
+    // Grupo de checkboxes (objetivo): marca o fieldset, não cada opção.
     const target = field && !field.setAttribute ? form.querySelector('.pl-chips') : field;
     if (target && target.setAttribute) target.setAttribute('aria-invalid', msg ? 'true' : 'false');
     if (err) err.textContent = msg || '';
@@ -62,12 +73,11 @@ export function initClinicForm(root = doc) {
 
   const validate = (data) => {
     const errors = {};
-    for (const name of ['nome', 'clinica', 'email', 'objetivo']) {
+    for (const name of REQUIRED) {
       if (!String(data[name] || '').trim()) errors[name] = T.required;
     }
     if (data.email && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(data.email.trim())) errors.email = T.email;
     if (data.telefone && !/^[0-9+()\s-]{8,40}$/.test(data.telefone.trim())) errors.telefone = T.phone;
-    if (errors.objetivo) errors.objetivo = T.goal;
     if (data.consentimento !== 'sim') errors.consentimento = T.consent;
     return errors;
   };
@@ -75,15 +85,18 @@ export function initClinicForm(root = doc) {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (state !== 'idle') return; // evita envio duplo
-    const data = Object.fromEntries(new FormData(form).entries());
+    const fd = new FormData(form);
+    const data = Object.fromEntries(fd.entries());
+    // Objetivos são múltipla escolha e opcionais.
+    const goals = fd.getAll('objetivo');
+    if (goals.length) data.objetivo = goals; else delete data.objetivo;
     data.consentimento = form.elements.consentimento.checked ? 'sim' : '';
     const errors = validate(data);
-    for (const name of ['nome', 'clinica', 'email', 'telefone', 'objetivo', 'consentimento']) setError(name, errors[name]);
+    for (const name of FIELDS) setError(name, errors[name]);
     if (Object.keys(errors).length) {
       status.dataset.state = 'error';
       status.textContent = T.fix;
-      const bad = form.querySelector('[aria-invalid="true"]');
-      (bad?.matches('fieldset') ? bad.querySelector('input') : bad)?.focus();
+      focusFirstError();
       return;
     }
 
@@ -105,7 +118,8 @@ export function initClinicForm(root = doc) {
       });
       resposta = await res.json().catch(() => null);
       if (res.status === 422 && resposta?.error === 'validation') {
-        for (const name of [...(resposta.missing || []), ...(resposta.invalid || [])]) setError(name, T.required);
+        for (const name of [...(resposta.missing || []), ...(resposta.invalid || [])]) setError(name, name === 'objetivo' ? T.goal : T.required);
+        focusFirstError();
         throw new Error('validation');
       }
     } catch {
