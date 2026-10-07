@@ -68,9 +68,9 @@
 
 1. **Aprovar esta versão** para publicar. Depois de publicar: novo lead TESTE em produção para confirmar a etiqueta HUBBER ADS — AGENCY e a próxima ação no card real.
 2. ~~MedGrowth~~ **confirmado por você em 07/out:** a MedGrowth faz parte do grupo Hubber e passou a se chamar Hubber com a ida para os EUA. A página agora diz isso. A fala dos médicos continua intacta.
-3. **Dr. Rafael Sabino:** confirmar a autorização de uso.
+3. ~~Dr. Rafael Sabino~~ **autorizado (confirmado por você em 07/out).**
 4. **"100+ cirurgiões":** a fonte é a sua mensagem de 07/out; não há documento.
-5. **Bônus de gravação na Flórida:** confirmar que existe nesses termos ("pode vir como bônus").
+5. ~~Gravação presencial~~ **decidido em 07/out:** captação presencial, bônus da Flórida e diária de conteúdo saíram da página. Ficam como argumento de negociação para quem tiver interesse.
 6. **Pixel:** sem dataset aprovado, segue **desligado**. Falta o ID do conjunto de dados dedicado à Hubber. O Lead só dispararia com `delivered`.
 7. **Agenda:** não conectada. A página e o card só falam em resposta por e-mail.
 8. **PageSpeed de produção:** a cota diária da API pública acabou hoje. Não há dado de campo (CrUX) para esta URL nova.
