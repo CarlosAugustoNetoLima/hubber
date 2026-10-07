@@ -151,7 +151,7 @@ test('cada briefing tem página em inglês publicada e rota no subdomínio', () 
     assert.ok(existsSync(pagina), `rode python3 build.py: falta briefing/en/${slug}/`);
     const html = readFileSync(pagina, 'utf8');
     assert.ok(html.includes(`data-tipo="${tipo}" data-idioma="en"`), slug);
-    assert.ok(html.includes('<html lang="en">'), slug);
+    assert.ok(html.includes('<html lang="en"'), slug);
     assert.ok(middleware.includes(`'/en/${slug}/': '/briefing/en/${slug}/index.html'`), slug);
     assert.ok(middleware.includes(`'/en/${slug}/',`), `matcher: ${slug}`);
   }
@@ -223,4 +223,15 @@ test('subdomínio: endereço sem a barra final ganha a barra; com ela, abre a p�
   assert.ok(pedir(B, '/robots.txt').headers.get('x-middleware-rewrite').endsWith('/briefing/robots.txt'), 'arquivo não ganha barra');
   assert.equal(pedir('hubbermarketing.com', '/en/'), undefined, 'o /en/ do site principal segue o dele');
   assert.equal(pedir('hubbermarketing.com', '/briefing/en/brand').headers.get('location'), `https://${B}/en/brand`);
+});
+
+test('páginas de briefing não são traduzidas pelo navegador e a lista em inglês não se chama só "Briefs"', () => {
+  const paginas = ['', 'marca/', 'site/', 'onboarding/', 'designer/', 'en/', 'en/brand/', 'en/website/', 'en/onboarding/', 'en/designer/'];
+  for (const p of paginas) {
+    const html = readFileSync(new URL(`../briefing/${p}index.html`, import.meta.url), 'utf8');
+    assert.match(html, /<html lang="(pt-BR|en)" translate="no">/, p || 'raiz');
+    assert.ok(html.includes('<meta name="google" content="notranslate">'), p || 'raiz');
+  }
+  const lista = readFileSync(new URL('../briefing/en/index.html', import.meta.url), 'utf8');
+  assert.ok(!/<title>Briefs\b/.test(lista) && !/>Briefs</.test(lista), 'em inglês, "Briefs" sozinho também lê como cueca');
 });
