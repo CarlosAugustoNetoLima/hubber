@@ -67,7 +67,7 @@
 ## Pendente / depende de você
 
 1. **Aprovar esta versão** para publicar. Depois de publicar: novo lead TESTE em produção para confirmar a etiqueta HUBBER ADS — AGENCY e a próxima ação no card real.
-2. **MedGrowth:** confirme se a frase acima está correta. Também: os "100+ cirurgiões" e os clientes listados são da MedGrowth, da Hubber ou dos dois? Hoje a página diz "Hubber clients".
+2. ~~MedGrowth~~ **confirmado por você em 07/out:** a MedGrowth faz parte do grupo Hubber e passou a se chamar Hubber com a ida para os EUA. A página agora diz isso. A fala dos médicos continua intacta.
 3. **Dr. Rafael Sabino:** confirmar a autorização de uso.
 4. **"100+ cirurgiões":** a fonte é a sua mensagem de 07/out; não há documento.
 5. **Bônus de gravação na Flórida:** confirmar que existe nesses termos ("pode vir como bônus").
