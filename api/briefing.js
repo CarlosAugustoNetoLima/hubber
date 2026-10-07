@@ -15,6 +15,11 @@
  * cliente para outro projeto sem ninguém perceber. Mudar o destino é mudar este
  * arquivo, com revisão.
  *
+ * Os briefings existem em português e em inglês americano (briefing.hubbermarketing
+ * .com/en). O card é sempre em português, para a equipe: perguntas e opções em
+ * português, o texto livre como o cliente escreveu. O de inglês ganha a etiqueta
+ * "Idioma · Inglês" e o aviso no título e no topo da descrição.
+ *
  * Os briefings não entram no projeto de leads: quem preenche já é cliente.
  * Briefing novo = entrada em BRIEFINGS, etiqueta e formulário DENTRO do
  * "Hubber · Briefings" no JSYNQ e uma linha em TIPOS abaixo.
@@ -42,6 +47,9 @@ const COLUMN_ID         = '6abf3ce857b946818a0ced98';
 /* Todo briefing cai na mão da Larissa, que conduz a entrega. Sem responsável o
    card nasce órfão e depende de alguém varrer a coluna para ver que chegou. */
 const RESPONSAVEL = process.env.JSYNQ_BRIEFING_RESPONSAVEL_ID || '6a862692b045e567c7c8d55b';
+// Etiqueta "Idioma · Inglês", no mesmo projeto: soma-se à do tipo nos briefings em inglês.
+const LABEL_INGLES = '6ac663ea156b5d9ab291bda1';
+const idiomaValido = (v) => (v === 'en' ? 'en' : 'pt');
 
 /* `campos` liga a chave da pergunta ao campo do formulário do JSYNQ. `destaque`
    é o campo de lista do tipo (objetivo na marca, tipo de projeto no site). */
@@ -112,8 +120,9 @@ const TIPOS = {
 
 const MAX_BODY = 256 * 1024;
 
-function montarCard(tipo, respostas, recebidoEm) {
+export function montarCard(tipo, respostas, recebidoEm, idioma = 'pt') {
   const cfg = TIPOS[tipo];
+  const ingles = idiomaValido(idioma) === 'en';
   const customFields = [];
   const contato = {};
 
@@ -129,17 +138,17 @@ function montarCard(tipo, respostas, recebidoEm) {
     if (respostas[chave]) push(spec, respostas[chave]);
   }
   push(cfg.consentimento, 'Autorizo');
-  push(cfg.origemCampo, cfg.origem);
+  push(cfg.origemCampo, ingles ? `${cfg.origem} · Inglês` : cfg.origem);
 
   const titulo = BRIEFINGS[tipo].titulo;
   return {
-    title: `${contato.company || respostas.empresa || 'Empresa sem nome'} · ${titulo}`,
+    title: `${contato.company || respostas.empresa || 'Empresa sem nome'} · ${titulo}${ingles ? ' (inglês)' : ''}`,
     type: 'task',
     board: BOARD_ID,
     column: COLUMN_ID,
-    labels: [cfg.labelId],
+    labels: ingles ? [cfg.labelId, LABEL_INGLES] : [cfg.labelId],
     assignedUsers: [RESPONSAVEL],
-    desc: montarDescricao(tipo, respostas, recebidoEm),
+    desc: montarDescricao(tipo, respostas, recebidoEm, idioma),
     customFields,
   };
 }
@@ -187,8 +196,9 @@ const NO_RESUMO = new Set(['empresa', 'responsavel', 'email', 'whatsapp', 'cidad
 const dataDoEnvio = (iso) => new Date(iso || Date.now())
   .toLocaleDateString('pt-BR', { timeZone: 'America/New_York' });
 
-export function montarDescricao(tipo, respostas, recebidoEm) {
+export function montarDescricao(tipo, respostas, recebidoEm, idioma = 'pt') {
   const b = BRIEFINGS[tipo];
+  const ingles = idiomaValido(idioma) === 'en';
   const campos = todosCampos(b).filter((c) => visivel(c, respostas));
   const respondidas = campos.filter((c) => {
     const v = respostas[c.k];
@@ -196,7 +206,7 @@ export function montarDescricao(tipo, respostas, recebidoEm) {
   });
 
   const blocos = [
-    bloco('paragraph', [texto(`${b.titulo} · recebido em ${dataDoEnvio(recebidoEm)} por briefing.hubbermarketing.com · ${respondidas.length} de ${campos.length} perguntas respondidas`, { italic: true })], { textColor: 'gray' }),
+    bloco('paragraph', [texto(`${b.titulo}${ingles ? ' · respondido em inglês' : ''} · recebido em ${dataDoEnvio(recebidoEm)} por briefing.hubbermarketing.com${ingles ? '/en' : ''} · ${respondidas.length} de ${campos.length} perguntas respondidas`, { italic: true })], { textColor: 'gray' }),
     bloco('heading', [texto('Resumo')], { level: 2 }),
   ];
 
@@ -253,14 +263,14 @@ async function criarCard(card, token) {
   return { ok: false, status: res.status, body: await res.text().catch(() => '') };
 }
 
-const resumo = (d) => `| ${d?.tipo} · ${d?.respostas?.empresa || '?'} · ${d?.respostas?.email || '?'}`;
+const resumo = (d) => `| ${d?.tipo}${d?.idioma === 'en' ? ' (en)' : ''} · ${d?.respostas?.empresa || '?'} · ${d?.respostas?.email || '?'}`;
 
 /* Usada pelo cron e pelo próprio envio. `dados` é { tipo, respostas } já
    validado: o que está na fila nunca foi aceito sem passar por validar(). */
 export async function entregarBriefing(dados, token) {
-  const { tipo, respostas, recebidoEm } = dados;
+  const { tipo, respostas, recebidoEm, idioma } = dados;   // item antigo da fila não tem idioma: é português
   if (!TIPOS[tipo]) return false;
-  const out = await criarCard(montarCard(tipo, respostas, recebidoEm), token);
+  const out = await criarCard(montarCard(tipo, respostas, recebidoEm, idioma), token);
   if (!out.ok) {
     console.error('[briefing] JSYNQ recusou:', out.status, out.body?.slice(0, 500), resumo(dados));
     return false;
@@ -293,13 +303,14 @@ export default async function handler(req, res) {
     return res.status(422).json({ ok: false, error: 'validation', missing: ['consentimento'] });
   }
 
+  // Sem idioma aqui: a página manda dia/mês já no formato único (ver validar).
   const { faltam, invalidos, limpo } = validar(tipo, body.respostas);
   if (faltam.length || invalidos.length) {
     return res.status(422).json({ ok: false, error: 'validation', missing: faltam, invalid: invalidos });
   }
 
   const token = process.env.JSYNQ_API_TOKEN;
-  const dados = { tipo, respostas: limpo, recebidoEm: new Date().toISOString() };
+  const dados = { tipo, idioma: idiomaValido(body.idioma), respostas: limpo, recebidoEm: new Date().toISOString() };
   if (!token) {
     console.error('[briefing] JSYNQ_API_TOKEN ausente.', resumo(dados));
     return res.status(503).json({ ok: false, error: 'not_configured' });

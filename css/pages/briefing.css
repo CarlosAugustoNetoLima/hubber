@@ -96,6 +96,9 @@ body {
 .meta { margin: 0 0 1rem; font-family: var(--mono); font-size: .8125rem; color: var(--muted); }
 .lead { margin: 0 0 2.5rem; font-size: 1.25rem; line-height: 1.5; max-width: 34rem; }
 .lead.sm { font-size: 1.0625rem; color: var(--muted); }
+.lead.sm + .idioma { margin: -1.75rem 0 2.5rem; }
+.idioma a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+.idioma a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
 .field { margin: 0 0 2rem; padding: 0; border: 0; min-width: 0; }
 .field[hidden] { display: none; }

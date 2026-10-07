@@ -1,7 +1,8 @@
 /**
  * Formulário em etapas de briefing.hubbermarketing.com.
  *
- * Lê o tipo em <body data-tipo="marca|site">, desenha as etapas a partir de
+ * Lê o tipo em <body data-tipo="marca|site|..."> e o idioma em data-idioma
+ * ("en" para inglês; sem ele, português), desenha as etapas a partir de
  * js/briefing-perguntas.js e, na revisão, manda tudo para /api/briefing, que
  * cria o card no JSYNQ. As respostas ficam salvas no navegador até o envio e
  * somem depois de RASCUNHO_HORAS sem alteração, mesmo com a página aberta.
@@ -14,22 +15,33 @@
  * só nesta aba, por SESSAO_MIN minutos depois do envio, e nunca são preenchidos
  * sem a pessoa conferir e dar o ok. Não há consulta a servidor nem busca por
  * e-mail: qualquer um digitaria o e-mail de outra pessoa e veria os dados dela.
+ *
+ * Em inglês muda só o que a pessoa lê (js/briefing-idiomas.js). O valor de cada
+ * opção continua em português, então validação, reaproveitamento e o card no
+ * JSYNQ são os mesmos nos dois idiomas.
  */
 
 import { BRIEFINGS, CONSENTIMENTO, validar, visivel, formatar, todosCampos, diaMesValido } from './briefing-perguntas.js';
+import { UI, traduzir, SLUG_EN } from './briefing-idiomas.js';
 
 const TIPO = document.body.dataset.tipo;
+const IDIOMA = document.body.dataset.idioma === 'en' ? 'en' : 'pt';
+const T = UI[IDIOMA];
+const tr = (texto) => traduzir(texto, IDIOMA);
 const B = BRIEFINGS[TIPO];
 const N = B.passos.length;
 const REVISAO = N + 1;
-const STORE_KEY = `hubber-briefing-${TIPO}-v1`;
+// Rascunho separado por idioma: a data de aniversário é digitada em ordens diferentes.
+const STORE_KEY = `hubber-briefing-${TIPO}${IDIOMA === 'en' ? '-en' : ''}-v1`;
 const RASCUNHO_HORAS = 24;
 const RASCUNHO_MS = RASCUNHO_HORAS * 60 * 60 * 1000;
-const AVISO_RASCUNHO = `As respostas que estavam salvas neste navegador foram apagadas porque ficaram ${RASCUNHO_HORAS} horas sem alteração.`;
+const AVISO_RASCUNHO = T.avisoRascunho(RASCUNHO_HORAS);
 const SESSAO_KEY = 'hubber-briefing-sessao-v1';
 const SESSAO_MIN = 15;
 const SESSAO_MS = SESSAO_MIN * 60 * 1000;
-const GRUPOS_REUSO = { contato: 'Contato', cadastro: 'Dados de cadastro', negocio: 'Sobre o negócio', marketing: 'Marketing e metas' };
+const GRUPOS_REUSO = T.grupos;
+// O mesmo briefing no outro idioma, a partir do endereço desta página.
+const OUTRO_IDIOMA = IDIOMA === 'en' ? `../../${TIPO}/` : `../en/${SLUG_EN[TIPO]}/`;
 
 // ---------- estado ----------
 const state = { a: {}, view: 0, max: 0 };
@@ -177,7 +189,7 @@ function ofertaDaSessao() {
   const { limpo } = validar(TIPO, valores);
   const itens = todosCampos(B).filter((c) => c.compartilha && limpo[c.k] !== undefined).map((c) => [c, limpo[c.k]]);
   if (!itens.length) return null;
-  return { itens, origens: entradas.map((e) => BRIEFINGS[e.tipo].titulo.toLowerCase()) };
+  return { itens, origens: entradas.map((e) => tr(BRIEFINGS[e.tipo].titulo).toLowerCase()) };
 }
 
 /* Se a página ficar aberta além do prazo, os dados somem da tela e do
@@ -189,7 +201,7 @@ function agendarExpiracao() {
   const resta = Math.min(...entradas.map((e) => SESSAO_MS - (Date.now() - e.at)));
   timerSessao = setTimeout(() => {
     lerSessao();
-    if (ofertaVisivel) avisoSessao = 'Por segurança, os dados venceram e foram apagados. Preencha normalmente.';
+    if (ofertaVisivel) avisoSessao = T.sessaoVenceu;
     if (state.view === 0 || (enviado && state.view === REVISAO)) desenhar(true);
     agendarExpiracao();
   }, Math.max(resta, 0) + 250);
@@ -199,7 +211,7 @@ function usarDados() {
   // Confere de novo: o painel pode ter ficado aberto além do prazo.
   const atual = ofertaDaSessao();
   if (!atual) {
-    avisoSessao = 'Por segurança, os dados venceram e foram apagados. Preencha normalmente.';
+    avisoSessao = T.sessaoVenceu;
     desenhar(true);
     return;
   }
@@ -236,10 +248,19 @@ const vazio = (c) => { const v = val(c.k); return Array.isArray(v) ? v.length ==
 const fid = (k) => `f-${k}`;
 const mostra = (c) => visivel(c, state.a);
 
+/* Valor para a pessoa ler: opção no idioma da página, data no formato local. */
+function exibir(c, v) {
+  if (Array.isArray(v)) return v.map(tr).join(', ');
+  if (c.t === 'single') return tr(String(v ?? ''));
+  const s = formatar(c, v);
+  if (IDIOMA === 'en' && c.t === 'date' && /^\d{2}\/\d{2}\/\d{4}$/.test(s)) { const [d, m, y] = s.split('/'); return `${m}/${d}/${y}`; }
+  return s;
+}
+
 // ---------- campos ----------
 function desenharCampo(c) {
   const id = fid(c.k);
-  const dica = c.hint ? h('p', { class: 'hint', id: `${id}-h`, text: c.hint }) : null;
+  const dica = c.hint ? h('p', { class: 'hint', id: `${id}-h`, text: tr(c.hint) }) : null;
   const erro = h('p', { class: 'err', id: `${id}-e`, role: 'alert', hidden: true });
   const marca = c.req ? h('span', { class: 'req', 'aria-hidden': 'true' }, ' *') : null;
   const descreve = [c.hint ? `${id}-h` : '', `${id}-e`].join(' ').trim();
@@ -265,17 +286,17 @@ function desenharCampo(c) {
         reaproveitados.delete(c.k);
         persistir(); limparErro(c); sincronizarLimite(c); sincronizarCondicionais();
       });
-      lista.append(h('label', { class: 'opt', for: `${id}-${i}` }, input, h('span', { text: o })));
+      lista.append(h('label', { class: 'opt', for: `${id}-${i}` }, input, h('span', { text: tr(o) })));
     });
     wrap = h('fieldset', { class: 'field', 'data-k': c.k, 'aria-describedby': descreve },
-      h('legend', null, c.label, marca), dica, lista, erro);
+      h('legend', null, tr(c.label), marca), dica, lista, erro);
   } else {
     const tag = c.t === 'textarea' ? 'textarea' : 'input';
     const ctl = h(tag, {
       class: 'in', id, name: c.k,
       type: tag === 'input' ? (c.t === 'tel' ? 'tel' : c.t === 'diames' ? 'text' : c.t) : null,
       rows: tag === 'textarea' ? 4 : null,
-      placeholder: c.ph || null,
+      placeholder: c.ph ? tr(c.ph) : null,
       autocomplete: c.t === 'email' ? 'email' : c.t === 'tel' ? 'tel' : 'off',
       inputmode: c.t === 'tel' ? 'tel' : null,
       maxlength: c.t === 'textarea' ? 4000 : c.t === 'diames' ? 10 : 400,
@@ -284,7 +305,7 @@ function desenharCampo(c) {
     ctl.value = String(val(c.k));
     ctl.addEventListener('input', () => { state.a[c.k] = ctl.value; reaproveitados.delete(c.k); persistir(); limparErro(c); sincronizarCondicionais(); });
     wrap = h('div', { class: 'field', 'data-k': c.k },
-      h('label', { for: id }, c.label, marca), dica, ctl, erro);
+      h('label', { for: id }, tr(c.label), marca), dica, ctl, erro);
   }
   if (!mostra(c)) wrap.hidden = true;
   return wrap;
@@ -336,13 +357,13 @@ function conferirPasso(passo) {
     if (!mostra(c)) continue;
     let msg = null;
     if (c.req && vazio(c)) {
-      msg = c.t === 'single' || c.t === 'multi' ? 'Escolha uma opção para continuar.' : 'Preencha este campo para continuar.';
+      msg = c.t === 'single' || c.t === 'multi' ? T.erroOpcao : T.erroCampo;
     } else if (c.t === 'email' && !vazio(c) && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(val(c.k)).trim())) {
-      msg = 'Use um e-mail completo, como nome@empresa.com.';
+      msg = T.erroEmail;
     } else if (c.t === 'tel' && !vazio(c) && !/^[0-9+()\s.-]{8,40}$/.test(String(val(c.k)).trim())) {
-      msg = 'Use só números, com DDD ou código do país.';
-    } else if (c.t === 'diames' && !vazio(c) && !diaMesValido(val(c.k))) {
-      msg = 'Use o dia e o mês, como 14/03.';
+      msg = T.erroTel;
+    } else if (c.t === 'diames' && !vazio(c) && !diaMesValido(val(c.k), IDIOMA)) {
+      msg = T.erroDiaMes;
     }
     if (msg) { marcarErro(c, msg); if (!primeiro) primeiro = c; } else limparErro(c);
   }
@@ -377,9 +398,9 @@ function proximo() {
 
 // ---------- painel lateral ----------
 function desenharPainel() {
-  const titulo = state.view === 0 ? B.titulo
-    : state.view === REVISAO ? (enviado ? 'Briefing enviado' : 'Revise e envie')
-    : B.passos[state.view - 1].titulo;
+  const titulo = state.view === 0 ? tr(B.titulo)
+    : state.view === REVISAO ? (enviado ? T.enviadoTitulo : T.revisaoTitulo)
+    : tr(B.passos[state.view - 1].titulo);
   const t = $('railTitle');
   t.textContent = titulo;
   t.classList.remove('enter'); void t.offsetWidth; t.classList.add('enter');
@@ -388,7 +409,7 @@ function desenharPainel() {
   for (let i = 1; i <= REVISAO; i++) seg.append(h('i', { class: i <= state.view ? 'on' : '' }));
 
   const ol = $('steps'); ol.textContent = '';
-  const itens = B.passos.map((p) => p.titulo).concat(['Revisão e envio']);
+  const itens = B.passos.map((p) => tr(p.titulo)).concat([T.revisaoPasso]);
   itens.forEach((rotulo, idx) => {
     const n = idx + 1;
     const bloqueado = enviado || (n > state.max && n !== state.view);
@@ -405,26 +426,25 @@ function desenharPainel() {
 /* Painel de conferência: lista tudo o que seria preenchido e só preenche com o
    ok. Quem prefere começar do zero segue sem nada preenchido. */
 function painelDeReuso(oferta) {
-  const origem = oferta.origens.length === 1 ? `do ${oferta.origens[0]}` : 'dos briefings';
   const grupos = Object.entries(GRUPOS_REUSO).map(([chave, nome]) => {
     const itens = oferta.itens.filter(([c]) => c.compartilha === chave);
     if (!itens.length) return null;
     const dl = h('dl');
     for (const [c, v] of itens) {
-      dl.append(h('div', { class: 'qa' }, h('dt', { text: c.label }), h('dd', { text: formatar(c, v) })));
+      dl.append(h('div', { class: 'qa' }, h('dt', { text: tr(c.label) }), h('dd', { text: exibir(c, v) })));
     }
     return h('section', { class: 'group' }, h('div', { class: 'group-head' }, h('h2', { text: nome })), dl);
   });
   return h('section', { class: 'oferta', 'aria-labelledby': 'ofertaTitulo' },
-    h('h2', { id: 'ofertaTitulo', text: `Reaproveitar os dados ${origem} que você enviou?` }),
-    h('p', null, 'Para você não digitar tudo de novo, podemos preencher os campos que se repetem. Confira os dados abaixo: nada é preenchido sem o seu ok, e você ainda poderá editar cada campo.'),
+    h('h2', { id: 'ofertaTitulo', text: T.ofertaTitulo(oferta.origens) }),
+    h('p', null, T.ofertaTexto),
     grupos,
     h('div', { class: 'actions' },
-      h('button', { class: 'btn', type: 'button', onclick: usarDados }, 'Usar estes dados'),
-      h('button', { class: 'btn ghost', type: 'button', onclick: () => { ofertaRecusada = true; ir(1); } }, 'Começar sem preencher')),
+      h('button', { class: 'btn', type: 'button', onclick: usarDados }, T.usarDados),
+      h('button', { class: 'btn ghost', type: 'button', onclick: () => { ofertaRecusada = true; ir(1); } }, T.semPreencher)),
     h('p', { class: 'hint' },
-      `Por segurança, estes dados ficam só nesta aba do navegador, por ${SESSAO_MIN} minutos depois do envio, e somem quando você fechar a aba. `,
-      h('button', { class: 'linkbtn', type: 'button', onclick: () => { apagarSessao(); avisoSessao = 'Dados apagados deste navegador.'; desenhar(true); } }, 'Apagar agora')));
+      T.ofertaPrazo(SESSAO_MIN),
+      h('button', { class: 'linkbtn', type: 'button', onclick: () => { apagarSessao(); avisoSessao = T.dadosApagados; desenhar(true); } }, T.apagarAgora)));
 }
 
 function telaIntro() {
@@ -433,28 +453,31 @@ function telaIntro() {
   const oferta = !temSalvo && !ofertaRecusada ? ofertaDaSessao() : null;
   ofertaVisivel = !!oferta;
   return [
-    h('p', { class: 'lead' }, B.intro),
-    h('p', { class: 'lead sm' }, `São ${N} etapas e ${B.duracao}. Suas respostas ficam salvas neste navegador até você enviar e somem depois de ${RASCUNHO_HORAS} horas sem alteração. Se não souber responder algo, escreva “não sei”: isso também é informação.`),
+    h('p', { class: 'lead' }, tr(B.intro)),
+    h('p', { class: 'lead sm' }, T.intro(N, tr(B.duracao), RASCUNHO_HORAS)),
+    // Escrito no outro idioma de propósito: é para quem não lê este.
+    h('p', { class: 'hint idioma', lang: IDIOMA === 'en' ? 'pt-BR' : 'en' },
+      T.outroIdioma[0], h('a', { href: OUTRO_IDIOMA, hreflang: IDIOMA === 'en' ? 'pt-BR' : 'en' }, T.outroIdioma[1]), T.outroIdioma[2]),
     avisoRascunho ? h('p', { class: 'aviso', role: 'status', text: avisoRascunho }) : null,
     avisoSessao ? h('p', { class: 'aviso', role: 'status', text: avisoSessao }) : null,
     oferta
       ? painelDeReuso(oferta)
       : h('div', { class: 'actions' },
           retomar
-            ? [h('button', { class: 'btn', type: 'button', onclick: () => ir(Math.max(1, vistaSalva)) }, 'Continuar de onde parou'),
-               h('button', { class: 'btn ghost', type: 'button', onclick: () => { zerar(); limparSalvo(); ir(1); } }, 'Começar do zero')]
-            : h('button', { class: 'btn', type: 'button', onclick: () => ir(1) }, 'Começar')),
+            ? [h('button', { class: 'btn', type: 'button', onclick: () => ir(Math.max(1, vistaSalva)) }, T.continuarSalvo),
+               h('button', { class: 'btn ghost', type: 'button', onclick: () => { zerar(); limparSalvo(); ir(1); } }, T.comecarDoZero)]
+            : h('button', { class: 'btn', type: 'button', onclick: () => ir(1) }, T.comecar)),
   ];
 }
 
 function telaPasso() {
   const passo = B.passos[state.view - 1];
   const saida = [
-    h('p', { class: 'meta', text: `Etapa ${state.view} de ${N}` }),
-    h('p', { class: 'lead', text: passo.porque }),
+    h('p', { class: 'meta', text: T.etapa(state.view, N) }),
+    h('p', { class: 'lead', text: tr(passo.porque) }),
   ];
   if (passo.campos.some((c) => reaproveitados.has(c.k) && !vazio(c))) {
-    saida.push(h('p', { class: 'aviso', role: 'note', text: 'Alguns campos vieram preenchidos com os dados do briefing anterior. Confira antes de continuar.' }));
+    saida.push(h('p', { class: 'aviso', role: 'note', text: T.preenchidos }));
   }
   const form = h('form', { novalidate: true, onsubmit: (e) => { e.preventDefault(); proximo(); } });
 
@@ -467,7 +490,7 @@ function telaPasso() {
       const dentro = h('div', { class: 'inner' });
       let respondido = false;
       while (i < cs.length && cs[i].grupo === nome) { dentro.append(desenharCampo(cs[i])); if (!vazio(cs[i])) respondido = true; i++; }
-      form.append(h('details', { class: 'more', open: respondido ? true : null }, h('summary', { text: nome }), dentro));
+      form.append(h('details', { class: 'more', open: respondido ? true : null }, h('summary', { text: tr(nome) }), dentro));
     } else if (c.par) {
       const par = c.par;
       const linha = h('div', { class: 'pair' });
@@ -479,8 +502,8 @@ function telaPasso() {
   }
 
   form.append(h('div', { class: 'actions' },
-    h('button', { class: 'btn ghost', type: 'button', onclick: () => ir(state.view - 1) }, 'Voltar'),
-    h('button', { class: 'btn', type: 'submit' }, state.view === N ? 'Revisar respostas' : 'Continuar')));
+    h('button', { class: 'btn ghost', type: 'button', onclick: () => ir(state.view - 1) }, T.voltar),
+    h('button', { class: 'btn', type: 'submit' }, state.view === N ? T.revisar : T.continuar)));
   saida.push(form);
   return saida;
 }
@@ -500,20 +523,20 @@ function telaEnviado() {
   const empresa = String(val('empresa')).trim();
   const guardado = lerSessao().some((e) => e.tipo === TIPO);
   return [
-    h('p', { class: 'meta', text: 'Recebemos' }),
-    h('p', { class: 'lead', text: `${empresa ? `${empresa}, o` : 'O'} ${B.titulo.toLowerCase()} chegou à equipe da Hubber.` }),
-    h('p', { class: 'lead sm', text: 'Vamos ler com calma e falar com você pelo e-mail ou pelo WhatsApp que informou. Não precisa enviar de novo.' }),
+    h('p', { class: 'meta', text: T.recebemos }),
+    h('p', { class: 'lead', text: T.chegou(empresa, tr(B.titulo)) }),
+    h('p', { class: 'lead sm', text: T.vamosLer }),
     guardado
       ? h('p', { class: 'hint' },
-          `Se precisar preencher outro briefing agora, podemos reaproveitar seus dados de contato. Eles ficam só nesta aba do navegador, por ${SESSAO_MIN} minutos, e você pode `,
-          h('button', { class: 'linkbtn', type: 'button', onclick: () => { apagarSessao(); apagouAgora = true; desenhar(true); } }, 'apagar agora'),
+          T.reusoDepois(SESSAO_MIN),
+          h('button', { class: 'linkbtn', type: 'button', onclick: () => { apagarSessao(); apagouAgora = true; desenhar(true); } }, T.apagarAgoraMin),
           '.')
       : null,
-    apagouAgora ? h('p', { class: 'hint', role: 'status', text: 'Dados apagados deste navegador.' }) : null,
+    apagouAgora ? h('p', { class: 'hint', role: 'status', text: T.dadosApagados }) : null,
     // Leva à página com todos os briefings. Os dados da sessão seguem junto de propósito:
     // é assim que o próximo briefing oferece reaproveitar o que a pessoa acabou de informar.
     h('div', { class: 'actions' },
-      h('a', { class: 'btn', href: '../' }, 'Preencher outro briefing')),
+      h('a', { class: 'btn', href: '../' }, T.outroBriefing)),
   ];
 }
 
@@ -521,29 +544,29 @@ function telaRevisao() {
   if (enviado) return telaEnviado();
 
   const saida = [
-    h('p', { class: 'meta', text: 'Última etapa' }),
-    h('p', { class: 'lead', text: 'Confira as respostas. Você pode voltar em qualquer etapa para ajustar antes de enviar.' }),
+    h('p', { class: 'meta', text: T.ultimaEtapa }),
+    h('p', { class: 'lead', text: T.confira }),
   ];
 
   B.passos.forEach((passo, idx) => {
     const dl = h('dl');
     for (const c of passo.campos) {
       if (!mostra(c)) continue;
-      const v = formatar(c, val(c.k));
-      dl.append(h('div', { class: 'qa' }, h('dt', { text: c.label }), h('dd', { class: v ? '' : 'empty', text: v || 'Não respondido' })));
+      const v = exibir(c, val(c.k));
+      dl.append(h('div', { class: 'qa' }, h('dt', { text: tr(c.label) }), h('dd', { class: v ? '' : 'empty', text: v || T.naoRespondido })));
     }
     saida.push(h('section', { class: 'group' },
       h('div', { class: 'group-head' },
-        h('h2', { text: passo.titulo }),
-        h('button', { class: 'linkbtn', type: 'button', 'aria-label': `Editar ${passo.titulo}`, onclick: () => ir(idx + 1) }, 'Editar')),
+        h('h2', { text: tr(passo.titulo) }),
+        h('button', { class: 'linkbtn', type: 'button', 'aria-label': T.editarRotulo(tr(passo.titulo)), onclick: () => ir(idx + 1) }, T.editar)),
       dl));
   });
 
   const status = h('p', { class: `status${aviso ? ' bad' : ''}`, id: 'status', role: 'status', 'aria-live': 'polite', text: aviso });
   const caixa = h('input', { type: 'checkbox', id: 'consent' });
   caixa.checked = consentiu;
-  const enviar = h('button', { class: 'btn', type: 'button', 'aria-disabled': consentiu && !enviando ? 'false' : 'true' }, enviando ? 'Enviando…' : 'Enviar briefing');
-  const copiar = h('button', { class: 'btn ghost', type: 'button', 'aria-disabled': consentiu ? 'false' : 'true' }, 'Copiar respostas');
+  const enviar = h('button', { class: 'btn', type: 'button', 'aria-disabled': consentiu && !enviando ? 'false' : 'true' }, enviando ? T.enviando : T.enviar);
+  const copiar = h('button', { class: 'btn ghost', type: 'button', 'aria-disabled': consentiu ? 'false' : 'true' }, T.copiar);
   const isca = h('input', { class: 'hp', type: 'text', name: 'website_extra', id: 'website_extra', tabindex: '-1', autocomplete: 'off', 'aria-hidden': 'true' });
 
   caixa.addEventListener('change', () => {
@@ -557,42 +580,42 @@ function telaRevisao() {
 
   enviar.addEventListener('click', () => {
     if (enviando) return;
-    if (!consentiu) { dizer('Marque a autorização acima para continuar.', true); caixa.focus(); return; }
+    if (!consentiu) { dizer(T.marqueAutorizacao, true); caixa.focus(); return; }
     const pendente = primeiroPendente();
-    if (pendente) { dizer(`Falta responder uma pergunta obrigatória na etapa ${pendente}.`, true); return; }
+    if (pendente) { dizer(T.faltaNaEtapa(pendente), true); return; }
     enviarBriefing(isca.value, dizer, enviar);
   });
 
   copiar.addEventListener('click', () => {
-    if (!consentiu) { dizer('Marque a autorização acima para continuar.', true); caixa.focus(); return; }
-    copiarTexto(textoCompleto()).then((ok) => dizer(ok ? 'Respostas copiadas.' : 'Não deu para copiar sozinho.', !ok));
+    if (!consentiu) { dizer(T.marqueAutorizacao, true); caixa.focus(); return; }
+    copiarTexto(textoCompleto()).then((ok) => dizer(ok ? T.copiadas : T.naoCopiou, !ok));
   });
 
   saida.push(
-    h('label', { class: 'consent', for: 'consent' }, caixa, h('span', null, CONSENTIMENTO)),
+    h('label', { class: 'consent', for: 'consent' }, caixa, h('span', null, tr(CONSENTIMENTO))),
     isca,
     h('div', { class: 'actions' },
-      h('button', { class: 'btn ghost', type: 'button', onclick: () => ir(N) }, 'Voltar'),
+      h('button', { class: 'btn ghost', type: 'button', onclick: () => ir(N) }, T.voltar),
       enviar, copiar),
     status,
     h('p', { class: 'hint', style: 'margin-top:2rem' },
       confirmandoApagar
-        ? [h('span', null, 'Apagar todas as respostas salvas neste navegador? '),
-           h('button', { class: 'linkbtn', type: 'button', onclick: () => { zerar(); limparSalvo(); ir(0); } }, 'Sim, apagar'),
+        ? [h('span', null, T.apagarTudo),
+           h('button', { class: 'linkbtn', type: 'button', onclick: () => { zerar(); limparSalvo(); ir(0); } }, T.simApagar),
            h('span', null, ' · '),
-           h('button', { class: 'linkbtn', type: 'button', onclick: () => { confirmandoApagar = false; desenhar(true); } }, 'Cancelar')]
-        : h('button', { class: 'linkbtn', type: 'button', onclick: () => { confirmandoApagar = true; desenhar(true); } }, 'Apagar respostas salvas')));
+           h('button', { class: 'linkbtn', type: 'button', onclick: () => { confirmandoApagar = false; desenhar(true); } }, T.cancelar)]
+        : h('button', { class: 'linkbtn', type: 'button', onclick: () => { confirmandoApagar = true; desenhar(true); } }, T.apagarSalvas)));
   return saida;
 }
 
 // ---------- envio ----------
 function textoCompleto() {
-  const linhas = [`${B.titulo} · ${String(val('empresa')).trim() || 'Sem nome'}`, ''];
+  const linhas = [`${tr(B.titulo)} · ${String(val('empresa')).trim() || T.semNome}`, ''];
   for (const passo of B.passos) {
-    linhas.push(passo.titulo.toUpperCase(), '');
+    linhas.push(tr(passo.titulo).toUpperCase(), '');
     for (const c of passo.campos) {
       if (!mostra(c)) continue;
-      linhas.push(c.label, formatar(c, val(c.k)) || 'Não respondido', '');
+      linhas.push(tr(c.label), exibir(c, val(c.k)) || T.naoRespondido, '');
     }
   }
   return linhas.join('\n').trim();
@@ -615,16 +638,17 @@ function copiarTexto(texto) {
 async function enviarBriefing(isca, dizer, botao) {
   enviando = true;
   botao.setAttribute('aria-disabled', 'true');
-  botao.textContent = 'Enviando…';
-  dizer('Enviando…', false);
+  botao.textContent = T.enviando;
+  dizer(T.enviando, false);
 
-  const { limpo } = validar(TIPO, state.a);
+  // `limpo` sai com dia/mês já no formato único, qualquer que seja o idioma.
+  const { limpo } = validar(TIPO, state.a, IDIOMA);
   let resposta = null;
   try {
     resposta = await fetch('/api/briefing', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ tipo: TIPO, respostas: limpo, consentimento: true, website_extra: isca }),
+      body: JSON.stringify({ tipo: TIPO, idioma: IDIOMA, respostas: limpo, consentimento: true, website_extra: isca }),
     });
   } catch { /* sem rede */ }
 
@@ -638,13 +662,13 @@ async function enviarBriefing(isca, dizer, botao) {
   }
 
   botao.setAttribute('aria-disabled', consentiu ? 'false' : 'true');
-  botao.textContent = 'Enviar briefing';
+  botao.textContent = T.enviar;
   if (resposta && resposta.status === 422) {
-    dizer('Alguma resposta não passou na conferência. Volte pelas etapas e revise os campos obrigatórios.', true);
+    dizer(T.erro422, true);
   } else if (!resposta) {
-    dizer('Não consegui falar com o servidor. Confira sua conexão e tente de novo. Suas respostas continuam salvas.', true);
+    dizer(T.erroRede, true);
   } else {
-    dizer('O envio falhou do nosso lado. Suas respostas continuam salvas: tente de novo em alguns minutos ou use “Copiar respostas” e mande pelo WhatsApp.', true);
+    dizer(T.erroServidor, true);
   }
 }
 

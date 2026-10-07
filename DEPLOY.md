@@ -45,8 +45,9 @@ novo dentro do mesmo projeto**, nunca projeto novo. Hoje existem dois:
 ## Briefings (briefing.hubbermarketing.com)
 
 Subdomínio com os briefings de cliente: `/` escolhe o tipo e `/marca/`, `/site/`,
-`/onboarding/` e `/designer/` são os formulários em etapas. É página privada
-(`noindex`, `robots.txt` com `Disallow: /`).
+`/onboarding/` e `/designer/` são os formulários em etapas. Em inglês americano:
+`/en/`, `/en/brand/`, `/en/website/`, `/en/onboarding/` e `/en/designer/`. É página
+privada (`noindex`, `robots.txt` com `Disallow: /`).
 
 | Briefing | Origem das perguntas | Destaque no card |
 |---|---|---|
@@ -99,14 +100,28 @@ Google, para a resposta poder ser reaproveitada entre os dois.
   briefings (`tom`, `regiao`, `provas` e `objetivo` têm a mesma chave e perguntam
   coisas diferentes); em dúvida, use `igualMarca()`. Rascunho existente tem
   prioridade sobre a oferta. Data de nascimento (`diames`) nunca é compartilhada.
-- **Briefing novo:** entrada em `BRIEFINGS`, etiqueta e formulário no JSYNQ, uma
-  linha em `TIPOS` no `api/briefing.js`, card no hub (`src/briefing/index.html`)
-  e página em `src/briefing/<slug>/index.html`.
+- **Inglês:** as perguntas continuam escritas uma vez, em português.
+  `js/briefing-idiomas.js` traduz pelo próprio texto (`EN`) e guarda os textos da
+  página nos dois idiomas (`UI`). O valor de cada opção continua em português, então
+  validação, perguntas condicionais, reaproveitamento (que funciona entre os dois
+  idiomas) e card são os mesmos. O card chega em português para a equipe, com a
+  etiqueta `Idioma · Inglês` somada à do tipo, " (inglês)" no título, o aviso no topo
+  da descrição e a origem "Briefing · Tipo · Inglês". A data de aniversário em inglês
+  é digitada mês/dia e viaja como dia/mês. O rascunho do inglês tem chave própria.
+  Mudou um texto em `briefing-perguntas.js`? Traduza em `EN`, senão ele aparece em
+  português na versão em inglês e `node --test tests/*.test.js` acusa.
+- **Briefing novo:** entrada em `BRIEFINGS`, traduções em `js/briefing-idiomas.js`
+  (mais o slug em `SLUG_EN`), etiqueta e formulário no JSYNQ, uma linha em `TIPOS`
+  no `api/briefing.js`, card nos dois hubs (`src/briefing/index.html` e
+  `src/briefing/en/index.html`), páginas em `src/briefing/<slug>/index.html` e
+  `src/briefing/en/<slug-en>/index.html` e as rotas no `middleware.js`.
 - **Domínio:** adicionar `briefing.hubbermarketing.com` ao projeto na Vercel e o
   CNAME no DNS. O `middleware.js` reescreve por host, como no reels.
 - **Responsável:** `JSYNQ_BRIEFING_RESPONSAVEL_ID` troca quem recebe o card.
-- **Fila:** o item pendente é `{ tipo, respostas }` já validado, sob
-  `pendentes/briefing/`.
+- **Fila:** o item pendente é `{ tipo, idioma, respostas }` já validado, sob
+  `pendentes/briefing/`. Item sem `idioma` (anterior ao inglês) é português.
+- **Testes:** `node --test tests/*.test.js` cobre traduções completas, destino fixo
+  (mesmo com variáveis erradas na Vercel), card nos dois idiomas e barreiras.
 
 ## Publicar na Vercel
 

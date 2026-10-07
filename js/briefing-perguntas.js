@@ -436,11 +436,12 @@ export const todosCampos = (b) => b.passos.flatMap((p) => p.campos);
 
 /* Dia e mês sem o ano (aniversário de pessoa): aceita 14/03, 14-3, 14.03 e devolve
    '14/03', ou null quando não é uma data possível. Fevereiro aceita 29 porque,
-   sem o ano, não há como saber se é bissexto. */
-export function diaMesValido(v) {
+   sem o ano, não há como saber se é bissexto. Em inglês a pessoa digita mês/dia
+   (03/14); a saída é sempre dia/mês, o formato que viaja e que o card mostra. */
+export function diaMesValido(v, idioma = 'pt') {
   const m = /^(\d{1,2})[/.\-\s](\d{1,2})$/.exec(String(v).trim());
   if (!m) return null;
-  const dia = +m[1], mes = +m[2];
+  const [dia, mes] = idioma === 'en' ? [+m[2], +m[1]] : [+m[1], +m[2]];
   const dias = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   if (mes < 1 || mes > 12 || dia < 1 || dia > dias[mes - 1]) return null;
   return `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}`;
@@ -461,8 +462,12 @@ const vazio = (v) => (Array.isArray(v) ? v.length === 0 : String(v ?? '').trim()
  * Confere as respostas de um briefing. Devolve { faltam, invalidos, limpo },
  * onde `limpo` só tem campos visíveis, aparados e dentro do que a página
  * oferece. Quem chama usa `limpo` e ignora o resto do que o navegador mandou.
+ *
+ * `idioma` é o de quem digitou e só muda a leitura de dia/mês. A página em
+ * inglês valida com 'en' e manda `limpo`, já em dia/mês; o servidor valida o
+ * que chega sem idioma, porque recebe sempre o formato de dia/mês.
  */
-export function validar(tipo, bruto) {
+export function validar(tipo, bruto, idioma = 'pt') {
   const b = BRIEFINGS[tipo];
   const faltam = [];
   const invalidos = [];
@@ -481,7 +486,7 @@ export function validar(tipo, bruto) {
       if (v && c.t === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { invalidos.push(c.k); continue; }
       if (v && c.t === 'tel' && !/^[0-9+()\s.-]{8,40}$/.test(v)) { invalidos.push(c.k); continue; }
       if (v && c.t === 'date' && !/^\d{4}-\d{2}-\d{2}$/.test(v)) { invalidos.push(c.k); continue; }
-      if (v && c.t === 'diames') { const n = diaMesValido(v); if (!n) { invalidos.push(c.k); continue; } v = n; }
+      if (v && c.t === 'diames') { const n = diaMesValido(v, idioma); if (!n) { invalidos.push(c.k); continue; } v = n; }
       if (v.length > (c.t === 'textarea' ? MAX_LONGO : MAX_CURTO)) { invalidos.push(c.k); continue; }
     }
     if (vazio(v)) { if (c.req) faltam.push(c.k); continue; }

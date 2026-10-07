@@ -17,7 +17,9 @@ const REELS = {
   },
 };
 
-/* Briefings dos clientes: página privada, sem indexação, três telas. */
+/* Briefings dos clientes: páginas privadas, sem indexação, em português e em
+   inglês (/en). Os caminhos do inglês também existem no site principal, onde o
+   middleware não encontra dono e deixa passar. */
 const BRIEFING = {
   host: 'briefing.hubbermarketing.com',
   prefixo: '/briefing',
@@ -31,6 +33,16 @@ const BRIEFING = {
   '/onboarding/': '/briefing/onboarding/index.html',
   '/designer': '/briefing/designer/index.html',
   '/designer/': '/briefing/designer/index.html',
+  '/en': '/briefing/en/index.html',
+  '/en/': '/briefing/en/index.html',
+  '/en/brand': '/briefing/en/brand/index.html',
+  '/en/brand/': '/briefing/en/brand/index.html',
+  '/en/website': '/briefing/en/website/index.html',
+  '/en/website/': '/briefing/en/website/index.html',
+  '/en/onboarding': '/briefing/en/onboarding/index.html',
+  '/en/onboarding/': '/briefing/en/onboarding/index.html',
+  '/en/designer': '/briefing/en/designer/index.html',
+  '/en/designer/': '/briefing/en/designer/index.html',
   '/robots.txt': '/briefing/robots.txt',
   },
 };
@@ -62,6 +74,16 @@ export const config = {
     '/onboarding/',
     '/designer',
     '/designer/',
+    '/en',
+    '/en/',
+    '/en/brand',
+    '/en/brand/',
+    '/en/website',
+    '/en/website/',
+    '/en/onboarding',
+    '/en/onboarding/',
+    '/en/designer',
+    '/en/designer/',
     '/reels',
     '/reels/:caminho*',
     '/briefing',
