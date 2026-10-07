@@ -42,7 +42,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     <div class="legal__meta">
       <p class="t-label t-accent">Privacy policy</p>
       <h1 class="legal__title" id="titulo">What we collect, why, and what you can ask us to give back.</h1>
-      <p class="t-lead t-muted">In effect since September 24, 2026.</p>
+      <p class="t-lead t-muted">Updated October 7, 2026.</p>
     </div>
 
     <nav class="legal__toc" aria-labelledby="indice">
@@ -74,6 +74,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       <h3>What you type into the forms</h3>
       <p>We only collect what you write. We do not buy lists and we do not look up your information elsewhere.</p>
       <p>In the <strong>Growth Diagnostic</strong> form, for companies: name, company, your role in it, website, industry, revenue range, team size, marketing budget, and the open answers about where the business stands, plus email and phone.</p>
+      <p>In the <strong>plastic surgery practices</strong> form (<a href="/plastic/">/plastic/</a>): full name, work email, practice name, city and state and your role, plus, if you choose, website or Instagram, phone, goals and a short note. Please do not include patient information.</p>
+      <p>When you arrive through a campaign link, campaign labels (UTM parameters), campaign, ad set and ad identifiers and the Meta click identifier (fbclid), if present, travel with the form to our CRM so we know where the request came from.</p>
 
       <h3>What the server records on its own</h3>
       <p>As on any website, the server hosting Hubber records technical access data: IP address, browser type, date and time and the pages visited. Those records exist to keep the site running and to defend it from abuse.</p>
@@ -90,19 +92,23 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           <dd>Legal basis: <strong>legitimate interest</strong>, to operate the service and contain abuse and fraud.</dd>
         </div>
       </dl>
-      <p>What you write in the form does not become advertising: that data is not used to advertise or to build behavioral profiles.</p>
+      <p>What you write in the form does not become advertising: we do not send your name, email, phone, answers or any patient information to Meta or other ad platforms, and we do not use advanced matching.</p>
 
       <h2 id="sharing">4. Who we share it with</h2>
       <p>Hubber does not sell personal data. Sharing is limited to these cases:</p>
       <ul>
         <li><strong>CRM tool.</strong> Applications are stored in JSYNQ, the system where the team tracks each contact.</li>
         <li><strong>Hosting.</strong> The site and the form handling run on Vercel, on servers outside Brazil. That means there is an international transfer of data, carried out with the safeguards the law requires.</li>
+        <li><strong>Meta, only if you accept marketing cookies.</strong> On the plastic surgery practices page, the Meta Pixel can receive technical browser information, the page address and two events: a page visit and, after our CRM confirms your request was received, a standard inquiry event with fixed labels. No form answers are included. Saying no does not stop the form from working.</li>
         <li><strong>Google Fonts.</strong> The site's fonts are loaded from Google's servers. In that request your browser hands your IP address to Google, as on any site using the service.</li>
         <li><strong>Authorities.</strong> Where there is a court order or a legal obligation.</li>
       </ul>
 
       <h2 id="cookies">5. Cookies and tracking</h2>
-      <p>This site <strong>does not use cookies</strong> and loads no social network pixel, Google Analytics or any other audience measurement tool. Nothing is stored in your browser, which is why you do not see a cookie banner here.</p>
+      <p>Most of this site <strong>does not use cookies</strong> or audience measurement. The exception is the plastic surgery practices page (<a href="/plastic/">/plastic/</a> and <a href="/plastic/pt/">/plastic/pt/</a>), where the <strong>Meta Pixel</strong> stays off until you choose <strong>Accept marketing cookies</strong> in the notice. We do not run Google Analytics.</p>
+      <p>When allowed, Meta may set the <code>_fbp</code> and <code>_fbc</code> cookies to connect visits with ads. We store your choice in your browser and keep an opaque event identifier for the current tab session, so the same request is never counted twice.</p>
+      <p>You can reject or withdraw your choice below. Withdrawing stops the pixel on this site and removes its Meta cookies here; it does not undo information already sent to Meta. The form works either way.</p>
+      <div id="marketing-cookies" data-marketing-settings hidden></div>
       <p>Two pages outside this site do use measurement, each with its own policy and its own notice, where you can opt out of the measurement: <a href="/connect/privacidade/">Hubber Connect</a> and the <a href="https://reels.hubbermarketing.com/privacy/">Orlando video page</a>.</p>
 
       <h2 id="retention">6. How long we keep it</h2>
@@ -156,6 +162,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 </main>
 
 <!--partial:legal-footer-en-->
+
+<script type="module" src="/js/campaign-privacy.js"></script>
 
 </body>
 </html>

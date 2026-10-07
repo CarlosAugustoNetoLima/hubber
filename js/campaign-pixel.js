@@ -10,6 +10,8 @@ const PAGE_PATHS = new Set([
   '/en/core/', '/en/agency/', '/en/diagnostic/',
   '/plastic/', '/plastic/pt/',
 ]);
+// Fixed landing labels a page may attach to its Lead. Nothing from the URL or form.
+const LANDING_PAGES = new Set(['plastic']);
 const instances = new WeakMap();
 let browserController = null;
 
@@ -56,14 +58,13 @@ export function createMarketingPixelController({
       if (!initialized) {
         fbq = loadPixel();
         if (typeof fbq !== 'function') return false;
-        // Configure before init. Never pass customer data/advanced matching.
-        // Meta's own template documents these consent and autoConfig commands:
-        // github.com/facebook/GoogleTagManager-WebTemplate-For-FacebookPixel
-        fbq('consent', 'revoke');
+        // Only reached after an explicit opt-in, so no revoke/grant dance here:
+        // a queued 'consent revoke' makes fbevents.js hold every later queued
+        // command (including the queued 'grant'), and nothing is ever sent.
+        // Never pass customer data/advanced matching to init.
         fbq('set', 'autoConfig', false, pixelId);
         fbq.disablePushState = true;
         fbq('init', pixelId);
-        fbq('consent', 'grant');
         initialized = true;
       }
       if (!pageViewSent) {
@@ -100,7 +101,7 @@ export function createMarketingPixelController({
     return true;
   }
 
-  function trackDiagnosticLead(response) {
+  function trackDiagnosticLead(response, { landingPage } = {}) {
     if (response?.ok !== true || response.delivery !== 'delivered'
       || typeof response.eventId !== 'string' || !EVENT_ID.test(response.eventId)) return false;
 
@@ -121,6 +122,10 @@ export function createMarketingPixelController({
       // Never spread the response/form, or normalize arbitrary input into it.
       if (response.product === 'core' || response.product === 'agency') {
         data.content_category = response.product;
+        data.product = response.product;
+      }
+      if (typeof landingPage === 'string' && LANDING_PAGES.has(landingPage)) {
+        data.landing_page = landingPage;
       }
       fbq('trackSingle', pixelId, 'Lead',
         data, { eventID: id });
@@ -181,7 +186,7 @@ function loadBrowserPixel(win, doc) {
 const TEXT = {
   en: {
     label: 'Marketing cookie preferences',
-    notice: 'With your permission, we use the Meta Pixel to measure visits and successfully delivered inquiries for our marketing campaigns. Meta may receive your page address, browser information and cookie identifiers. Your diagnostic answers are not included in our events. You can change your choice in our privacy policy.',
+    notice: 'With your permission, we use the Meta Pixel to measure visits and successfully delivered inquiries for our marketing campaigns. Meta may receive your page address, browser information and cookie identifiers. Your form answers are not included in our events. You can change your choice in our privacy policy.',
     accept: 'Accept marketing cookies',
     reject: 'Reject',
     privacy: 'Privacy policy',
@@ -192,7 +197,7 @@ const TEXT = {
   },
   pt: {
     label: 'Preferências de cookies de marketing',
-    notice: 'Com sua permissão, usamos o Pixel da Meta para medir visitas e contatos entregues com sucesso nas nossas campanhas de marketing. A Meta pode receber o endereço da página, informações do navegador e identificadores de cookies. Suas respostas ao diagnóstico não entram nos nossos eventos. Você pode mudar sua escolha na política de privacidade.',
+    notice: 'Com sua permissão, usamos o Pixel da Meta para medir visitas e contatos entregues com sucesso nas nossas campanhas de marketing. A Meta pode receber o endereço da página, informações do navegador e identificadores de cookies. Suas respostas ao formulário não entram nos nossos eventos. Você pode mudar sua escolha na política de privacidade.',
     accept: 'Aceitar cookies de marketing',
     reject: 'Recusar',
     privacy: 'Política de privacidade',
@@ -292,6 +297,6 @@ export function initMarketingPixel(root = document) {
 }
 
 /** Pass only the parsed server response; never pass the form or FormData. */
-export function trackDiagnosticLead(response) {
-  return browserController?.trackDiagnosticLead(response) ?? false;
+export function trackDiagnosticLead(response, context) {
+  return browserController?.trackDiagnosticLead(response, context) ?? false;
 }

@@ -311,3 +311,12 @@
 .pl-next__h { margin: 0; font-weight: 600; }
 .pl-next ul { margin: 6px 0 0; padding-left: 1.1em; }
 .pl-next li + li { margin-top: 2px; }
+
+/* Aviso de cookies de marketing: compacto no celular, sem cobrir o CTA do hero */
+@media (max-width: 560px) {
+  .pl .consent { inset-inline: 10px; bottom: 10px; padding: 12px 14px; }
+  .pl .consent__caixa { gap: 10px; }
+  .pl .consent__texto { font-size: .78rem; line-height: 1.45; margin: 0; }
+  .pl .consent__acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pl .consent__acoes .btn { min-height: 44px; padding: 8px 10px; font-size: .82rem; width: 100%; }
+}

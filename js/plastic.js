@@ -138,7 +138,7 @@ export function initClinicForm(root = doc) {
     state = 'done';
     button.textContent = label;
     // Lead só com entrega confirmada pelo CRM (o helper confere de novo).
-    if (resposta.delivery === 'delivered') trackDiagnosticLead(resposta);
+    if (resposta.delivery === 'delivered') trackDiagnosticLead(resposta, { landingPage: 'plastic' });
     status.dataset.state = resposta.delivery === 'pending' ? 'pending' : 'delivered';
     status.textContent = resposta.delivery === 'pending' ? T.pending : T.delivered;
     status.focus?.();
@@ -185,8 +185,7 @@ function initReveal(root = doc) {
 }
 
 initCampaignContext();
-// Sem dataset aprovado o Pixel fica desligado, e não faz sentido pedir
-// consentimento de cookies que não existem. Liga junto com o ID.
+// Pixel só com consentimento (opt-in). Sem ID configurado, nem a tarja aparece.
 if (MARKETING_PIXEL_CONFIG.enabled && MARKETING_PIXEL_CONFIG.pixelId) initMarketingPixel();
 initClinicForm();
 initPlayers();

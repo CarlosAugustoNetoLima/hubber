@@ -1,11 +1,12 @@
-// Main-site tracking remains disabled pending an approved dataset mapping.
-// The existing Reels dataset must not be assumed suitable for Core/Agency.
-// Before publishing, verify automatic advanced matching and automatic events
-// are OFF in the chosen dataset's Meta Events Manager settings. This code adds
-// no CAPI integration or customer matching data.
+// Main-site Meta Pixel (opt-in, consent-gated). Reuses the HUBBER REELS dataset
+// (ad account HUBBER USA (DOLAR) 1303690145088831): Nicolas authorized sharing
+// it with the Reels product on 2026-10-07. The Reels subdomain keeps its own,
+// separate installation (partials/meta-pixel.html); this config does not touch it.
+// This code sends no customer data, no advanced matching and adds no CAPI.
+// Check in Events Manager that automatic advanced matching stays OFF.
 export const MARKETING_PIXEL_CONFIG = Object.freeze({
-  enabled: false,
-  pixelId: '',
+  enabled: true,
+  pixelId: '1622410909278763',
 });
 
 // Separate from the opt-out settings used by Connect and Reels.

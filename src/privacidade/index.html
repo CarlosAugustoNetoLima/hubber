@@ -42,7 +42,7 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
     <div class="legal__meta">
       <p class="t-label t-accent">Política de privacidade</p>
       <h1 class="legal__title" id="titulo">O que a gente coleta, por quê, e o que você pode pedir de volta.</h1>
-      <p class="t-lead t-muted">Em vigor desde 24 de setembro de 2026.</p>
+      <p class="t-lead t-muted">Atualizada em 7 de outubro de 2026.</p>
     </div>
 
     <nav class="legal__toc" aria-labelledby="indice">
@@ -74,6 +74,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       <h3>O que você digita nos formulários</h3>
       <p>A gente só coleta o que você escreve. Não compramos listas e não buscamos dados seus em outros lugares.</p>
       <p>No formulário de <strong>diagnóstico</strong>, para empresas: nome, empresa, seu papel nela, site, setor, faixa de faturamento, tamanho do time, verba de marketing, e as respostas abertas sobre o momento do negócio, além de e-mail e telefone.</p>
+      <p>No formulário para <strong>clínicas de cirurgia plástica</strong> (<a href="/plastic/pt/">/plastic/pt/</a>): nome completo, e-mail profissional, nome da clínica, cidade e estado e sua função, e, se você quiser, site ou Instagram, telefone, objetivos e uma observação. Não inclua informações de pacientes.</p>
+      <p>Quando você chega por um link de campanha, os parâmetros da campanha (UTM), os identificadores de campanha, conjunto e anúncio e o identificador de clique da Meta (fbclid), se presentes, acompanham o formulário até o CRM, para sabermos de onde veio o pedido.</p>
 
       <h3>O que o servidor registra sozinho</h3>
       <p>Como em qualquer site, o servidor que hospeda a Hubber registra dados técnicos de acesso: endereço IP, tipo de navegador, data e hora e as páginas visitadas. Esses registros existem para manter o site no ar e defendê-lo de abuso.</p>
@@ -90,19 +92,23 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
           <dd>Base legal: <strong>legítimo interesse</strong>, para operar o serviço e conter abuso e fraude.</dd>
         </div>
       </dl>
-      <p>O que você escreve no formulário não vira publicidade: esses dados não são usados para anunciar nem para montar perfil de comportamento.</p>
+      <p>O que você escreve no formulário não vira publicidade: não enviamos seu nome, e-mail, telefone, respostas nem informações de pacientes à Meta ou a outras plataformas de anúncio, e não usamos correspondência avançada.</p>
 
       <h2 id="compartilhamento">4. Com quem compartilhamos</h2>
       <p>A Hubber não vende dados pessoais. O compartilhamento se limita a estes casos:</p>
       <ul>
         <li><strong>Ferramenta de CRM.</strong> As aplicações ficam guardadas no JSYNQ, o sistema onde a equipe acompanha cada contato.</li>
         <li><strong>Hospedagem.</strong> O site e o recebimento dos formulários rodam na Vercel, em servidores fora do Brasil. Ou seja, há transferência internacional de dados, feita com as garantias que a lei exige. Se o sistema de CRM estiver indisponível no momento do envio, a sua resposta fica guardada ali, em área privada, até ser entregue, para que nenhuma aplicação se perca.</li>
+        <li><strong>Meta, somente se você aceitar cookies de marketing.</strong> Na página para clínicas de cirurgia plástica, o Pixel da Meta pode receber informações técnicas do navegador, o endereço da página e dois eventos: a visita e, depois que o CRM confirma o recebimento do seu pedido, um evento padrão de solicitação com rótulos fixos. Nenhuma resposta do formulário vai junto. Recusar não impede o envio do formulário.</li>
         <li><strong>Google Fonts.</strong> As fontes do site são carregadas dos servidores do Google. Nesse pedido o seu navegador entrega o endereço IP ao Google, como em qualquer site que use o serviço.</li>
         <li><strong>Autoridades.</strong> Quando houver ordem judicial ou obrigação legal.</li>
       </ul>
 
       <h2 id="cookies">5. Cookies e rastreamento</h2>
-      <p>Este site <strong>não usa cookies</strong> e não carrega pixel de rede social, Google Analytics nem qualquer outra ferramenta de medição de audiência. Nada é gravado no seu navegador, e é por isso que você não vê aqui aviso de cookies.</p>
+      <p>A maior parte deste site <strong>não usa cookies</strong> nem medição de audiência. A exceção é a página para clínicas de cirurgia plástica (<a href="/plastic/pt/">/plastic/pt/</a> e <a href="/plastic/">/plastic/</a>), onde o <strong>Pixel da Meta</strong> fica desligado até você escolher <strong>Aceitar cookies de marketing</strong> no aviso. Não usamos Google Analytics.</p>
+      <p>Com a sua permissão, a Meta pode criar os cookies <code>_fbp</code> e <code>_fbc</code> para relacionar visitas a anúncios. Sua escolha fica guardada no seu navegador, e um identificador opaco de evento fica na sessão da aba, para o mesmo pedido nunca ser contado duas vezes.</p>
+      <p>Você pode recusar ou retirar a autorização abaixo. A retirada desliga o pixel neste site e remove os cookies da Meta daqui; não desfaz informações já enviadas à Meta. O formulário funciona nos dois casos.</p>
+      <div id="marketing-cookies" data-marketing-settings hidden></div>
       <p>Duas páginas fora deste site usam medição, cada uma com a política dela e com um aviso próprio, onde dá para desativar a medição: a <a href="/connect/privacidade/">Hubber Connect</a> e a <a href="https://reels.hubbermarketing.com/pt/privacidade/">página de vídeos em Orlando</a>.</p>
 
       <h2 id="prazo">6. Por quanto tempo guardamos</h2>
@@ -156,6 +162,8 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
 </main>
 
 <!--partial:legal-footer-->
+
+<script type="module" src="/js/campaign-privacy.js"></script>
 
 </body>
 </html>
