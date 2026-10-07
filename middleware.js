@@ -99,6 +99,12 @@ export default function middleware(requisicao) {
   if (dono) {
     const destino = dono.rotas[url.pathname];
     if (!destino) return;
+    /* Nos briefings, página sem a barra final ganha a barra: os links da página
+       são relativos (../, brand/) e, sem ela, /en/brand mandaria "All briefs"
+       para a lista em português e os cards de /en para endereços que não existem. */
+    if (dono === BRIEFING && !url.pathname.endsWith('/') && !url.pathname.includes('.')) {
+      return Response.redirect(`https://${host}${url.pathname}/${url.search}`, 308);
+    }
     url.pathname = destino;
     return rewrite(url);
   }

@@ -208,3 +208,19 @@ test('barreiras: sem consentimento, tipo inexistente, isca de robô e GET não v
   }
   assert.equal(chamadas.length, 0);
 });
+
+test('subdomínio: endereço sem a barra final ganha a barra; com ela, abre a página', async () => {
+  const { default: middleware } = await import('../middleware.js');
+  const pedir = (host, caminho) => middleware({ url: `https://${host}${caminho}`, headers: { get: (k) => (k === 'host' ? host : null) } });
+  const B = 'briefing.hubbermarketing.com';
+  for (const caminho of ['/en', '/en/brand', '/en/website', '/en/onboarding', '/en/designer', '/marca', '/site']) {
+    const r = pedir(B, caminho);
+    assert.equal(r.status, 308, caminho);
+    assert.equal(r.headers.get('location'), `https://${B}${caminho}/`, caminho);
+  }
+  const ok = pedir(B, '/en/brand/');
+  assert.ok(ok.headers.get('x-middleware-rewrite').endsWith('/briefing/en/brand/index.html'));
+  assert.ok(pedir(B, '/robots.txt').headers.get('x-middleware-rewrite').endsWith('/briefing/robots.txt'), 'arquivo não ganha barra');
+  assert.equal(pedir('hubbermarketing.com', '/en/'), undefined, 'o /en/ do site principal segue o dele');
+  assert.equal(pedir('hubbermarketing.com', '/briefing/en/brand').headers.get('location'), `https://${B}/en/brand`);
+});
