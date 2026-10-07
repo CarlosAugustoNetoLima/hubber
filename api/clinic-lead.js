@@ -66,11 +66,12 @@ export function validateClinicLead(body) {
   text('telefone', { max: 40 });
   text('clinica', { required: true, max: 160 });
   text('site', { max: 300 });
-  text('local', { required: true, max: 120 });
+  text('local', { max: 120 });
   text('detalhe', { max: 1000 });
-  for (const [name, list] of [['funcao', ROLES], ['objetivo', GOALS]]) {
+  // Objetivo é obrigatório (um toque na página); função é opcional.
+  for (const [name, list, required] of [['funcao', ROLES, false], ['objetivo', GOALS, true]]) {
     const raw = typeof body[name] === 'string' ? body[name].trim() : '';
-    if (!raw) missing.push(name);
+    if (!raw) { if (required) missing.push(name); }
     else if (!(raw in list)) invalid.push(name);
     else out[name] = raw;
   }
@@ -117,13 +118,13 @@ export function buildClinicCard(d) {
 
   const linhas = [
     'Pedido de reunião · LP /plastic (Hubber Agency · clínicas de cirurgia plástica nos EUA)',
-    `Clínica: ${d.clinica}`,
+    `Clínica / Instagram: ${d.clinica}`,
     `Nome: ${d.nome}`,
-    `Função: ${ROLES[d.funcao]}`,
+    d.funcao && `Função: ${ROLES[d.funcao]}`,
     `E-mail: ${d.email}`,
     d.telefone && `Telefone: ${d.telefone}`,
     d.site && `Site / Instagram: ${d.site}`,
-    `Cidade/estado: ${d.local}`,
+    d.local && `Cidade/estado: ${d.local}`,
     `Objetivo principal: ${GOALS[d.objetivo]}`,
     d.detalhe && `Detalhe: ${d.detalhe}`,
     `Idioma: ${d.idioma} · Origem: ${d.origem}`,
@@ -162,13 +163,13 @@ function resumo(d) {
 
 const PAGINA = {
   'en-US': {
-    ok: ['Request received.', 'Thank you. Your request reached our team. We will get back to you by email to find a time for the conversation. No meeting has been scheduled yet.'],
+    ok: ['Request received.', 'Thank you. Your request reached our team. We will get back to you to find a time for the conversation. No meeting has been scheduled yet.'],
     pend: ['Request saved.', 'Your request is saved and waiting to reach our team. We will retry delivery; you do not need to submit again. No meeting has been scheduled yet.'],
     err: ['We could not record your request.', 'Something failed on our side. Please try again in a few minutes.'],
     back: 'Back to the page', href: '/plastic/',
   },
   'pt-BR': {
-    ok: ['Pedido recebido.', 'Obrigado. Seu pedido chegou à nossa equipe. Vamos responder por e-mail para encontrar um horário para a conversa. Nenhuma reunião foi agendada ainda.'],
+    ok: ['Pedido recebido.', 'Obrigado. Seu pedido chegou à nossa equipe. Vamos entrar em contato para combinar um horário para a conversa. Nenhuma reunião foi agendada ainda.'],
     pend: ['Pedido salvo.', 'Seu pedido está salvo e aguarda entrega à nossa equipe. Vamos tentar de novo; você não precisa reenviar. Nenhuma reunião foi agendada ainda.'],
     err: ['Não conseguimos registrar seu pedido.', 'Algo falhou do nosso lado. Tente de novo em alguns minutos.'],
     back: 'Voltar para a página', href: '/plastic/pt/',

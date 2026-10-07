@@ -341,34 +341,29 @@ window.setTimeout(function(){if(!h.classList.contains('motion-ready')){h.classLi
       </ul>
     </div>
     <form class="pl-form" data-clinic-form action="/api/clinic-lead" method="post" novalidate>
-      <h3>Request the conversation</h3>
+      <div class="pl-form__head"><h3>Request a call with Nicolas</h3><p class="pl-mono">Four fields, about 30 seconds.</p></div>
       <input type="hidden" name="idioma" value="en-US">
       <div class="pl-hp" aria-hidden="true"><label for="f-website_extra">Leave empty</label><input id="f-website_extra" name="website_extra" type="text" tabindex="-1" autocomplete="off"></div>
+      <fieldset class="pl-chips" aria-describedby="e-objetivo">
+        <legend>What matters most right now?</legend>
+        <div class="pl-chips__row">
+          <label class="pl-chip"><input type="radio" name="objetivo" value="consultations" required><span>More consultations</span></label>
+          <label class="pl-chip"><input type="radio" name="objetivo" value="authority" required><span>Stronger authority</span></label>
+          <label class="pl-chip"><input type="radio" name="objetivo" value="ads" required><span>Ads that bring the right patients</span></label>
+          <label class="pl-chip"><input type="radio" name="objetivo" value="website" required><span>A site that converts</span></label>
+          <label class="pl-chip"><input type="radio" name="objetivo" value="tracking" required><span>Know where patients come from</span></label>
+        </div>
+        <p class="pl-field__err" id="e-objetivo" data-err="objetivo" aria-live="polite"></p>
+      </fieldset>
       <div class="pl-fields">
-          <div class="pl-field"><label for="f-nome">Full name</label><input id="f-nome" name="nome" type="text" required aria-required="true" autocomplete="name" aria-describedby="e-nome"><p class="pl-field__err" id="e-nome" data-err="nome" aria-live="polite"></p></div>
+          <div class="pl-field"><label for="f-nome">Your name</label><input id="f-nome" name="nome" type="text" required aria-required="true" autocomplete="name" aria-describedby="e-nome"><p class="pl-field__err" id="e-nome" data-err="nome" aria-live="polite"></p></div>
+          <div class="pl-field"><label for="f-clinica">Practice name or Instagram</label><input id="f-clinica" name="clinica" type="text" required aria-required="true" autocomplete="organization" aria-describedby="e-clinica"><p class="pl-field__err" id="e-clinica" data-err="clinica" aria-live="polite"></p></div>
           <div class="pl-field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" required aria-required="true" autocomplete="email" aria-describedby="e-email"><p class="pl-field__err" id="e-email" data-err="email" aria-live="polite"></p></div>
-          <div class="pl-field"><label for="f-telefone">Phone <span>(optional)</span></label><input id="f-telefone" name="telefone" type="tel" autocomplete="tel" aria-describedby="e-telefone"><p class="pl-field__err" id="e-telefone" data-err="telefone" aria-live="polite"></p></div>
-          <div class="pl-field"><label for="f-clinica">Practice name</label><input id="f-clinica" name="clinica" type="text" required aria-required="true" autocomplete="organization" aria-describedby="e-clinica"><p class="pl-field__err" id="e-clinica" data-err="clinica" aria-live="polite"></p></div>
-          <div class="pl-field"><label for="f-site">Website or Instagram <span>(optional)</span></label><input id="f-site" name="site" type="text" autocomplete="url" aria-describedby="e-site"><p class="pl-field__err" id="e-site" data-err="site" aria-live="polite"></p></div>
-          <div class="pl-field"><label for="f-local">City and state</label><input id="f-local" name="local" type="text" required aria-required="true" autocomplete="address-level1" aria-describedby="e-local"><p class="pl-field__err" id="e-local" data-err="local" aria-live="polite"></p></div>
-          <div class="pl-field"><label for="f-funcao">Your role</label><select id="f-funcao" name="funcao" required aria-required="true" aria-describedby="e-funcao"><option value="">Choose one</option>
-              <option value="surgeon-owner">Surgeon and practice owner</option>
-              <option value="practice-owner">Owner or partner (non-surgeon)</option>
-              <option value="practice-manager">Practice manager</option>
-              <option value="marketing">Marketing lead</option>
-              <option value="other">Other</option></select><p class="pl-field__err" id="e-funcao" data-err="funcao" aria-live="polite"></p></div>
-          <div class="pl-field"><label for="f-objetivo">Main goal</label><select id="f-objetivo" name="objetivo" required aria-required="true" aria-describedby="e-objetivo"><option value="">Choose one</option>
-              <option value="consultations">More qualified consultations</option>
-              <option value="authority">Stronger authority and online presence</option>
-              <option value="ads">Ads that attract the right patients</option>
-              <option value="website">A website and landing pages that convert</option>
-              <option value="tracking">Knowing where patients come from</option>
-              <option value="other">Something else</option></select><p class="pl-field__err" id="e-objetivo" data-err="objetivo" aria-live="polite"></p></div>
-          <div class="pl-field pl-field--full"><label for="f-detalhe">Anything we should know? <span>(optional)</span></label><textarea id="f-detalhe" name="detalhe" maxlength="1000" placeholder="Procedures you focus on, current marketing, what is not working. Please do not include patient information."></textarea></div>
-          <div class="pl-check"><input id="f-consentimento" name="consentimento" type="checkbox" value="sim" required aria-describedby="e-consentimento"><label for="f-consentimento">I agree that Hubber may use this information to contact me about this request. See our <a href="/en/privacy/">Privacy Policy</a>.</label><p class="pl-field__err" id="e-consentimento" data-err="consentimento" aria-live="polite" style="grid-column:2"></p></div>
+          <div class="pl-field"><label for="f-telefone">Phone or WhatsApp <span>(optional)</span></label><input id="f-telefone" name="telefone" type="tel" autocomplete="tel" aria-describedby="e-telefone"><p class="pl-field__err" id="e-telefone" data-err="telefone" aria-live="polite"></p></div>
       </div>
-      <button class="btn btn--primary pl-form__submit" type="submit">Request the conversation</button>
-      <p class="pl-form__after">We will confirm receipt and reply by email to schedule. Sending this form does not book a meeting.</p>
+      <div class="pl-check"><input id="f-consentimento" name="consentimento" type="checkbox" value="sim" required aria-describedby="e-consentimento"><label for="f-consentimento">Hubber may contact me about this request. <a href="/en/privacy/">Privacy</a></label><p class="pl-field__err" id="e-consentimento" data-err="consentimento" aria-live="polite" style="grid-column:2"></p></div>
+      <button class="btn btn--primary pl-form__submit" type="submit">Request a call with Nicolas</button>
+      <p class="pl-form__after">We reply to find a time. Sending this does not book a meeting yet.</p>
       <p class="pl-form__status" data-form-status role="status" aria-live="polite" tabindex="-1"></p>
     </form>
   </div>

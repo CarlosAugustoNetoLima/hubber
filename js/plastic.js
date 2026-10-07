@@ -19,21 +19,23 @@ const doc = document;
 const en = !doc.documentElement.lang.startsWith('pt');
 const T = en ? {
   sending: 'Sending…',
-  delivered: 'Request received. We will reply by email to find a time with Nicolas. No meeting has been scheduled yet.',
+  delivered: 'Request received. We will get back to you to find a time with Nicolas. No meeting has been scheduled yet.',
   pending: 'Request saved. It is waiting to reach our team and we will retry delivery. You do not need to submit again. No meeting has been scheduled yet.',
   error: 'We could not send your request. Please check your connection and try again.',
   fix: 'Please review the highlighted fields.',
   required: 'Required.',
+  goal: 'Choose one.',
   email: 'Enter a valid email address.',
   phone: 'Enter a valid phone number, or leave it blank.',
   consent: 'Please confirm so we can contact you.',
 } : {
   sending: 'Enviando…',
-  delivered: 'Pedido recebido. Vamos responder por e-mail para encontrar um horário com o Nicolas. Nenhuma reunião foi agendada ainda.',
+  delivered: 'Pedido recebido. Vamos entrar em contato para combinar um horário com o Nicolas. Nenhuma reunião foi agendada ainda.',
   pending: 'Pedido salvo. Ele aguarda entrega à nossa equipe e vamos tentar de novo. Você não precisa reenviar. Nenhuma reunião foi agendada ainda.',
   error: 'Não conseguimos enviar seu pedido. Confira sua conexão e tente de novo.',
   fix: 'Revise os campos destacados.',
   required: 'Obrigatório.',
+  goal: 'Escolha uma opção.',
   email: 'Informe um e-mail válido.',
   phone: 'Informe um telefone válido ou deixe em branco.',
   consent: 'Confirme para podermos falar com você.',
@@ -52,17 +54,20 @@ export function initClinicForm(root = doc) {
   const setError = (name, msg) => {
     const field = form.elements[name];
     const err = form.querySelector(`[data-err="${name}"]`);
-    if (field && field.setAttribute) field.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    // Grupo de rádio (objetivo): marca o fieldset, não cada opção.
+    const target = field && !field.setAttribute ? form.querySelector('.pl-chips') : field;
+    if (target && target.setAttribute) target.setAttribute('aria-invalid', msg ? 'true' : 'false');
     if (err) err.textContent = msg || '';
   };
 
   const validate = (data) => {
     const errors = {};
-    for (const name of ['nome', 'email', 'clinica', 'local', 'funcao', 'objetivo']) {
+    for (const name of ['nome', 'clinica', 'email', 'objetivo']) {
       if (!String(data[name] || '').trim()) errors[name] = T.required;
     }
     if (data.email && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(data.email.trim())) errors.email = T.email;
     if (data.telefone && !/^[0-9+()\s-]{8,40}$/.test(data.telefone.trim())) errors.telefone = T.phone;
+    if (errors.objetivo) errors.objetivo = T.goal;
     if (data.consentimento !== 'sim') errors.consentimento = T.consent;
     return errors;
   };
@@ -73,11 +78,12 @@ export function initClinicForm(root = doc) {
     const data = Object.fromEntries(new FormData(form).entries());
     data.consentimento = form.elements.consentimento.checked ? 'sim' : '';
     const errors = validate(data);
-    for (const name of ['nome', 'email', 'telefone', 'clinica', 'local', 'funcao', 'objetivo', 'consentimento']) setError(name, errors[name]);
+    for (const name of ['nome', 'clinica', 'email', 'telefone', 'objetivo', 'consentimento']) setError(name, errors[name]);
     if (Object.keys(errors).length) {
       status.dataset.state = 'error';
       status.textContent = T.fix;
-      form.querySelector('[aria-invalid="true"]')?.focus();
+      const bad = form.querySelector('[aria-invalid="true"]');
+      (bad?.matches('fieldset') ? bad.querySelector('input') : bad)?.focus();
       return;
     }
 

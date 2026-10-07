@@ -172,19 +172,21 @@ C = {
   fin_h2='Talk through your practice’s <mark class="hl">growth plan.</mark>',
   fin_p='In about 30 minutes we look at how your practice shows up today, understand what you want to achieve and point out the priorities we would tackle first.',
   fin_list=['A look at your current presence: content, ads, website and response', 'Your goals for the next months', 'The priorities we see, and whether Hubber Agency is a fit'],
-  form_h='Request the conversation',
-  f=dict(nome='Full name', email='Work email', telefone='Phone', clinica='Practice name', site='Website or Instagram',
+  form_h='Request a call with Nicolas',
+  form_sub='Four fields, about 30 seconds.',
+  goal_q='What matters most right now?',
+  f=dict(nome='Your name', email='Work email', telefone='Phone or WhatsApp', clinica='Practice name or Instagram', site='Website or Instagram',
          local='City and state', funcao='Your role', objetivo='Main goal', detalhe='Anything we should know?',
          optional='(optional)', choose='Choose one',
          detalhe_ph='Procedures you focus on, current marketing, what is not working. Please do not include patient information.',
-         consent='I agree that Hubber may use this information to contact me about this request. See our <a href="/en/privacy/">Privacy Policy</a>.',
-         submit='Request the conversation',
-         after='We will confirm receipt and reply by email to schedule. Sending this form does not book a meeting.'),
+         consent='Hubber may contact me about this request. <a href="/en/privacy/">Privacy</a>',
+         submit='Request a call with Nicolas',
+         after='We reply to find a time. Sending this does not book a meeting yet.'),
   roles=[('surgeon-owner', 'Surgeon and practice owner'), ('practice-owner', 'Owner or partner (non-surgeon)'),
          ('practice-manager', 'Practice manager'), ('marketing', 'Marketing lead'), ('other', 'Other')],
-  goals=[('consultations', 'More qualified consultations'), ('authority', 'Stronger authority and online presence'),
-         ('ads', 'Ads that attract the right patients'), ('website', 'A website and landing pages that convert'),
-         ('tracking', 'Knowing where patients come from'), ('other', 'Something else')],
+  goals=[('consultations', 'More consultations'), ('authority', 'Stronger authority'),
+         ('ads', 'Ads that bring the right patients'), ('website', 'A site that converts'),
+         ('tracking', 'Know where patients come from')],
   foot='© 2026 Hubber. Part of Grupo Cinnamon.', privacy='Privacy', privacy_href='/en/privacy/', terms='Terms', terms_href='/en/terms/',
  ),
  'pt': dict(
@@ -301,19 +303,21 @@ C = {
   fin_h2='Converse sobre o <mark class="hl">plano de crescimento da clínica.</mark>',
   fin_p='Em cerca de 30 minutos olhamos como a sua clínica aparece hoje, entendemos o que você quer alcançar e apontamos as prioridades que atacaríamos primeiro.',
   fin_list=['Uma leitura da sua presença atual: conteúdo, anúncios, site e atendimento', 'Seus objetivos para os próximos meses', 'As prioridades que enxergamos, e se a Hubber Agency faz sentido'],
-  form_h='Pedir a conversa',
-  f=dict(nome='Nome completo', email='E-mail profissional', telefone='Telefone', clinica='Nome da clínica', site='Site ou Instagram',
+  form_h='Peça uma ligação do Nicolas',
+  form_sub='Quatro campos, uns 30 segundos.',
+  goal_q='O que mais importa agora?',
+  f=dict(nome='Seu nome', email='E-mail profissional', telefone='Telefone ou WhatsApp', clinica='Clínica ou Instagram', site='Site ou Instagram',
          local='Cidade e estado', funcao='Sua função', objetivo='Objetivo principal', detalhe='Algo que devemos saber?',
          optional='(opcional)', choose='Escolha uma opção',
          detalhe_ph='Procedimentos em que você foca, marketing atual, o que não está funcionando. Não inclua informações de pacientes.',
-         consent='Autorizo a Hubber a usar estes dados para entrar em contato sobre este pedido. Veja a <a href="/privacidade/">Política de Privacidade</a>.',
-         submit='Pedir a conversa',
-         after='Vamos confirmar o recebimento e responder por e-mail para agendar. Enviar este formulário não marca uma reunião.'),
+         consent='A Hubber pode me contatar sobre este pedido. <a href="/privacidade/">Privacidade</a>',
+         submit='Pedir ligação do Nicolas',
+         after='Respondemos para combinar um horário. Enviar não marca a reunião ainda.'),
   roles=[('surgeon-owner', 'Cirurgião(ã) e dono(a) da clínica'), ('practice-owner', 'Dono(a) ou sócio(a), não cirurgião'),
          ('practice-manager', 'Gestor(a) da clínica'), ('marketing', 'Responsável por marketing'), ('other', 'Outra')],
-  goals=[('consultations', 'Mais consultas qualificadas'), ('authority', 'Autoridade e presença digital mais fortes'),
-         ('ads', 'Anúncios que trazem o paciente certo'), ('website', 'Site e landing pages que convertem'),
-         ('tracking', 'Saber de onde vêm os pacientes'), ('other', 'Outro objetivo')],
+  goals=[('consultations', 'Mais consultas'), ('authority', 'Mais autoridade'),
+         ('ads', 'Anúncios com o paciente certo'), ('website', 'Site que converte'),
+         ('tracking', 'Saber de onde vêm os pacientes')],
   foot='© 2026 Hubber. Uma empresa do Grupo Cinnamon.', privacy='Privacidade', privacy_href='/privacidade/', terms='Termos', terms_href='/termos/',
  ),
 }
@@ -402,6 +406,7 @@ def page(k):
     faq = '\n'.join(
         f'      <details>\n        <summary>{E(q)}</summary>\n        <div class="faq__a"><p class="t-body">{E(a)}</p></div>\n      </details>'
         for q, a in t['faq'])
+    goal_chips = '\n'.join(f'          <label class="pl-chip"><input type="radio" name="objetivo" value="{v}" required><span>{E(lbl)}</span></label>' for v, lbl in t['goals'])
     fin_list = '\n'.join(f'        <li>{E(x)}</li>' for x in t['fin_list'])
     opt = lambda pairs: '\n'.join(f'              <option value="{v}">{E(lbl)}</option>' for v, lbl in pairs)
 
@@ -635,21 +640,23 @@ def page(k):
       </ul>
     </div>
     <form class="pl-form" data-clinic-form action="/api/clinic-lead" method="post" novalidate>
-      <h3>{E(t["form_h"])}</h3>
+      <div class="pl-form__head"><h3>{E(t["form_h"])}</h3><p class="pl-mono">{E(t["form_sub"])}</p></div>
       <input type="hidden" name="idioma" value="{t["lang"]}">
       <div class="pl-hp" aria-hidden="true"><label for="f-website_extra">Leave empty</label><input id="f-website_extra" name="website_extra" type="text" tabindex="-1" autocomplete="off"></div>
+      <fieldset class="pl-chips" aria-describedby="e-objetivo">
+        <legend>{E(t["goal_q"])}</legend>
+        <div class="pl-chips__row">
+{goal_chips}
+        </div>
+        <p class="pl-field__err" id="e-objetivo" data-err="objetivo" aria-live="polite"></p>
+      </fieldset>
       <div class="pl-fields">
 {field("nome", f["nome"], auto="name")}
+{field("clinica", f["clinica"], auto="organization")}
 {field("email", f["email"], "email", auto="email")}
 {field("telefone", f["telefone"], "tel", required=False, auto="tel")}
-{field("clinica", f["clinica"], auto="organization")}
-{field("site", f["site"], required=False, auto="url")}
-{field("local", f["local"], auto="address-level1")}
-{select("funcao", f["funcao"], t["roles"])}
-{select("objetivo", f["objetivo"], t["goals"])}
-          <div class="pl-field pl-field--full"><label for="f-detalhe">{E(f["detalhe"])} <span>{E(f["optional"])}</span></label><textarea id="f-detalhe" name="detalhe" maxlength="1000" placeholder="{E(f["detalhe_ph"])}"></textarea></div>
-          <div class="pl-check"><input id="f-consentimento" name="consentimento" type="checkbox" value="sim" required aria-describedby="e-consentimento"><label for="f-consentimento">{f["consent"]}</label><p class="pl-field__err" id="e-consentimento" data-err="consentimento" aria-live="polite" style="grid-column:2"></p></div>
       </div>
+      <div class="pl-check"><input id="f-consentimento" name="consentimento" type="checkbox" value="sim" required aria-describedby="e-consentimento"><label for="f-consentimento">{f["consent"]}</label><p class="pl-field__err" id="e-consentimento" data-err="consentimento" aria-live="polite" style="grid-column:2"></p></div>
       <button class="btn btn--primary pl-form__submit" type="submit">{E(f["submit"])}</button>
       <p class="pl-form__after">{E(f["after"])}</p>
       <p class="pl-form__status" data-form-status role="status" aria-live="polite" tabindex="-1"></p>

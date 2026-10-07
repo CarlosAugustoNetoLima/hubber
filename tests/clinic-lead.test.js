@@ -84,10 +84,24 @@ test('Validation: required fields, closed lists, email, consent', () => {
   const r = validateClinicLead({ nome: '', email: 'not-an-email', funcao: 'ceo', objetivo: 'consultations', idioma: 'en' });
   assert.ok(r.missing.includes('nome'));
   assert.ok(r.missing.includes('clinica'));
-  assert.ok(r.missing.includes('local'));
+  assert.ok(!r.missing.includes('local')); // cidade/estado é opcional no formulário curto
+  assert.ok(r.missing.includes('objetivo') === false); // veio preenchido
   assert.ok(r.missing.includes('consentimento'));
   assert.ok(r.invalid.includes('email'));
   assert.ok(r.invalid.includes('funcao'));
+});
+
+test('Short form: only name, practice, email, goal and consent are required', () => {
+  const r = validateClinicLead({ nome: 'Jane', clinica: '@exampleclinic', email: 'jane@clinic.com', objetivo: 'authority', consentimento: 'sim', idioma: 'en-US' });
+  assert.deepEqual(r.missing, []);
+  assert.deepEqual(r.invalid, []);
+  const card = buildClinicCard(r.data);
+  assert.equal(card.desc.includes('Função'), false);
+  assert.equal(card.desc.includes('Cidade/estado'), false);
+});
+
+test('Goal is required in the short form', () => {
+  assert.ok(validateClinicLead({ nome: 'Jane', clinica: 'X', email: 'jane@clinic.com', consentimento: 'sim' }).missing.includes('objetivo'));
 });
 
 test('Phone is optional but must look like a phone when present', () => {

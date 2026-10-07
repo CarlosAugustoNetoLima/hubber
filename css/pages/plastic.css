@@ -226,3 +226,31 @@
 .pl-work__points h3 { margin: var(--s8) 0 0; font-family: var(--font-display); font-weight: var(--fw-regular); font-size: clamp(1.25rem, 1.9vw, 1.7rem); line-height: 1.1; }
 .pl-work__points p { margin: var(--s8) 0 0; color: var(--fg-muted); line-height: 1.55; }
 @media (max-width: 760px) { .pl-work__points { grid-template-columns: 1fr; } }
+
+/* Formulário curto: objetivo em pílulas + 4 campos */
+.pl-form { box-shadow: 0 30px 80px -40px rgba(0,0,0,.55); }
+.pl-form__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--s8); margin-bottom: var(--s24); }
+.pl-form__head h3 { margin: 0; }
+.pl-form__head p { margin: 0; color: var(--c-muted-on-white); font-size: .7rem; }
+.pl-chips { border: 0; margin: 0 0 var(--s24); padding: 0; }
+.pl-chips legend { padding: 0; margin-bottom: var(--s12); font-size: .875rem; font-weight: 500; }
+.pl-chips__row { display: flex; flex-wrap: wrap; gap: 8px; }
+.pl-chip { position: relative; cursor: pointer; }
+.pl-chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.pl-chip span { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 16px; border: 1px solid var(--c-border); border-radius: 100px; font-size: .9rem; line-height: 1.2; transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.pl-chip:hover span { border-color: var(--c-ink); }
+.pl-chip input:checked + span { background: var(--c-ink); color: #fff; border-color: var(--c-ink); }
+.pl-chip input:focus-visible + span { outline: var(--focus-w) solid var(--c-blue); outline-offset: 2px; }
+.pl-chips[aria-invalid="true"] .pl-chip span { border-color: var(--c-error); }
+.pl-form .pl-check { margin-top: var(--s16); }
+.pl-form .pl-field input { min-height: 52px; font-size: 1.05rem; }
+.pl-form .pl-form__submit { background: var(--c-magenta); color: #fff; border-color: var(--c-magenta); min-height: 56px; font-size: 1rem; }
+.pl-form .pl-form__submit:hover { background: var(--c-ink); border-color: var(--c-ink); color: #fff; }
+.pl-form .pl-form__submit:disabled { opacity: .7; cursor: default; }
+@media (max-width: 560px) {
+  .pl-form { padding: 22px 18px; }
+  .pl-form__head h3 { font-size: 1.35rem; }
+  .pl-chips__row { gap: 6px; }
+  .pl-chip span { min-height: 40px; padding: 8px 12px; font-size: .82rem; }
+  .pl-fields { gap: 12px; }
+}
